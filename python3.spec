@@ -24,6 +24,7 @@ Source1:	http://www.python.org/ftp/python/doc/%{docver}/python-%{docver}-docs-ht
 
 # format-not-a-string-literal fix
 Patch0:		python-2.6.2-format-string.patch
+Patch1:		python3-lib64.patch
 
 URL:		http://www.python.org/
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
@@ -149,6 +150,7 @@ Various applications written using tkinter
 %setup -q -n Python-%{version}
 
 %patch0 -p0 -b .format-not-a-string-literal
+%patch1 -p1 -b .lib64
 
 # docs
 mkdir html
@@ -201,7 +203,7 @@ export TMP="/tmp" TMPDIR="/tmp"
 # (eugeni, 21/07/2009) test_distutils fails with python3.1 due to ld error
 # (eugeni, 22/07/2009) test_mailbox fails on the BS
 # test test_sax failed -- 1 of 44 tests failed: test_xmlgen_attr_escape
-make test TESTOPTS="-w -l -x test_linuxaudiodev -x test_nis -x test_shutil -x test_pyexpat -x test_minidom -x test_sax -x test_string -x test_str -x test_unicode -x test_userstring -x test_bytes -x test_distutils -x test_mailbox"
+make test TESTOPTS="-w -l -x test_linuxaudiodev -x test_nis -x test_shutil -x test_pyexpat -x test_minidom -x test_sax -x test_string -x test_str -x test_unicode -x test_userstring -x test_bytes -x test_distutils -x test_mailbox -x test_ioctl"
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -220,7 +222,7 @@ mkdir -p $RPM_BUILD_ROOT%{_mandir}
 
 (cd $RPM_BUILD_ROOT%{_libdir}; ln -sf libpython%{lib_major}.so.* libpython%{lib_major}.so)
 
-# Provide a libpython%{dirver}.so symlink in /usr/lib/puthon*/config, so that
+# Provide a libpython%{dirver}.so symlink in /usr/lib/python*/config, so that
 # the shared library could be found when -L/usr/lib/python*/config is specified
 (cd $RPM_BUILD_ROOT%{_libdir}/python%{dirver}/config; ln -sf ../../libpython%{lib_major}.so .)
 
