@@ -397,7 +397,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/idle3
 %{_bindir}/pynche3
 %{_bindir}/modulator3
-%{_datadir}/applications/mandriva-tkinter.desktop
+%{_datadir}/applications/mandriva-tkinter3.desktop
 
 %if %mdkversion < 200900
 %post -n %{lib_name} -p /sbin/ldconfig
