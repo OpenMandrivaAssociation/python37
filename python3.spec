@@ -269,7 +269,7 @@ install Misc/valgrind-python.supp -D $RPM_BUILD_ROOT%{_libdir}/valgrind/valgrind
 %endif
 
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/applications
-cat > $RPM_BUILD_ROOT%{_datadir}/applications/mandriva-tkinter.desktop << EOF
+cat > $RPM_BUILD_ROOT%{_datadir}/applications/mandriva-tkinter3.desktop << EOF
 [Desktop Entry]
 Name=IDLE
 Comment=IDE for Python3
