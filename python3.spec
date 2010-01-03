@@ -25,6 +25,9 @@ Source1:	http://www.python.org/ftp/python/doc/%{docver}/python-%{docver}-docs-ht
 # format-not-a-string-literal fix
 Patch0:		python-2.6.2-format-string.patch
 Patch1:		python3-lib64.patch
+# fix http://bugs.python.org/issue6244
+# and https://qa.mandriva.com/show_bug.cgi?id=56260
+Patch2:     python-2.5-tcl86.patch
 
 URL:		http://www.python.org/
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
@@ -151,6 +154,8 @@ Various applications written using tkinter
 
 #%patch0 -p0 -b .format-not-a-string-literal
 %patch1 -p1 -b .lib64
+
+%patch2 -p1
 
 # docs
 mkdir html
