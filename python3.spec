@@ -14,7 +14,7 @@
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python3
 Version:	3.1.1
-Release:	%mkrel 3
+Release:	%mkrel 4
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 
@@ -358,6 +358,7 @@ rm -rf $RPM_BUILD_ROOT
 %exclude %{_libdir}/python*/tkinter
 %exclude %{_libdir}/python*/site-packages/pynche
 %exclude %{_libdir}/python*/site-packages/modulator
+%exclude %{_libdir}/python*/lib-dynload/_tkinter.so
 
 %{_libdir}/python*
 %{_bindir}/python%{dirver}
@@ -396,6 +397,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/python*/idlelib
 %{_libdir}/python*/site-packages/modulator
 %{_libdir}/python*/site-packages/pynche
+%{_libdir}/python*/lib-dynload/_tkinter.so
 
 %files -n tkinter3-apps
 %defattr(-, root, root, 755)
