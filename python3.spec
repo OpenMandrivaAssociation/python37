@@ -62,7 +62,6 @@ BuildRequires:	valgrind
 #Obsoletes:      python-sqlite3
 #Provides:       python-sqlite3
 Provides:       %{name} = %version
-Provides:       python-base = %version
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 
