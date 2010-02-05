@@ -39,7 +39,6 @@ BuildRequires:	blt
 # not even with an update of db4.6.patch: there is an actual code
 # incompatibility which would need patching - AdamW 2008/12
 BuildRequires:	db2-devel, db4-devel
-BuildRequires:	emacs-bin
 BuildRequires:	expat-devel
 BuildRequires:	gdbm-devel
 BuildRequires:	gmp-devel
@@ -52,8 +51,9 @@ BuildRequires:	tk tk-devel
 BuildRequires:	autoconf2.5
 BuildRequires:  bzip2-devel
 BuildRequires:  sqlite3-devel
-# removed once the emacs part no longer conflict with python 2.X
+# uncomment once the emacs part no longer conflict with python 2.X
 #BuildRequires:	emacs
+#BuildRequires:	emacs-bin
 %if %{with valgrind}
 BuildRequires:	valgrind
 %endif
