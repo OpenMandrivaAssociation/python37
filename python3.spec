@@ -49,8 +49,6 @@ BuildRequires:	readline-devel
 BuildRequires:	termcap-devel
 BuildRequires:	tcl tcl-devel
 BuildRequires:	tk tk-devel
-BuildRequires:	tcl tk tix
-BuildRequires:	tix
 BuildRequires:	autoconf2.5
 BuildRequires:  bzip2-devel
 BuildRequires:  sqlite3-devel
