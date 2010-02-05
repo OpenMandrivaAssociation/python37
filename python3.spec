@@ -52,7 +52,8 @@ BuildRequires:	tk tk-devel
 BuildRequires:	autoconf2.5
 BuildRequires:  bzip2-devel
 BuildRequires:  sqlite3-devel
-BuildRequires:	emacs
+# removed once the emacs part no longer conflict with python 2.X
+#BuildRequires:	emacs
 %if %{with valgrind}
 BuildRequires:	valgrind
 %endif
