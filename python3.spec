@@ -56,9 +56,6 @@ BuildRequires:	emacs
 %if %{with valgrind}
 BuildRequires:	valgrind
 %endif
-# not needed, we only have version 2.0 in distro
-#Obsoletes:      python-sqlite3
-#Provides:       python-sqlite3
 Provides:       %{name} = %version
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
@@ -94,9 +91,6 @@ Summary:	The libraries and header files needed for Python development
 Group:		Development/Python
 Requires:	%{name} = %version
 Requires:	%{lib_name} = %{version}
-Obsoletes:	%{name}-devel
-# (misc) needed to ease upgrade , see #47803
-Obsoletes:  %mklibname -d %{name} 2.5
 Provides:	%{name}-devel = %{version}-%{release}
 Provides:	%{lib_name_orig}-devel = %{version}-%{release}
 
@@ -160,7 +154,7 @@ bzcat %{SOURCE1} | tar x  -C html
 
 find . -type f -print0 | xargs -0 perl -p -i -e 's@/usr/local/bin/python@/usr/bin/python@'
 
-cat > README.mdk << EOF
+cat > README.mdv << EOF
 Python interpreter support readline completion by default.
 This is only used with the interpreter. In order to remove it,
 you can :
@@ -343,7 +337,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-, root, root, 755)
-%doc README.mdk
+%doc README.mdv
 # conflicts with python2.6
 #%config(noreplace) %{_sysconfdir}/emacs/site-start.d/%{name}.el
 %{_sysconfdir}/profile.d/*
