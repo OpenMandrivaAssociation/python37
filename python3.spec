@@ -14,7 +14,7 @@
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python3
 Version:	3.1.1
-Release:	%mkrel 8
+Release:	%mkrel 9
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 
