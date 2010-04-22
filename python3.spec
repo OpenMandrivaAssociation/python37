@@ -1,4 +1,4 @@
-%define docver  3.1.1
+%define docver  3.1.2
 %define dirver  3.1
 %define familyver 3
 
@@ -13,8 +13,8 @@
 %endif
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python3
-Version:	3.1.1
-Release:	%mkrel 9
+Version:	3.1.2
+Release:	%mkrel 1
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 
