@@ -169,6 +169,7 @@ rm -f Modules/Setup.local
 
 OPT="$RPM_OPT_FLAGS -g"
 export OPT
+autoreconf
 %configure2_5x	--with-threads \
 		--with-cycle-gc \
 		--with-cxx=g++ \
