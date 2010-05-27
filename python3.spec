@@ -28,6 +28,8 @@ Patch1:		python3-lib64.patch
 # fix http://bugs.python.org/issue6244
 # and https://qa.mandriva.com/show_bug.cgi?id=56260
 Patch2:     python-2.5-tcl86.patch
+# backported from svn
+Patch3:		python3-disable-pymalloc-on-valgrind.patch
 
 URL:		http://www.python.org/
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
@@ -148,6 +150,7 @@ Various applications written using tkinter
 %patch1 -p1 -b .lib64
 
 %patch2 -p1
+%patch3 -p1 -b .valgrind~
 
 # docs
 mkdir html
