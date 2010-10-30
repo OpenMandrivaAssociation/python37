@@ -14,7 +14,7 @@
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python3
 Version:	3.1.2
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 
@@ -60,6 +60,7 @@ BuildRequires:  sqlite3-devel
 BuildRequires:	valgrind
 %endif
 Provides:       %{name} = %version
+Provides:	python(abi) = %{dirver}
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 
@@ -355,6 +356,9 @@ rm -rf $RPM_BUILD_ROOT
 %exclude %{_libdir}/python*/site-packages/pynche
 %exclude %{_libdir}/python*/site-packages/modulator
 %exclude %{_libdir}/python*/lib-dynload/_tkinter.so
+
+# HACK: build fails without this (TODO: investigate rpm)
+%{_libdir}/python*/configparser*
 
 %{_libdir}/python*
 %{_bindir}/python%{dirver}
