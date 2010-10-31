@@ -23,8 +23,7 @@ Source1:	http://www.python.org/ftp/python/doc/%{docver}/python-%{docver}-docs-ht
 Source2:	python3.macros
 #Source4:	python-mode-1.0.tar.bz2
 
-# format-not-a-string-literal fix
-Patch0:		python-2.6.2-format-string.patch
+Patch0:		python-3.1.2-module-linkage.patch
 Patch1:		python3-lib64.patch
 # fix http://bugs.python.org/issue6244
 # and https://qa.mandriva.com/show_bug.cgi?id=56260
@@ -147,8 +146,7 @@ Various applications written using tkinter
 
 %prep
 %setup -q -n Python-%{version}
-
-#%patch0 -p0 -b .format-not-a-string-literal
+%patch0 -p0 -b .link
 %patch1 -p1 -b .lib64
 
 %patch2 -p1
