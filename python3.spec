@@ -14,12 +14,13 @@
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python3
 Version:	3.1.2
-Release:	%mkrel 2
+Release:	%mkrel 3
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 
 Source:		http://www.python.org/ftp/python/%{version}/Python-%{version}.tar.bz2
 Source1:	http://www.python.org/ftp/python/doc/%{docver}/python-%{docver}-docs-html.tar.bz2
+Source2:	python3.macros
 #Source4:	python-mode-1.0.tar.bz2
 
 # format-not-a-string-literal fix
@@ -157,7 +158,7 @@ Various applications written using tkinter
 mkdir html
 bzcat %{SOURCE1} | tar x  -C html
 
-find . -type f -print0 | xargs -0 perl -p -i -e 's@/usr/local/bin/python@/usr/bin/python@'
+find . -type f -print0 | xargs -0 perl -p -i -e 's@/usr/local/bin/python@/usr/bin/python3@'
 
 cat > README.mdv << EOF
 Python interpreter support readline completion by default.
@@ -338,6 +339,9 @@ EOF
 
 %multiarch_includes $RPM_BUILD_ROOT/usr/include/python*/pyconfig.h
 
+mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/rpm/macros.d
+install -m644 %{SOURCE2} $RPM_BUILD_ROOT/%{_sysconfdir}/rpm/macros.d/
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -377,6 +381,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n %{lib_name}-devel
 %defattr(-, root, root, 755)
+%{_sysconfdir}/rpm/macros.d/*.macros
 %{_libdir}/libpython*.so
 %multiarch %multiarch_includedir/python*/pyconfig.h
 %{_includedir}/python*
