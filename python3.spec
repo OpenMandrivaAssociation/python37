@@ -14,7 +14,7 @@
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python3
 Version:	3.1.2
-Release:	%mkrel 3
+Release:	%mkrel 4
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 
@@ -34,6 +34,7 @@ Patch3:		python3-disable-pymalloc-on-valgrind.patch
 URL:		http://www.python.org/
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Conflicts:	tkinter3 < %{version}
+Conflicts:	%{lib_name}-devel < 3.1.2-4
 Requires:	%{lib_name} = %{version}
 BuildRequires:	X11-devel
 BuildRequires:	blt
@@ -345,6 +346,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc README.mdv
 # conflicts with python2.6
 #%config(noreplace) %{_sysconfdir}/emacs/site-start.d/%{name}.el
+%{_sysconfdir}/rpm/macros.d/*.macros
 %{_sysconfdir}/profile.d/*
 %config(noreplace) %{_sysconfdir}/pythonrc.py
 %exclude %{_libdir}/python*/config/
@@ -376,7 +378,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n %{lib_name}-devel
 %defattr(-, root, root, 755)
-%{_sysconfdir}/rpm/macros.d/*.macros
 %{_libdir}/libpython*.so
 %multiarch %multiarch_includedir/python*/pyconfig.h
 %{_includedir}/python*
