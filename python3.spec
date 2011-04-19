@@ -1,5 +1,5 @@
-%define docver  3.1.2
-%define dirver  3.1
+%define docver  3.2
+%define dirver  3.2
 %define familyver 3
 
 %define lib_major	%{dirver}
@@ -13,8 +13,8 @@
 %endif
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python3
-Version:	3.1.2
-Release:	%mkrel 4
+Version:	3.2
+Release:	%mkrel 1
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 
@@ -38,10 +38,7 @@ Conflicts:	%{lib_name}-devel < 3.1.2-4
 Requires:	%{lib_name} = %{version}
 BuildRequires:	X11-devel
 BuildRequires:	blt
-# Python 2.5.2 will not build the _bsddb extension against db4.7,
-# not even with an update of db4.6.patch: there is an actual code
-# incompatibility which would need patching - AdamW 2008/12
-BuildRequires:	db2-devel, db4-devel
+BuildRequires:	db-devel
 BuildRequires:	expat-devel
 BuildRequires:	gdbm-devel
 BuildRequires:	gmp-devel
@@ -51,7 +48,7 @@ BuildRequires:	readline-devel
 BuildRequires:	termcap-devel
 BuildRequires:	tcl tcl-devel
 BuildRequires:	tk tk-devel
-BuildRequires:	autoconf2.5
+BuildRequires:	autoconf
 BuildRequires:  bzip2-devel
 BuildRequires:  sqlite3-devel
 # uncomment once the emacs part no longer conflict with python 2.X
