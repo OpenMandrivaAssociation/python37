@@ -147,8 +147,8 @@ Various applications written using tkinter
 %patch0 -p0 -b .link
 %patch1 -p1 -b .lib64
 
-%patch2 -p1
-%patch3 -p1 -b .valgrind~
+#patch2 -p1
+#patch3 -p1 -b .valgrind~
 
 # docs
 mkdir html
