@@ -143,7 +143,8 @@ Requires:   tkinter3
 Various applications written using tkinter
 
 %prep
-%setup -q -n Python-%{version}
+%setup -qDTn Python-%{version}
+%if 0
 %patch0 -p0 -b .link
 %patch1 -p1 -b .lib64
 
@@ -183,7 +184,7 @@ autoreconf
 # (misc) if the home is nfs mounted, rmdir fails due to delay
 export TMP="/tmp" TMPDIR="/tmp"
 %make
-
+%endif
 %check
 # (misc) if the home is nfs mounted, rmdir fails
 export TMP="/tmp" TMPDIR="/tmp"
@@ -217,11 +218,7 @@ echo 'install_dir='"${RPM_BUILD_ROOT}/usr/bin" >>setup.cfg
 mkdir -p $RPM_BUILD_ROOT%{_mandir}
 %makeinstall_std
 
-(cd $RPM_BUILD_ROOT%{_libdir}; ln -sf libpython%{lib_major}.so.* libpython%{lib_major}.so)
-
-# Provide a libpython%{dirver}.so symlink in /usr/lib/python*/config, so that
-# the shared library could be found when -L/usr/lib/python*/config is specified
-(cd $RPM_BUILD_ROOT%{_libdir}/python%{dirver}/config; ln -sf ../../libpython%{lib_major}.so .)
+(cd $RPM_BUILD_ROOT%{_libdir}; ln -sf libpython%{lib_major}m.so.* libpython%{lib_major}.so)
 
 # fix files conflicting with python2.6
 mv $RPM_BUILD_ROOT/%{_bindir}/2to3 $RPM_BUILD_ROOT/%{_bindir}/python3-2to3
@@ -240,13 +237,6 @@ mv $RPM_BUILD_ROOT/%{_bindir}/2to3 $RPM_BUILD_ROOT/%{_bindir}/python3-2to3
 
 #"  this comment is just here because vim syntax higlighting is confused by the previous snippet of lisp
 
-# install modulator as modulator3
-cat << EOF > $RPM_BUILD_ROOT%{_bindir}/modulator3
-#!/bin/bash
-exec %{_libdir}/python%{dirver}/site-packages/modulator/modulator.py
-EOF
-cp -r Tools/modulator $RPM_BUILD_ROOT%{_libdir}/python%{dirver}/site-packages/
-
 # install pynche as pynche3
 cat << EOF > $RPM_BUILD_ROOT%{_bindir}/pynche3
 #!/bin/bash
@@ -255,9 +245,8 @@ EOF
 rm -f Tools/pynche/*.pyw
 cp -r Tools/pynche $RPM_BUILD_ROOT%{_libdir}/python%{dirver}/site-packages/
 
-chmod 755 $RPM_BUILD_ROOT%{_bindir}/{idle3,modulator3,pynche3}
+chmod 755 $RPM_BUILD_ROOT%{_bindir}/{idle3,pynche3}
 
-ln -f Tools/modulator/README Tools/modulator/README.modulator
 ln -f Tools/pynche/README Tools/pynche/README.pynche
 
 %if %{with valgrind}
@@ -292,7 +281,7 @@ EOF
 # fix non real scripts
 chmod 644 $RPM_BUILD_ROOT%{_libdir}/python*/test/test_{binascii,grp,htmlparser}.py*
 # fix python library not stripped
-chmod u+w $RPM_BUILD_ROOT%{_libdir}/libpython%{lib_major}.so.1.0
+chmod u+w $RPM_BUILD_ROOT%{_libdir}/libpython%{lib_major}m.so.1.0
 
 
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/profile.d/
@@ -352,7 +341,6 @@ rm -rf $RPM_BUILD_ROOT
 %exclude %{_libdir}/python*/idlelib
 %exclude %{_libdir}/python*/tkinter
 %exclude %{_libdir}/python*/site-packages/pynche
-%exclude %{_libdir}/python*/site-packages/modulator
 %exclude %{_libdir}/python*/lib-dynload/_tkinter.so
 
 # HACK: build fails without this (TODO: investigate rpm)
@@ -393,7 +381,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-, root, root, 755)
 %{_libdir}/python*/tkinter/
 %{_libdir}/python*/idlelib
-%{_libdir}/python*/site-packages/modulator
 %{_libdir}/python*/site-packages/pynche
 %{_libdir}/python*/lib-dynload/_tkinter.so
 
@@ -401,7 +388,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-, root, root, 755)
 %{_bindir}/idle3
 %{_bindir}/pynche3
-%{_bindir}/modulator3
 %{_datadir}/applications/mandriva-tkinter3.desktop
 
 %if %mdkversion < 200900
