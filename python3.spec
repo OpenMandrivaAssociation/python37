@@ -143,8 +143,7 @@ Requires:   tkinter3
 Various applications written using tkinter
 
 %prep
-%setup -qDTn Python-%{version}
-%if 0
+%setup -qn Python-%{version}
 %patch0 -p0 -b .link
 %patch1 -p1 -b .lib64
 
@@ -184,7 +183,7 @@ autoreconf
 # (misc) if the home is nfs mounted, rmdir fails due to delay
 export TMP="/tmp" TMPDIR="/tmp"
 %make
-%endif
+
 %check
 # (misc) if the home is nfs mounted, rmdir fails
 export TMP="/tmp" TMPDIR="/tmp"
