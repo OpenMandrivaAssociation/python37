@@ -36,7 +36,6 @@ Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Conflicts:	tkinter3 < %{version}
 Conflicts:	%{lib_name}-devel < 3.1.2-4
 Requires:	%{lib_name} = %{version}
-BuildRequires:	X11-devel
 BuildRequires:	blt
 BuildRequires:	db-devel
 BuildRequires:	expat-devel
@@ -334,22 +333,22 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/rpm/macros.d/*.macros
 %{_sysconfdir}/profile.d/*
 %config(noreplace) %{_sysconfdir}/pythonrc.py
-%exclude %{_libdir}/python*/config/
+%exclude %{_libdir}/python*/config*/
 %exclude %{_libdir}/python*/test/
 
 %exclude %{_libdir}/python*/idlelib
 %exclude %{_libdir}/python*/tkinter
 %exclude %{_libdir}/python*/site-packages/pynche
-%exclude %{_libdir}/python*/lib-dynload/_tkinter.so
+%exclude %{_libdir}/python*/lib-dynload/_tkinter.*.so
 
 # HACK: build fails without this (TODO: investigate rpm)
 %{_libdir}/python*/configparser*
 
 %{_libdir}/python*
-%{_bindir}/python%{dirver}
-%{_bindir}/pydoc3
-%{_bindir}/python3
-%{_bindir}/python3-2to3
+%{_bindir}/pydoc3*
+%{_bindir}/python3*
+%{_bindir}/2to3-%{dirver}
+%exclude %{_bindir}/python*config
 #%{_datadir}/emacs/site-lisp/*
 %{_mandir}/man*/*
 %if %{with valgrind}
@@ -363,11 +362,12 @@ rm -rf $RPM_BUILD_ROOT
 %files -n %{lib_name}-devel
 %defattr(-, root, root, 755)
 %{_libdir}/libpython*.so
+%{_libdir}/llibpython*.so
 %multiarch %multiarch_includedir/python*/pyconfig.h
 %{_includedir}/python*
-%{_libdir}/python*/config/
+%{_libdir}/python*/config*/
 %{_libdir}/python*/test/
-%{_bindir}/python%{dirver}-config
+%{_bindir}/python%{dirver}*-config
 %{_bindir}/python%{familyver}-config
 %{_libdir}/pkgconfig/python*.pc
 
@@ -381,11 +381,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/python*/tkinter/
 %{_libdir}/python*/idlelib
 %{_libdir}/python*/site-packages/pynche
-%{_libdir}/python*/lib-dynload/_tkinter.so
+%{_libdir}/python*/lib-dynload/_tkinter.*.so
 
 %files -n tkinter3-apps
 %defattr(-, root, root, 755)
-%{_bindir}/idle3
+%{_bindir}/idle3*
 %{_bindir}/pynche3
 %{_datadir}/applications/mandriva-tkinter3.desktop
 
