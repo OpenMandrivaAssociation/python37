@@ -14,7 +14,7 @@
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python3
 Version:	3.2
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 
@@ -172,6 +172,7 @@ export OPT
 autoreconf
 %configure2_5x	--with-threads \
 		--enable-ipv6 \
+		--with-wide-unicode \
 		--enable-shared \
 %if %{with valgrind}
 		--with-valgrind
@@ -216,7 +217,7 @@ echo 'install_dir='"${RPM_BUILD_ROOT}/usr/bin" >>setup.cfg
 mkdir -p $RPM_BUILD_ROOT%{_mandir}
 %makeinstall_std
 
-(cd $RPM_BUILD_ROOT%{_libdir}; ln -sf libpython%{lib_major}m.so.* libpython%{lib_major}.so)
+(cd $RPM_BUILD_ROOT%{_libdir}; ln -sf `ls libpython%{lib_major}*.so.*` libpython%{lib_major}.so)
 
 # fix files conflicting with python2.6
 mv $RPM_BUILD_ROOT/%{_bindir}/2to3 $RPM_BUILD_ROOT/%{_bindir}/python3-2to3
@@ -279,7 +280,7 @@ EOF
 # fix non real scripts
 chmod 644 $RPM_BUILD_ROOT%{_libdir}/python*/test/test_{binascii,grp,htmlparser}.py*
 # fix python library not stripped
-chmod u+w $RPM_BUILD_ROOT%{_libdir}/libpython%{lib_major}m.so.1.0
+chmod u+w $RPM_BUILD_ROOT%{_libdir}/libpython%{lib_major}*.so.1.0 $RPM_BUILD_ROOT%{_libdir}/libpython3.so
 
 
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/profile.d/
