@@ -5,6 +5,7 @@
 %define lib_major	%{dirver}
 %define lib_name_orig	libpython%{familyver}
 %define lib_name	%mklibname python %{lib_major}
+%define develname	%mklibname python3 -d
 
 %ifarch %{ix86} x86_64 ppc
 %bcond_without	valgrind
@@ -14,7 +15,7 @@
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python3
 Version:	3.2
-Release:	%mkrel 2
+Release:	%mkrel 3
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 
@@ -87,21 +88,23 @@ This packages contains Python shared object library.  Python is an
 interpreted, interactive, object-oriented programming language often
 compared to Tcl, Perl, Scheme or Java.
 
-%package -n	%{lib_name}-devel
+%package -n	%{develname}
 Summary:	The libraries and header files needed for Python development
 Group:		Development/Python
 Requires:	%{name} = %version
 Requires:	%{lib_name} = %{version}
 Provides:	%{name}-devel = %{version}-%{release}
 Provides:	%{lib_name_orig}-devel = %{version}-%{release}
+Obsoletes:	%{_lib}python3.1-devel < %{version}
+Obsoletes:	%{_lib}python3.2-devel < %{version}-%{release}
 
-%description -n	%{lib_name}-devel
+%description -n	%{develname}
 The Python programming language's interpreter can be extended with
 dynamically loaded extensions and can be embedded in other programs.
 This package contains the header files and libraries needed to do
 these types of tasks.
 
-Install %{lib_name}-devel if you want to develop Python extensions.  The
+Install %{develname} if you want to develop Python extensions.  The
 python package will also need to be installed.  You'll probably also
 want to install the python-docs package, which contains Python
 documentation.
@@ -360,7 +363,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 %{_libdir}/libpython*.so.1*
 
-%files -n %{lib_name}-devel
+%files -n %{develname}
 %defattr(-, root, root, 755)
 %{_libdir}/libpython*.so
 %{_libdir}/llibpython*.so
