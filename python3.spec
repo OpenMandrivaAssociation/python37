@@ -340,18 +340,39 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/pythonrc.py
 %{_includedir}/python*/pyconfig.h
 %{_libdir}/python*/config*/Makefile
-%exclude %{_libdir}/python*/config*/
-%exclude %{_libdir}/python*/test/
-
-%exclude %{_libdir}/python*/idlelib
-%exclude %{_libdir}/python*/tkinter
 %exclude %{_libdir}/python*/site-packages/pynche
 %exclude %{_libdir}/python*/lib-dynload/_tkinter.*.so
 
 # HACK: build fails without this (TODO: investigate rpm)
+%dir %{_libdir}/python*
 %{_libdir}/python*/configparser*
-
-%{_libdir}/python*
+%{_libdir}/python%{dirver}/*.py
+%{_libdir}/python%{dirver}/__pycache__
+%{_libdir}/python%{dirver}/concurrent
+%{_libdir}/python%{dirver}/ctypes
+%{_libdir}/python%{dirver}/curses
+%{_libdir}/python%{dirver}/dbm
+%{_libdir}/python%{dirver}/distutils
+%{_libdir}/python%{dirver}/email
+%{_libdir}/python%{dirver}/encodings
+%{_libdir}/python%{dirver}/html
+%{_libdir}/python%{dirver}/http
+%{_libdir}/python%{dirver}/importlib
+%{_libdir}/python%{dirver}/json
+%{_libdir}/python%{dirver}/lib-dynload
+%{_libdir}/python%{dirver}/lib2to3
+%{_libdir}/python%{dirver}/logging
+%{_libdir}/python%{dirver}/multiprocessing
+%{_libdir}/python%{dirver}/plat-linux2
+%{_libdir}/python%{dirver}/pydoc_data
+%{_libdir}/python%{dirver}/site-packages
+%{_libdir}/python%{dirver}/sqlite3
+%{_libdir}/python%{dirver}/turtledemo
+%{_libdir}/python%{dirver}/unittest
+%{_libdir}/python%{dirver}/urllib
+%{_libdir}/python%{dirver}/wsgiref*
+%{_libdir}/python%{dirver}/xml
+%{_libdir}/python%{dirver}/xmlrpc
 %{_bindir}/pydoc3*
 %{_bindir}/python3*
 %{_bindir}/2to3-%{dirver}
