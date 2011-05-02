@@ -36,6 +36,7 @@ URL:		http://www.python.org/
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Conflicts:	tkinter3 < %{version}
 Conflicts:	%{lib_name}-devel < 3.1.2-4
+Conflicts:	%{develname} < 3.2-4
 Requires:	%{lib_name} = %{version}
 BuildRequires:	blt
 BuildRequires:	db-devel
@@ -55,7 +56,7 @@ BuildRequires:  sqlite3-devel
 #BuildRequires:	emacs
 #BuildRequires:	emacs-bin
 %if %{with valgrind}
-BuildRequires:	valgrind
+BuildRequires:	valgrind-devel
 %endif
 Provides:       %{name} = %version
 Provides:	python(abi) = %{dirver}
@@ -337,6 +338,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/rpm/macros.d/*.macros
 %{_sysconfdir}/profile.d/*
 %config(noreplace) %{_sysconfdir}/pythonrc.py
+%{_includedir}/python*/pyconfig.h
+%{_libdir}/python*/config*/Makefile
 %exclude %{_libdir}/python*/config*/
 %exclude %{_libdir}/python*/test/
 
@@ -367,13 +370,15 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-, root, root, 755)
 %{_libdir}/libpython*.so
 %{_libdir}/llibpython*.so
-%multiarch %multiarch_includedir/python*/pyconfig.h
+%multiarch_includedir/python*/pyconfig.h
 %{_includedir}/python*
 %{_libdir}/python*/config*/
 %{_libdir}/python*/test/
 %{_bindir}/python%{dirver}*-config
 %{_bindir}/python%{familyver}-config
 %{_libdir}/pkgconfig/python*.pc
+%exclude %{_includedir}/python*/pyconfig.h
+%exclude %{_libdir}/python*/config*/Makefile
 
 %files docs
 %defattr(-,root,root,755)
