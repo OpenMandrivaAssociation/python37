@@ -345,7 +345,7 @@ rm -rf $RPM_BUILD_ROOT
 
 # HACK: build fails without this (TODO: investigate rpm)
 %dir %{_libdir}/python*
-%{_libdir}/python*/configparser*
+%{_libdir}/python*/LICENSE.txt
 %{_libdir}/python%{dirver}/*.py
 %{_libdir}/python%{dirver}/__pycache__
 %{_libdir}/python%{dirver}/concurrent
@@ -393,7 +393,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/llibpython*.so
 %multiarch_includedir/python*/pyconfig.h
 %{_includedir}/python*
-%{_libdir}/python*/config*/
+%{_libdir}/python*/config-%{dirver}*
 %{_libdir}/python*/test/
 %{_bindir}/python%{dirver}*-config
 %{_bindir}/python%{familyver}-config
