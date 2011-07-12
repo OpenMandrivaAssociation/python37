@@ -1,4 +1,4 @@
-%define docver  3.2
+%define docver  3.2.1
 %define dirver  3.2
 %define familyver 3
 
@@ -14,12 +14,12 @@
 %endif
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python3
-Version:	3.2
-Release:	%mkrel 4
+Version:	3.2.1
+Release:	%mkrel 1
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 
-Source:		http://www.python.org/ftp/python/%{version}/Python-%{version}.tar.bz2
+Source:		http://www.python.org/ftp/python/%{version}/Python-%{version}.tar.xz
 Source1:	http://www.python.org/ftp/python/doc/%{docver}/python-%{docver}-docs-html.tar.bz2
 Source2:	python3.macros
 #Source4:	python-mode-1.0.tar.bz2
@@ -186,7 +186,7 @@ autoreconf
 #perl -pi -e 's/^(LDFLAGS=.*)/$1 -lstdc++/' Makefile
 # (misc) if the home is nfs mounted, rmdir fails due to delay
 export TMP="/tmp" TMPDIR="/tmp"
-%make
+%make LN="ln -sf"
 
 %check
 # (misc) if the home is nfs mounted, rmdir fails
@@ -219,7 +219,7 @@ echo 'install_dir='"${RPM_BUILD_ROOT}/usr/bin" >>setup.cfg
 
 # python is not GNU and does not know fsstd
 mkdir -p $RPM_BUILD_ROOT%{_mandir}
-%makeinstall_std
+%makeinstall_std LN="ln -sf"
 
 (cd $RPM_BUILD_ROOT%{_libdir}; ln -sf `ls libpython%{lib_major}*.so.*` libpython%{lib_major}.so)
 
@@ -390,7 +390,6 @@ rm -rf $RPM_BUILD_ROOT
 %files -n %{develname}
 %defattr(-, root, root, 755)
 %{_libdir}/libpython*.so
-%{_libdir}/llibpython*.so
 %multiarch_includedir/python*/pyconfig.h
 %{_includedir}/python*
 %{_libdir}/python*/config-%{dirver}*
