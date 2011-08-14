@@ -51,7 +51,7 @@ BuildRequires:	readline-devel
 BuildRequires:	termcap-devel
 BuildRequires:	tcl tcl-devel
 BuildRequires:	tk tk-devel
-BuildRequires:	autoconf
+BuildRequires:	autoconf automake
 BuildRequires:  bzip2-devel
 BuildRequires:  sqlite3-devel
 # uncomment once the emacs part no longer conflict with python 2.X
