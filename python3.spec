@@ -7,6 +7,8 @@
 %define lib_name	%mklibname python %{lib_major}
 %define develname	%mklibname python3 -d
 
+%define _requires_exceptions /usr/bin/python%{dirver}
+
 %ifarch %{ix86} x86_64 ppc
 %bcond_without	valgrind
 %else
@@ -15,7 +17,7 @@
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python3
 Version:	3.2.1
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 
