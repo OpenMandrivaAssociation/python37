@@ -1,4 +1,4 @@
-%define docver  3.2.1
+%define docver  3.2.2
 %define dirver  3.2
 %define familyver 3
 
@@ -6,8 +6,7 @@
 %define lib_name_orig	libpython%{familyver}
 %define lib_name	%mklibname python %{lib_major}
 %define develname	%mklibname python3 -d
-
-%define _requires_exceptions /usr/bin/python%{dirver}
+%define sdevelname	%mklibname -d -s %{name}
 
 %ifarch %{ix86} x86_64 ppc
 %bcond_without	valgrind
@@ -16,8 +15,8 @@
 %endif
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python3
-Version:	3.2.1
-Release:	%mkrel 2
+Version:	3.2.2
+Release:	%mkrel 3
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 
@@ -30,12 +29,11 @@ Patch0:		python-3.1.2-module-linkage.patch
 Patch1:		python3-lib64.patch
 # fix http://bugs.python.org/issue6244
 # and https://qa.mandriva.com/show_bug.cgi?id=56260
-Patch2:     python-2.5-tcl86.patch
+Patch2:		python-2.5-tcl86.patch
 # backported from svn
 Patch3:		python3-disable-pymalloc-on-valgrind.patch
 
 URL:		http://www.python.org/
-Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Conflicts:	tkinter3 < %{version}
 Conflicts:	%{lib_name}-devel < 3.1.2-4
 Conflicts:	%{develname} < 3.2-4
@@ -51,17 +49,20 @@ BuildRequires:	readline-devel
 BuildRequires:	termcap-devel
 BuildRequires:	tcl tcl-devel
 BuildRequires:	tk tk-devel
-BuildRequires:	autoconf automake
+BuildRequires:	autoconf
 BuildRequires:  bzip2-devel
 BuildRequires:  sqlite3-devel
 # uncomment once the emacs part no longer conflict with python 2.X
 #BuildRequires:	emacs
 #BuildRequires:	emacs-bin
-%if %{with valgrind}
+%if %{with valgrind} && %{mdkversion} > 201100
 BuildRequires:	valgrind-devel
+%else
+BuildRequires:	valgrind
 %endif
 Provides:       %{name} = %version
 Provides:	python(abi) = %{dirver}
+Provides:	/usr/bin/python%{dirver}mu
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 
@@ -108,15 +109,30 @@ This package contains the header files and libraries needed to do
 these types of tasks.
 
 Install %{develname} if you want to develop Python extensions.  The
-python package will also need to be installed.  You'll probably also
+python package will also need to be installed.  You will probably also
 want to install the python-docs package, which contains Python
 documentation.
+
+%package -n	%{sdevelname}
+Summary:        The static libraries needed for Python development
+Group:          Development/Python
+Requires:       %{name} = %version
+Requires:       %{lib_name} = %{version}
+Requires:       %{develname} = %{version}
+Provides:       %{name}-static-devel = %{version}-%{release}
+Provides:       %{lib_name_orig}-static-devel = %{version}-%{release}
+Obsoletes:      %{_lib}python3.1-static-devel < %{version}
+Obsoletes:      %{_lib}python3.2-static-devel < %{version}-%{release}
+
+%description -n	%{sdevelname}
+Static libraries for doing development with Python.
 
 %package	docs
 Summary:	Documentation for the Python programming language
 Requires:	%name = %version
 Requires:	xdg-utils
 Group:		Development/Python
+BuildArch:	noarch
 
 %description	docs
 The python-docs package contains documentation on the Python
@@ -161,7 +177,7 @@ bzcat %{SOURCE1} | tar x  -C html
 
 find . -type f -print0 | xargs -0 perl -p -i -e 's@/usr/local/bin/python@/usr/bin/python3@'
 
-cat > README.mdv << EOF
+cat > README.%{_real_vendor} << EOF
 Python interpreter support readline completion by default.
 This is only used with the interpreter. In order to remove it,
 you can :
@@ -228,6 +244,9 @@ mkdir -p $RPM_BUILD_ROOT%{_mandir}
 # fix files conflicting with python2.6
 mv $RPM_BUILD_ROOT/%{_bindir}/2to3 $RPM_BUILD_ROOT/%{_bindir}/python3-2to3
 
+# install static libs
+cp -p *.a $RPM_BUILD_ROOT%{_libdir}/
+
 # conflicts with python2
 # # emacs, I use it, I want it
 # mkdir -p $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp
@@ -259,7 +278,7 @@ install Misc/valgrind-python.supp -D $RPM_BUILD_ROOT%{_libdir}/valgrind/valgrind
 %endif
 
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/applications
-cat > $RPM_BUILD_ROOT%{_datadir}/applications/mandriva-tkinter3.desktop << EOF
+cat > $RPM_BUILD_ROOT%{_datadir}/applications/%{_real_vendor}-tkinter3.desktop << EOF
 [Desktop Entry]
 Name=IDLE
 Comment=IDE for Python3
@@ -271,7 +290,7 @@ Categories=Development;IDE;
 EOF
 
 
-cat > $RPM_BUILD_ROOT%{_datadir}/applications/mandriva-%{name}-docs.desktop << EOF
+cat > $RPM_BUILD_ROOT%{_datadir}/applications/%{_real_vendor}-%{name}-docs.desktop << EOF
 [Desktop Entry]
 Name=Python documentation
 Comment=Python complete reference
@@ -287,6 +306,7 @@ EOF
 chmod 644 $RPM_BUILD_ROOT%{_libdir}/python*/test/test_{binascii,grp,htmlparser}.py*
 # fix python library not stripped
 chmod u+w $RPM_BUILD_ROOT%{_libdir}/libpython%{lib_major}*.so.1.0 $RPM_BUILD_ROOT%{_libdir}/libpython3.so
+
 
 
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/profile.d/
@@ -334,7 +354,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-, root, root, 755)
-%doc README.mdv
+%doc README.%{_real_vendor}
 # conflicts with python2.6
 #%config(noreplace) %{_sysconfdir}/emacs/site-start.d/%{name}.el
 %{_sysconfdir}/rpm/macros.d/*.macros
@@ -402,10 +422,13 @@ rm -rf $RPM_BUILD_ROOT
 %exclude %{_includedir}/python*/pyconfig.h
 %exclude %{_libdir}/python*/config*/Makefile
 
+%files -n %{sdevelname}
+%{_libdir}/*.a
+
 %files docs
 %defattr(-,root,root,755)
 %doc html/*/*
-%{_datadir}/applications/mandriva-%{name}-docs.desktop
+%{_datadir}/applications/%{_real_vendor}-%{name}-docs.desktop
 
 %files -n tkinter3
 %defattr(-, root, root, 755)
@@ -418,7 +441,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-, root, root, 755)
 %{_bindir}/idle3*
 %{_bindir}/pynche3
-%{_datadir}/applications/mandriva-tkinter3.desktop
+%{_datadir}/applications/%{_real_vendor}-tkinter3.desktop
 
 %if %mdkversion < 200900
 %post -n %{lib_name} -p /sbin/ldconfig
@@ -426,15 +449,12 @@ rm -rf $RPM_BUILD_ROOT
 %if %mdkversion < 200900
 %postun -n %{lib_name} -p /sbin/ldconfig
 %endif
-
 %if %mdkversion < 200900
 %post -n tkinter3-apps
 %update_menus
 %endif
-
 %if %mdkversion < 200900
 %postun -n tkinter3-apps
 %clean_menus
 %endif
-
 
