@@ -48,6 +48,7 @@ BuildRequires:	tk tk-devel
 BuildRequires:	autoconf
 BuildRequires:	bzip2-devel
 BuildRequires:	pkgconfig(sqlite3)
+BuildRequires:	pkgconfig(libtirpc)
 # uncomment once the emacs part no longer conflict with python 2.X
 #BuildRequires:	emacs
 #BuildRequires:	emacs-bin
