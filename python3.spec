@@ -1,5 +1,5 @@
-%define docver  3.2.3
-%define dirver  3.2
+%define docver  3.3.0
+%define dirver  3.3
 %define familyver 3
 
 %define lib_major	%{dirver}
@@ -14,8 +14,8 @@
 %endif
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python3
-Version:	3.2.3
-Release:	6
+Version:	3.3.0
+Release:	1
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 
@@ -27,8 +27,8 @@ Source2:	python3.macros
 Patch0:		python-3.1.2-module-linkage.patch
 Patch1:		python3-3.2.3-fdr-lib64.patch
 Patch2:		python3-3.2.3-fdr-lib64-fix-for-test_install.patch
-Patch3:		python-3.2-CVE-2012-2135.patch
-Patch4:		python-3.2-bug14579-tests.diff
+Patch3:		python-3.3.0-module-dependencies.patch
+Patch4:		python-3.3.0-fix-urllibnet-test.patch
 
 URL:		http://www.python.org/
 Conflicts:	tkinter3 < %{version}
@@ -43,7 +43,6 @@ BuildRequires:	gmp-devel
 BuildRequires:	pkgconfig(ncursesw)
 BuildRequires:	pkgconfig(openssl)
 BuildRequires:	readline-devel
-BuildRequires:	termcap-devel
 BuildRequires:	tcl tcl-devel
 BuildRequires:	tk tk-devel
 BuildRequires:	autoconf
@@ -146,13 +145,14 @@ Various applications written using tkinter
 %prep
 %setup -qn Python-%{version}
 %patch0 -p0 -b .link
-%patch3 -p1 -b .CVE-2012-2135
-%patch4 -p1 -b .bug14579-tests
 
 %if "%{_lib}" == "lib64"
 %patch1 -p1 -b .lib64
 %patch2 -p1
 %endif
+
+%patch3 -p1 -b .modlink~
+%patch4 -p1 -b .urllibtest~
 
 # docs
 mkdir html
@@ -211,7 +211,8 @@ export TMP="/tmp" TMPDIR="/tmp"
 # (eugeni, 22/07/2009) test_mailbox fails on the BS
 # (eugeni, 17/08/2009) test_telnetlib fails with a connection reset by peer message
 # test test_sax failed -- 1 of 44 tests failed: test_xmlgen_attr_escape
-make test TESTOPTS="-w -l -x test_linuxaudiodev -x test_nis -x test_shutil -x test_pyexpat -x test_minidom -x test_sax -x test_string -x test_str -x test_unicode -x test_userstring -x test_bytes -x test_distutils -x test_mailbox -x test_ioctl -x test_telnetlib"
+
+make test TESTOPTS="-w -x test_linuxaudiodev -x test_nis -x test_shutil -x test_pyexpat -x test_minidom -x test_sax -x test_string -x test_str -x test_unicode -x test_userstring -x test_bytes -x test_distutils -x test_mailbox -x test_ioctl -x test_telnetlib -x test_strtod -x test_urllib2net -x test_runpy -x test_posix -x test_robotparser -x test_numeric_tower -x test_math -x test_cmath -x test_importlib -x test_import -x test_float -x test_strtod -x test_timeout"
 
 %install
 mkdir -p %{buildroot}%{_prefix}/lib/python%{dirver}
@@ -353,6 +354,7 @@ install -m644 %{SOURCE2} %{buildroot}%{_sysconfdir}/rpm/macros.d/
 %{_libdir}/python*/LICENSE.txt
 %{_libdir}/python%{dirver}/*.py
 %{_libdir}/python%{dirver}/__pycache__
+%{_libdir}/python%{dirver}/collections
 %{_libdir}/python%{dirver}/concurrent
 %{_libdir}/python%{dirver}/ctypes
 %{_libdir}/python%{dirver}/curses
@@ -368,18 +370,21 @@ install -m644 %{SOURCE2} %{buildroot}%{_sysconfdir}/rpm/macros.d/
 %{_libdir}/python%{dirver}/lib2to3
 %{_libdir}/python%{dirver}/logging
 %{_libdir}/python%{dirver}/multiprocessing
-%{_libdir}/python%{dirver}/plat-linux2
+%{_libdir}/python%{dirver}/plat-linux
 %{_libdir}/python%{dirver}/pydoc_data
 %{_libdir}/python%{dirver}/site-packages
 %{_libdir}/python%{dirver}/sqlite3
 %{_libdir}/python%{dirver}/turtledemo
 %{_libdir}/python%{dirver}/unittest
 %{_libdir}/python%{dirver}/urllib
+%{_libdir}/python%{dirver}/venv
 %{_libdir}/python%{dirver}/wsgiref*
 %{_libdir}/python%{dirver}/xml
 %{_libdir}/python%{dirver}/xmlrpc
 %{_bindir}/pydoc3*
 %{_bindir}/python3*
+%_bindir/pyvenv
+%_bindir/pyvenv-%dirver
 %{_bindir}/2to3-%{dirver}
 %exclude %{_bindir}/python*config
 #%{_datadir}/emacs/site-lisp/*
