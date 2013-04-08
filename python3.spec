@@ -1,4 +1,4 @@
-%define docver  3.3.0
+%define docver  3.3.1
 %define dirver  3.3
 %define familyver 3
 
@@ -14,8 +14,8 @@
 %endif
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python3
-Version:	3.3.0
-Release:	2
+Version:	3.3.1
+Release:	1
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 
@@ -30,7 +30,6 @@ Patch1:		python3-3.2.3-fdr-lib64.patch
 Patch2:		python3-3.2.3-fdr-lib64-fix-for-test_install.patch
 Patch3:		python-3.3.0-module-dependencies.patch
 Patch4:		python-3.3.0-fix-urllibnet-test.patch
-# This is fixed in 3.3.1rc1
 Patch5:     	python-3.3.0-distutils-multiarch.patch
 
 URL:		http://www.python.org/
