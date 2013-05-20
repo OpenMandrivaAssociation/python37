@@ -14,7 +14,7 @@
 %endif
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python3
-Version:	3.3.1
+Version:	3.3.2
 Release:	1
 License:	Modified CNRI Open Source License
 Group:		Development/Python
@@ -197,7 +197,8 @@ autoreconf -vfi
 #perl -pi -e 's/^(LDFLAGS=.*)/$1 -lstdc++/' Makefile
 # (misc) if the home is nfs mounted, rmdir fails due to delay
 export TMP="/tmp" TMPDIR="/tmp"
-%make LN="ln -sf"
+# SMP build (with 12 cores) is broken as of 3.3.2
+make LN="ln -sf"
 
 %check
 # (misc) if the home is nfs mounted, rmdir fails
