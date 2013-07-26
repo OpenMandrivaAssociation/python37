@@ -14,7 +14,7 @@ index e9da6d5..e23ae2f 100644
 +                arch = 'i386'
 +            multiarch = 'multiarch-%s-%s' % (arch, sys.platform)
 +            if arch.endswith('v7l'):
-+		arch = 'arm'
++                arch = 'arm'
 +            multiarch = 'multiarch-%s-%s' % (arch, sys.platform)	
 +        return os.path.join(prefix, "include", multiarch, python_dir)
      elif os.name == "nt":
