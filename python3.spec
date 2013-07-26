@@ -15,11 +15,11 @@
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python3
 Version:	3.3.2
-Release:	1
+Release:	2
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 
-Source:		http://www.python.org/ftp/python/%{version}/Python-%{version}.tar.xz
+Source0:	http://www.python.org/ftp/python/%{version}/Python-%{version}.tar.xz
 Source1:	http://www.python.org/ftp/python/doc/%{docver}/python-%{docver}-docs-html.tar.bz2
 Source2:	python3.macros
 Source100:	%{name}.rpmlintrc

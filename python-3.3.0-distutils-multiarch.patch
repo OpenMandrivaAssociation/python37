@@ -1,6 +1,8 @@
---- Python-3.3.0/Lib/distutils/sysconfig.py	2012-09-29 12:00:28.000000000 +0400
-+++ Python-3.3.0-1/Lib/distutils/sysconfig.py	2013-03-28 17:53:13.945246411 +0400
-@@ -107,7 +107,13 @@
+diff --git a/Lib/distutils/sysconfig.py b/Lib/distutils/sysconfig.py
+index e9da6d5..e23ae2f 100644
+--- a/Lib/distutils/sysconfig.py
++++ b/Lib/distutils/sysconfig.py
+@@ -111,7 +111,16 @@ def get_python_inc(plat_specific=0, prefix=None):
                  incdir = os.path.join(get_config_var('srcdir'), 'Include')
              return os.path.normpath(incdir)
          python_dir = 'python' + get_python_version() + build_flags
@@ -11,6 +13,9 @@
 +            if arch.endswith('86'):
 +                arch = 'i386'
 +            multiarch = 'multiarch-%s-%s' % (arch, sys.platform)
++            if arch.endswith('v7l'):
++		arch = 'arm'
++            multiarch = 'multiarch-%s-%s' % (arch, sys.platform)	
 +        return os.path.join(prefix, "include", multiarch, python_dir)
      elif os.name == "nt":
          return os.path.join(prefix, "include")
