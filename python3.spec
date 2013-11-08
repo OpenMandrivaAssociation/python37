@@ -2,55 +2,48 @@
 %define dirver  3.3
 %define familyver 3
 
-%define lib_major	%{dirver}
-%define lib_name_orig	libpython%{familyver}
-%define lib_name	%mklibname python %{lib_major}
-%define develname	%mklibname python3 -d
+%define api	%{dirver}
+%define major	1
+%define libname	%mklibname python %{api}m %{major}
+%define devname	%mklibname python3 -d
 
 %ifarch %{ix86} x86_64 ppc
 %bcond_without	valgrind
 %else
 %bcond_with	valgrind
 %endif
+
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python3
 Version:	3.3.2
 Release:	2
 License:	Modified CNRI Open Source License
 Group:		Development/Python
-
+Url:		http://www.python.org/
 Source0:	http://www.python.org/ftp/python/%{version}/Python-%{version}.tar.xz
 Source1:	http://www.python.org/ftp/python/doc/%{docver}/python-%{docver}-docs-html.tar.bz2
 Source2:	python3.macros
 Source100:	%{name}.rpmlintrc
 #Source4:	python-mode-1.0.tar.bz2
-
 Patch0:		python-3.1.2-module-linkage.patch
 Patch1:		python3-3.2.3-fdr-lib64.patch
 Patch2:		python3-3.2.3-fdr-lib64-fix-for-test_install.patch
 Patch3:		python-3.3.0-module-dependencies.patch
 Patch4:		python-3.3.0-fix-urllibnet-test.patch
-Patch5:     	python-3.3.0-distutils-multiarch.patch
-
-URL:		http://www.python.org/
-Conflicts:	tkinter3 < %{version}
-Conflicts:	%{lib_name}-devel < 3.1.2-4
-Conflicts:	%{develname} < 3.2.2-3
-Requires:	%{lib_name} = %{version}
+Patch5:		python-3.3.0-distutils-multiarch.patch
 BuildRequires:	blt
+BuildRequires:	bzip2-devel
 BuildRequires:	db-devel
-BuildRequires:	pkgconfig(expat)
 BuildRequires:	gdbm-devel
 BuildRequires:	gmp-devel
+BuildRequires:	readline-devel
+BuildRequires:	pkgconfig(expat)
+BuildRequires:	pkgconfig(libtirpc)
 BuildRequires:	pkgconfig(ncursesw)
 BuildRequires:	pkgconfig(openssl)
-BuildRequires:	readline-devel
-BuildRequires:	tcl tcl-devel
-BuildRequires:	tk tk-devel
-BuildRequires:	autoconf
-BuildRequires:	bzip2-devel
 BuildRequires:	pkgconfig(sqlite3)
-BuildRequires:	pkgconfig(libtirpc)
+BuildRequires:	pkgconfig(tcl)
+BuildRequires:	pkgconfig(tk)
 # uncomment once the emacs part no longer conflict with python 2.X
 #BuildRequires:	emacs
 #BuildRequires:	emacs-bin
@@ -60,7 +53,9 @@ BuildRequires:	valgrind-devel
 Provides:	%{name} = %{version}
 Provides:	python(abi) = %{dirver}
 Provides:	/usr/bin/python%{dirver}mu
-
+Conflicts:	tkinter3 < %{version}
+Conflicts:	%{libname}-devel < 3.1.2-4
+Conflicts:	%{devname} < 3.2.2-3
 
 %description
 Python is an interpreted, interactive, object-oriented programming
@@ -79,32 +74,30 @@ Tix widget set for Tk and RPM.
 Note that documentation for Python is provided in the python-docs
 package.
 
-%package -n	%{lib_name}
+%package -n	%{libname}
 Summary:	Shared libraries for Python %{version}
 Group:		System/Libraries
+Obsoletes:	%{_lib}python3.3 < 3.3.2-2
 
-%description -n	%{lib_name}
+%description -n	%{libname}
 This packages contains Python shared object library.  Python is an
 interpreted, interactive, object-oriented programming language often
 compared to Tcl, Perl, Scheme or Java.
 
-%package -n	%{develname}
+%package -n	%{devname}
 Summary:	The libraries and header files needed for Python development
 Group:		Development/Python
 Requires:	%{name} = %{version}
-Requires:	%{lib_name} = %{version}
+Requires:	%{libname} = %{version}
 Provides:	%{name}-devel = %{version}-%{release}
-Provides:	%{lib_name_orig}-devel = %{version}-%{release}
-Obsoletes:	%{_lib}python3.1-devel < %{version}
-Obsoletes:	%{_lib}python3.2-devel < %{version}-%{release}
 
-%description -n	%{develname}
+%description -n	%{devname}
 The Python programming language's interpreter can be extended with
 dynamically loaded extensions and can be embedded in other programs.
 This package contains the header files and libraries needed to do
 these types of tasks.
 
-Install %{develname} if you want to develop Python extensions.  The
+Install %{devname} if you want to develop Python extensions.  The
 python package will also need to be installed.  You'll probably also
 want to install the python-docs package, which contains Python
 documentation.
@@ -222,7 +215,7 @@ echo 'install_dir='"%{buildroot}%{_bindir}" >>setup.cfg
 mkdir -p %{buildroot}%{_mandir}
 %makeinstall_std LN="ln -sf"
 
-(cd %{buildroot}%{_libdir}; ln -sf `ls libpython%{lib_major}*.so.*` libpython%{lib_major}.so)
+(cd %{buildroot}%{_libdir}; ln -sf `ls libpython%{api}*.so.*` libpython%{api}.so)
 
 # fix files conflicting with python2.6
 mv %{buildroot}%{_bindir}/2to3 %{buildroot}%{_bindir}/python3-2to3
@@ -286,7 +279,7 @@ EOF
 #chmod 644 %{buildroot}%{_libdir}/python*/test/test_{binascii,grp,htmlparser}.py*
 find %{buildroot} -type f \( -name "test_binascii.py*" -o -name "test_grp.py*" -o -name "test_htmlparser.py*" \) -exec chmod 644 {} \;
 # fix python library not stripped
-chmod u+w %{buildroot}%{_libdir}/libpython%{lib_major}*.so.1.0 %{buildroot}%{_libdir}/libpython3.so
+chmod u+w %{buildroot}%{_libdir}/libpython%{api}*.so.1.0 %{buildroot}%{_libdir}/libpython3.so
 
 
 mkdir -p %{buildroot}%{_sysconfdir}/profile.d/
@@ -377,8 +370,8 @@ install -m644 %{SOURCE2} %{buildroot}%{_sysconfdir}/rpm/macros.d/
 %{_libdir}/python%{dirver}/xmlrpc
 %{_bindir}/pydoc3*
 %{_bindir}/python3*
-%_bindir/pyvenv
-%_bindir/pyvenv-%dirver
+%{_bindir}/pyvenv
+%{_bindir}/pyvenv-%dirver
 %{_bindir}/2to3-%{dirver}
 %exclude %{_bindir}/python*config
 #%{_datadir}/emacs/site-lisp/*
@@ -387,10 +380,10 @@ install -m644 %{SOURCE2} %{buildroot}%{_sysconfdir}/rpm/macros.d/
 %{_libdir}/valgrind/valgrind-python3.supp
 %endif
 
-%files -n %{lib_name}
-%{_libdir}/libpython*.so.1*
+%files -n %{libname}
+%{_libdir}/libpython%{api}m.so.%{major}*
 
-%files -n %{develname}
+%files -n %{devname}
 %{_libdir}/libpython*.so
 %{_includedir}/python*
 %{_libdir}/python*/config-%{dirver}*
@@ -415,71 +408,4 @@ install -m644 %{SOURCE2} %{buildroot}%{_sysconfdir}/rpm/macros.d/
 %{_bindir}/idle3*
 %{_bindir}/pynche3
 %{_datadir}/applications/mandriva-tkinter3.desktop
-
-
-
-%changelog
-
-* Wed Aug 08 2012 luigiwalser <luigiwalser> 3.2.3-5.mga3
-+ Revision: 280050
-- add patch from OpenSuSE to fix CVE-2012-2135 (patch 3)
-- add upstream patch adding tests to testsuite associated w/CVE (patch 4)
-
-* Mon Jul 30 2012 tv <tv> 3.2.3-4.mga3
-+ Revision: 276244
-- rebuild for db-5.3
-
-* Thu Jul 05 2012 wally <wally> 3.2.3-3.mga3
-+ Revision: 268245
-- fix curses module build (mga#6702)
-
-* Tue Jul 03 2012 kamil <kamil> 3.2.3-2.mga3
-+ Revision: 266996
-- add P2 fdr-lib64-fix-for-test_install.patch
-- sync P1 with Fedora and fix x86_64 bugs (mga#6664)
-
-* Sat Apr 14 2012 fwang <fwang> 3.2.3-1.mga2
-+ Revision: 230764
-- update lib64 patch
-- new version 3.2.3
-
-* Mon Feb 20 2012 guillomovitch <guillomovitch> 3.2.2-3.mga2
-+ Revision: 211298
-- don't hardcode pyconfig.h location in lib64 path
-- ship pyconfig.h in main package, not just multiarch wrapper
-- spec cleanup
-
-* Mon Dec 05 2011 fwang <fwang> 3.2.2-2.mga2
-+ Revision: 176932
-- add upstream patch to recognize gdbm 1.9 magic value
-- build with gdbm
-- rebuild for new gdbm
-
-* Mon Sep 05 2011 fwang <fwang> 3.2.2-1.mga2
-+ Revision: 138550
-- new version 3.2.2
-
-* Fri Sep 02 2011 tv <tv> 3.2.1-2.mga2
-+ Revision: 137805
-- make the huge doc subpackage be noarch
-
-* Tue Jul 12 2011 fwang <fwang> 3.2.1-1.mga2
-+ Revision: 122718
-- use ln -sf always
-- update file list
-- really rediff lib64 patch
-- rediff lib64 patch
-- new version 3.2.1
-
-* Sat Jul 02 2011 fwang <fwang> 3.2-6.mga2
-+ Revision: 117326
-- rebuild for new tcl
-
-* Tue Jun 28 2011 fwang <fwang> 3.2-5.mga2
-+ Revision: 115157
-- add provides for binary
-
-* Tue Jun 07 2011 dmorgan <dmorgan> 3.2-4.mga2
-+ Revision: 101527
-- imported package python3
 
