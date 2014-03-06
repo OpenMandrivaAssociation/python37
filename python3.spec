@@ -31,6 +31,15 @@ Patch2:		python3-3.2.3-fdr-lib64-fix-for-test_install.patch
 Patch3:		python-3.3.0-module-dependencies.patch
 Patch4:		python-3.3.0-fix-urllibnet-test.patch
 Patch5:		python-3.3.0-distutils-multiarch.patch
+Patch6:		00157-uid-gid-overflows.patch
+Patch7:		00177-platform-unicode.patch
+Patch8:		00183-cve-2013-2099-fix-ssl-match_hostname-dos.patch
+Patch9:		00184-ctypes-should-build-with-libffi-multilib-wrapper.patch
+Patch10:	00185-CVE-2013-4238-hostname-check-bypass-in-SSL-module.patch
+Patch11:	00186-dont-raise-from-py_compile.patch
+Patch12:	00187-change-match_hostname-to-follow-RFC-6125.patch
+Patch13:	00192-buffer-overflow.patch
+
 BuildRequires:	blt
 BuildRequires:	bzip2-devel
 BuildRequires:	db-devel
@@ -150,6 +159,14 @@ Various applications written using tkinter
 
 %patch3 -p1 -b .modlink~
 %patch4 -p1 -b .urllibtest~
+%patch6 -p1
+%patch7 -p1
+%patch8 -p1
+%patch9 -p1
+%patch10 -p1
+%patch11 -p1
+%patch12 -p1
+%patch13 -p1
 
 # docs
 mkdir html
