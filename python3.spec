@@ -55,6 +55,7 @@ Patch156:       00156-gdb-autoload-safepath.patch
 # from Fedora (rhbz#913732)
 Patch173:       00173-workaround-ENOPROTOOPT-in-bind_port.patch
 Patch179:       00179-dont-raise-error-on-gdb-corrupted-frames-in-backtrace.patch
+Patch180:	python-3.2.1-fix-test-subprocess-with-nonreadable-path-dir.patch
 
 URL:            http://www.python.org/
 Conflicts:      tkinter3 < %{version}
@@ -181,6 +182,7 @@ Various applications written using tkinter
 %patch156 -p1
 %patch173 -p1
 %patch179 -p1
+%patch180 -p1
 
 # docs
 mkdir html
