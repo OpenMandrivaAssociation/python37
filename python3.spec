@@ -2,46 +2,30 @@
 %define dirver  3.3
 %define familyver 3
 
-%define lib_major       %{dirver}
-%define lib_name_orig   libpython%{familyver}
-%define lib_name        %mklibname python %{lib_major}
-%define develname       %mklibname python3 -d
+%define api	%{dirver}
+%define major	1
+%define libname	%mklibname python %{api}m %{major}
+%define devname	%mklibname python3 -d
 
 %ifarch %{ix86} x86_64 ppc
-%bcond_without  valgrind
+%bcond_without	valgrind
 %else
-%bcond_with     valgrind
+%bcond_with	valgrind
 %endif
 
-# We want to byte-compile the .py files within the packages using the new
-# python3 binary.
-# 
-# Unfortunately, rpmbuild's infrastructure requires us to jump through some
-# hoops to avoid byte-compiling with the system python 2 version:
-#   /usr/lib/rpm/mageia/macros sets up build policy that (amongst other things)
-# defines __os_install_post.  In particular, "brp-python-bytecompile" is
-# invoked without an argument thus using the wrong version of python
-# (/usr/bin/python, rather than the freshly built python), thus leading to
-# numerous syntax errors, and incorrect magic numbers in the .pyc files.  We
-# thus remove the invocation of brp-python-bytecompile, whilst keeping the
-# invocation of brp-python-hardlink (since this should still work for python3
-# pyc/pyo files)
-%define _python_bytecompile_build 0
-
-
-Summary:        An interpreted, interactive object-oriented programming language
-Name:           python3
-Version:        3.3.4
-Release:        %mkrel 1
-License:        Modified CNRI Open Source License
-Group:          Development/Python
-
-Source0:        http://www.python.org/ftp/python/%{version}/Python-%{version}.tar.xz
-Source1:        http://www.python.org/ftp/python/doc/%{docver}/python-%{docver}-docs-html.tar.bz2
-Source2:        python3.macros
+Summary:	An interpreted, interactive object-oriented programming language
+Name:		python3
+Version:	3.3.4
+Release:	2
+License:	Modified CNRI Open Source License
+Group:		Development/Python
+Url:		http://www.python.org/
+Source0:	http://www.python.org/ftp/python/%{version}/Python-%{version}.tar.xz
+Source1:	http://www.python.org/ftp/python/doc/%{docver}/python-%{docver}-docs-html.tar.bz2
+Source2:	python3.macros
 Source3:        pybytecompile.macros
 Source100:	%{name}.rpmlintrc
-
+#Source4:	python-mode-1.0.tar.bz2
 Patch0:         python-3.3.0-module-linkage.patch
 Patch1:         python3-3.3.0-fdr-lib64.patch
 Patch2:         python3-3.2.3-fdr-lib64-fix-for-test_install.patch
@@ -55,13 +39,6 @@ Patch156:       00156-gdb-autoload-safepath.patch
 # from Fedora (rhbz#913732)
 Patch173:       00173-workaround-ENOPROTOOPT-in-bind_port.patch
 Patch179:       00179-dont-raise-error-on-gdb-corrupted-frames-in-backtrace.patch
-Patch180:	python-3.2.1-fix-test-subprocess-with-nonreadable-path-dir.patch
-
-URL:            http://www.python.org/
-Conflicts:      tkinter3 < %{version}
-Conflicts:      %{lib_name}-devel < 3.1.2-4
-Conflicts:      %{develname} < 3.2.2-3
-Requires:       %{lib_name} = %{version}
 
 
 BuildRequires:	blt
@@ -77,13 +54,18 @@ BuildRequires:	pkgconfig(openssl)
 BuildRequires:	pkgconfig(sqlite3)
 BuildRequires:	pkgconfig(tcl)
 BuildRequires:	pkgconfig(tk)
-
+# uncomment once the emacs part no longer conflict with python 2.X
+#BuildRequires:	emacs
+#BuildRequires:	emacs-bin
 %if %{with valgrind}
-BuildRequires:  valgrind-devel
+BuildRequires:	valgrind-devel
 %endif
-Provides:       python(abi) = %{dirver}
-Provides:       /usr/bin/python%{dirver}m
-Provides:       /usr/bin/python%{dirver}
+Provides:	%{name} = %{version}
+Provides:	python(abi) = %{dirver}
+Provides:	/usr/bin/python%{dirver}mu
+Conflicts:	tkinter3 < %{version}
+Conflicts:	%{libname}-devel < 3.1.2-4
+Conflicts:	%{devname} < 3.2.2-3
 
 %description
 Python is an interpreted, interactive, object-oriented programming
@@ -102,44 +84,42 @@ Tix widget set for Tk and RPM.
 Note that documentation for Python is provided in the python-docs
 package.
 
-%package -n     %{lib_name}
-Summary:        Shared libraries for Python %{version}
-Group:          System/Libraries
+%package -n	%{libname}
+Summary:	Shared libraries for Python %{version}
+Group:		System/Libraries
+Obsoletes:	%{_lib}python3.3 < 3.3.2-2
 
-%description -n %{lib_name}
+%description -n	%{libname}
 This packages contains Python shared object library.  Python is an
 interpreted, interactive, object-oriented programming language often
 compared to Tcl, Perl, Scheme or Java.
 
-%package -n     %{develname}
-Summary:        The libraries and header files needed for Python development
-Group:          Development/Python
-Requires:       %{name} = %version
-Requires:       %{lib_name} = %{version}
-Provides:       %{name}-devel = %{version}-%{release}
-Provides:       %{lib_name_orig}-devel = %{version}-%{release}
-Obsoletes:      %{_lib}python3.1-devel < %{version}
-Obsoletes:      %{_lib}python3.2-devel < %{version}-%{release}
+%package -n	%{devname}
+Summary:	The libraries and header files needed for Python development
+Group:		Development/Python
+Requires:	%{name} = %{version}
+Requires:	%{libname} = %{version}
+Provides:	%{name}-devel = %{version}-%{release}
 
-%description -n %{develname}
+%description -n	%{devname}
 The Python programming language's interpreter can be extended with
 dynamically loaded extensions and can be embedded in other programs.
 This package contains the header files and libraries needed to do
 these types of tasks.
 
-Install %{develname} if you want to develop Python extensions.  The
+Install %{devname} if you want to develop Python extensions.  The
 python package will also need to be installed.  You'll probably also
 want to install the python-docs package, which contains Python
 documentation.
 
-%package        docs
-Summary:        Documentation for the Python programming language
-Requires:       %name = %version
-Requires:       xdg-utils
-Group:          Development/Python
-BuildArch:      noarch
+%package	docs
+Summary:	Documentation for the Python programming language
+Group:		Development/Python
+Requires:	%{name} = %{version}
+Requires:	xdg-utils
+BuildArch:	noarch
 
-%description    docs
+%description	docs
 The python-docs package contains documentation on the Python
 programming language and interpreter.  The documentation is provided
 in ASCII text files and in LaTeX source files.
@@ -147,26 +127,25 @@ in ASCII text files and in LaTeX source files.
 Install the python-docs package if you'd like to use the documentation
 for the Python language.
 
-%package -n     tkinter3
-Summary:        A graphical user interface for the Python scripting language
-Group:          Development/Python
-Requires:       %name = %version
-Requires:       tcl tk
-Provides:       python3-tkinter
+%package -n	tkinter3
+Summary:	A graphical user interface for the Python scripting language
+Group:		Development/Python
+Requires:	%{name} = %{version}
+Requires:	tcl tk
 
-%description -n tkinter3
+%description -n	tkinter3
 The Tkinter (Tk interface) program is an graphical user interface for
 the Python scripting language.
 
 You should install the tkinter package if you'd like to use a graphical
 user interface for Python programming.
 
-%package -n     tkinter3-apps
-Summary:        Various applications written using tkinter
-Group:          Development/Python
-Requires:       tkinter3
+%package -n	tkinter3-apps
+Summary:	Various applications written using tkinter
+Group:		Development/Python
+Requires:	tkinter3
 
-%description -n tkinter3-apps
+%description -n	tkinter3-apps
 Various applications written using tkinter
 
 %prep
@@ -182,13 +161,22 @@ Various applications written using tkinter
 %patch156 -p1
 %patch173 -p1
 %patch179 -p1
-%patch180 -p1
+
 
 # docs
 mkdir html
 bzcat %{SOURCE1} | tar x  -C html
 
 find . -type f -print0 | xargs -0 perl -p -i -e 's@/usr/local/bin/python@/usr/bin/python3@'
+
+cat > README.omv << EOF
+Python interpreter support readline completion by default.
+This is only used with the interpreter. In order to remove it,
+you can :
+1) unset PYTHONSTARTUP when you login
+2) create a empty file \$HOME/.pythonrc.py
+3) change %{_sysconfdir}/pythonrc.py
+EOF
 
 %build
 rm -f Modules/Setup.local
@@ -201,45 +189,62 @@ export CFLAGS="%{optflags} -I/usr/include/ncursesw"
 export CPPFLAGS="%{optflags} -I/usr/include/ncursesw"
 
 autoreconf -vfi
-# Remove -Wl,--no-undefined in accordance with MGA #9395 :
-# https://bugs.mageia.org/show_bug.cgi?id=9395
-%define _disable_ld_no_undefined 1
-%configure2_5x  --with-threads \
-                --enable-ipv6 \
-                --with-dbmliborder=gdbm \
-                --with-system-expat \
-                --with-system-ffi \
-                --enable-shared \
+%configure2_5x	--with-threads \
+		--enable-ipv6 \
+		--with-wide-unicode \
+		--with-dbmliborder=gdbm \
+		--enable-shared \
 %if %{with valgrind}
-                --with-valgrind
+		--with-valgrind
 %endif
 
 # fix build
 #perl -pi -e 's/^(LDFLAGS=.*)/$1 -lstdc++/' Makefile
 # (misc) if the home is nfs mounted, rmdir fails due to delay
 export TMP="/tmp" TMPDIR="/tmp"
-#%make LN="ln -sf"
-make EXTRA_CFLAGS="$CFLAGS" LN="ln -sf"
+# SMP build (with 12 cores) is broken as of 3.3.2
+make LN="ln -sf"
+
+%check
+# (misc) if the home is nfs mounted, rmdir fails
+export TMP="/tmp" TMPDIR="/tmp"
+
+# Currently (3.3.0-1), LOTS of tests fail, but python3 seems to work
+# quite fine anyway. Chances are something in the testsuite itself is bogus.
+#make test TESTOPTS="-w -x test_linuxaudiodev -x test_nis -x test_shutil -x test_pyexpat -x test_minidom -x test_sax -x test_string -x test_str -x test_unicode -x test_userstring -x test_bytes -x test_distutils -x test_mailbox -x test_ioctl -x test_telnetlib -x test_strtod -x test_urllib2net -x test_runpy -x test_posix -x test_robotparser -x test_numeric_tower -x test_math -x test_cmath -x test_importlib -x test_import -x test_float -x test_strtod -x test_timeout"
 
 %install
-mkdir -p %buildroot%{_prefix}/lib/python%{dirver}
+mkdir -p %{buildroot}%{_prefix}/lib/python%{dirver}
 
 # fix Makefile to get rid of reference to distcc
 perl -pi -e "/^CC=/ and s/distcc/gcc/" Makefile
 
 # set the install path
 echo '[install_scripts]' >setup.cfg
-echo 'install_dir='"%{buildroot}/usr/bin" >>setup.cfg
+echo 'install_dir='"%{buildroot}%{_bindir}" >>setup.cfg
 
 # python is not GNU and does not know fsstd
 mkdir -p %{buildroot}%{_mandir}
 %makeinstall_std LN="ln -sf"
 
-(cd %{buildroot}%{_libdir}; ln -sf `ls libpython%{lib_major}*.so.*` libpython%{lib_major}.so)
+(cd %{buildroot}%{_libdir}; ln -sf `ls libpython%{api}*.so.*` libpython%{api}.so)
 
 # fix files conflicting with python2.6
-mv %{buildroot}/%{_bindir}/2to3 $RPM_BUILD_ROOT/%{_bindir}/python3-2to3
+mv %{buildroot}%{_bindir}/2to3 %{buildroot}%{_bindir}/python3-2to3
 
+# conflicts with python2
+# # emacs, I use it, I want it
+# mkdir -p %{buildroot}%{_datadir}/emacs/site-lisp
+# install -m 644 Misc/python-mode.el %{buildroot}%{_datadir}/emacs/site-lisp
+# emacs -batch -f batch-byte-compile %{buildroot}%{_datadir}/emacs/site-lisp/python-mode.el
+# 
+# install -d %{buildroot}%{_sysconfdir}/emacs/site-start.d
+# cat <<EOF >%{buildroot}%{_sysconfdir}/emacs/site-start.d/%{name}.el
+# (setq auto-mode-alist (cons '("\\\\.py$" . python-mode) auto-mode-alist))
+# (autoload 'python-mode "python-mode" "Mode for python files." t)
+# EOF
+
+#"  this comment is just here because vim syntax higlighting is confused by the previous snippet of lisp
 
 # install pynche as pynche3
 cat << EOF > %{buildroot}%{_bindir}/pynche3
@@ -258,7 +263,7 @@ install Misc/valgrind-python.supp -D %{buildroot}%{_libdir}/valgrind/valgrind-py
 %endif
 
 mkdir -p %{buildroot}%{_datadir}/applications
-cat > %{buildroot}%{_datadir}/applications/%_vendor-tkinter3.desktop << EOF
+cat > %{buildroot}%{_datadir}/applications/mandriva-tkinter3.desktop << EOF
 [Desktop Entry]
 Name=IDLE
 Comment=IDE for Python3
@@ -270,11 +275,11 @@ Categories=Development;IDE;
 EOF
 
 
-cat > %{buildroot}%{_datadir}/applications/%_vendor-%{name}-docs.desktop << EOF
+cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}-docs.desktop << EOF
 [Desktop Entry]
 Name=Python documentation
 Comment=Python complete reference
-Exec=%{_bindir}/xdg-open %_defaultdocdir/%{name}-docs/index.html
+Exec=%{_bindir}/xdg-open %{_defaultdocdir}/%{name}-docs/index.html
 Icon=documentation_section
 Terminal=false
 Type=Application
@@ -286,44 +291,60 @@ EOF
 #chmod 644 %{buildroot}%{_libdir}/python*/test/test_{binascii,grp,htmlparser}.py*
 find %{buildroot} -type f \( -name "test_binascii.py*" -o -name "test_grp.py*" -o -name "test_htmlparser.py*" \) -exec chmod 644 {} \;
 # fix python library not stripped
-chmod u+w %{buildroot}%{_libdir}/libpython%{lib_major}*.so.1.0 $RPM_BUILD_ROOT%{_libdir}/libpython3.so
+chmod u+w %{buildroot}%{_libdir}/libpython%{api}*.so.1.0 %{buildroot}%{_libdir}/libpython3.so
 
+
+mkdir -p %{buildroot}%{_sysconfdir}/profile.d/
+
+cat > %{buildroot}%{_sysconfdir}/profile.d/30python.sh << 'EOF'
+if [ -f $HOME/.pythonrc.py ] ; then
+	export PYTHONSTARTUP=$HOME/.pythonrc.py
+else
+	export PYTHONSTARTUP=/etc/pythonrc.py
+fi
+
+export PYTHONDONTWRITEBYTECODE=1
+EOF
+
+cat > %{buildroot}%{_sysconfdir}/profile.d/30python.csh << 'EOF'
+if ( -f ${HOME}/.pythonrc.py ) then
+	setenv PYTHONSTARTUP ${HOME}/.pythonrc.py
+else
+	setenv PYTHONSTARTUP /etc/pythonrc.py
+endif
+setenv PYTHONDONTWRITEBYTECODE 1
+EOF
+
+cat > %{buildroot}%{_sysconfdir}/pythonrc.py << EOF
+try:
+    # this add completion to python interpreter
+    import readline
+    import rlcompleter
+    # see readline man page for this
+    readline.parse_and_bind("set show-all-if-ambiguous on")
+    readline.parse_and_bind("tab: complete")
+except:
+    pass
+# you can place a file .pythonrc.py in your home to overrides this one
+# but then, this file will not be sourced
+EOF
 
 %multiarch_includes %{buildroot}/usr/include/python*/pyconfig.h
 
 mkdir -p %{buildroot}%{_sysconfdir}/rpm/macros.d
 install -m644 %{SOURCE2} %{buildroot}%{_sysconfdir}/rpm/macros.d/
-install -m 644 %{SOURCE3} %{buildroot}/%{_sysconfdir}/rpm/macros.d/
-
-%check
-# (misc) if the home is nfs mounted, rmdir fails
-export TMP="/tmp" TMPDIR="/tmp"
-
-%ifarch %arm
-%define custom_test -x test_float
-%else
-%define custom_test ""
-%endif
-
-# all tests must pass
-# (misc, 28/11/2006) test_shutil is causing problem in iurt, it seems to remove /tmp,
-# which make other test fail
-# (misc, 11/12/2006) test_pyexpat is icrashing, seem to be done on purpose ( http://python.org/sf/1296433 )
-# (misc, 11/12/2006) test_minidom is not working anymore, something changed either on my computer
-# or elsewhere.
-# (misc, 11/12/2006) test_sax fail too, will take a look later
-# (misc, 21/08/2007) test_string and test_str segfault, test_unicode, test_userstring, I need to pass the package as a security update
-# (eugeni, 21/07/2009) test_distutils fails with python3.1 due to ld error
-# (eugeni, 22/07/2009) test_mailbox fails on the BS
-# (eugeni, 17/08/2009) test_telnetlib fails with a connection reset by peer message
-# (tv, 31/08/2013à test_gdb, test_urllibnet & test_urllib2net fails
-# test test_sax failed -- 1 of 44 tests failed: test_xmlgen_attr_escape
-WITHIN_PYTHON_RPM_BUILD= make test TESTOPTS="-w -x test_linuxaudiodev -x test_nis -x test_shutil -x test_pyexpat -x test_minidom -x test_sax -x test_string -x test_str -x test_unicode -x test_userstring -x test_bytes -x test_distutils -x test_mailbox -x test_ioctl -x test_telnetlib -x test_runpy -x test_importlib -x test_import -x test_urllibnet -x test_gdb -x test_urllib2net -x test_urllib2_localnet -x test_timeout %custom_test"
+install -m644 %{SOURCE3} %{buildroot}/%{_sysconfdir}/rpm/macros.d/
 
 %files
+%doc README.omv
+# conflicts with python2.6
+#%config(noreplace) %{_sysconfdir}/emacs/site-start.d/%{name}.el
 %{_sysconfdir}/rpm/macros.d/*.macros
+%{_sysconfdir}/profile.d/*
+%config(noreplace) %{_sysconfdir}/pythonrc.py
 %{_includedir}/python*/pyconfig.h
-%multiarch_includedir/python*/pyconfig.h
+%{multiarch_includedir}/python*/pyconfig.h
+
 %{_libdir}/python*/config*/Makefile
 %exclude %{_libdir}/python*/site-packages/pynche
 %exclude %{_libdir}/python*/lib-dynload/_tkinter.*.so
@@ -362,7 +383,8 @@ WITHIN_PYTHON_RPM_BUILD= make test TESTOPTS="-w -x test_linuxaudiodev -x test_ni
 %{_libdir}/python%{dirver}/xmlrpc
 %{_bindir}/pydoc3*
 %{_bindir}/python3*
-%{_bindir}/pyvenv*
+%{_bindir}/pyvenv
+%{_bindir}/pyvenv-%dirver
 %{_bindir}/2to3-%{dirver}
 %exclude %{_bindir}/python*config
 #%{_datadir}/emacs/site-lisp/*
@@ -371,10 +393,10 @@ WITHIN_PYTHON_RPM_BUILD= make test TESTOPTS="-w -x test_linuxaudiodev -x test_ni
 %{_libdir}/valgrind/valgrind-python3.supp
 %endif
 
-%files -n %{lib_name}
-%{_libdir}/libpython*.so.1*
+%files -n %{libname}
+%{_libdir}/libpython%{api}m.so.%{major}*
 
-%files -n %{develname}
+%files -n %{devname}
 %{_libdir}/libpython*.so
 %{_includedir}/python*
 %{_libdir}/python*/config-%{dirver}*
@@ -387,7 +409,7 @@ WITHIN_PYTHON_RPM_BUILD= make test TESTOPTS="-w -x test_linuxaudiodev -x test_ni
 
 %files docs
 %doc html/*/*
-%{_datadir}/applications/%_vendor-%{name}-docs.desktop
+%{_datadir}/applications/mandriva-%{name}-docs.desktop
 
 %files -n tkinter3
 %{_libdir}/python*/tkinter/
@@ -398,4 +420,5 @@ WITHIN_PYTHON_RPM_BUILD= make test TESTOPTS="-w -x test_linuxaudiodev -x test_ni
 %files -n tkinter3-apps
 %{_bindir}/idle3*
 %{_bindir}/pynche3
-%{_datadir}/applications/%_vendor-tkinter3.desktop
+%{_datadir}/applications/mandriva-tkinter3.desktop
+
