@@ -295,13 +295,13 @@ install -m 644 %{SOURCE3} %{buildroot}/%{_sysconfdir}/rpm/macros.d/
 
 %check
 # (misc) if the home is nfs mounted, rmdir fails
-#export TMP="/tmp" TMPDIR="/tmp"
+export TMP="/tmp" TMPDIR="/tmp"
 
-#%ifarch %arm
-#%define custom_test -x test_float
-#%else
-#%define custom_test ""
-#%endif
+%ifarch %arm
+%define custom_test -x test_float
+%else
+%define custom_test ""
+%endif
 
 # all tests must pass
 # (misc, 28/11/2006) test_shutil is causing problem in iurt, it seems to remove /tmp,
@@ -316,7 +316,7 @@ install -m 644 %{SOURCE3} %{buildroot}/%{_sysconfdir}/rpm/macros.d/
 # (eugeni, 17/08/2009) test_telnetlib fails with a connection reset by peer message
 # (tv, 31/08/2013à test_gdb, test_urllibnet & test_urllib2net fails
 # test test_sax failed -- 1 of 44 tests failed: test_xmlgen_attr_escape
-#WITHIN_PYTHON_RPM_BUILD= make test TESTOPTS="-w -x test_linuxaudiodev -x test_nis -x test_shutil -x test_pyexpat -x test_minidom -x test_sax -x test_string -x test_str -x test_unicode -x test_userstring -x test_bytes -x test_distutils -x test_mailbox -x test_ioctl -x test_telnetlib -x test_runpy -x test_importlib -x test_import -x test_urllibnet -x test_gdb -x test_urllib2net -x test_urllib2_localnet -x test_timeout %custom_test"
+WITHIN_PYTHON_RPM_BUILD= make test TESTOPTS="-w -x test_linuxaudiodev -x test_nis -x test_shutil -x test_pyexpat -x test_minidom -x test_sax -x test_string -x test_str -x test_unicode -x test_userstring -x test_bytes -x test_distutils -x test_mailbox -x test_ioctl -x test_telnetlib -x test_runpy -x test_importlib -x test_import -x test_urllibnet -x test_gdb -x test_urllib2net -x test_urllib2_localnet -x test_timeout %custom_test"
 
 %files
 %{_sysconfdir}/rpm/macros.d/*.macros
