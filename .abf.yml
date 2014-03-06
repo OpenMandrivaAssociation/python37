@@ -1,7 +1,9 @@
 removed_sources:
   Python-3.3.0.tar.xz: 833d73565e1b665f1878504081dc985a5a06e46a
   Python-3.3.1.tar.xz: 393d7302c48bc911cd7faa7fa9b5fbcb9919bddc
+  Python-3.3.2.tar.xz: 87009d0c156c6e1354dfec5c98c328cae93950ad
   python-3.3.0-docs-html.tar.bz2: 5299b1523ede931767199a5b13388a5bf35351d5
 sources:
-  Python-3.3.2.tar.xz: 87009d0c156c6e1354dfec5c98c328cae93950ad
+  Python-3.3.4.tar.xz: 2c9586eeb4b6e45e9ebc28372c0856c709d9a522
   python-3.3.1-docs-html.tar.bz2: 55c3b3f3453346835b0df2b3b0ad7fe20833a7f7
+  python-3.3.4-docs-html.tar.bz2: 6d54aa11f2aa51339c09358d4a10217ee905dae3

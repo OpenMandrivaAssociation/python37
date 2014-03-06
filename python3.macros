@@ -8,3 +8,4 @@
 %py3_platsitedir %python3_sitearch
 %py3_puresitedir %python3_sitelib
 %py3_incdir %(%{__python3} -c 'from distutils.sysconfig import get_python_inc; print(get_python_inc())' 2>/dev/null || echo PYTHON-INCLUDEDIR-NOT-FOUND)
+%py3dir %{_builddir}/python3-%{name}-%{version}-%{release}
