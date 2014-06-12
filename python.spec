@@ -1,11 +1,11 @@
-%define docver  3.3.4
-%define dirver  3.3
+%define docver  3.4.0
+%define dirver  3.4
 %define familyver 3
 
 %define api	%{dirver}
 %define major	1
 %define libname	%mklibname python %{api}m %{major}
-%define devname	%mklibname python3 -d
+%define devname	%mklibname python -d
 
 %ifarch %{ix86} x86_64 ppc
 %bcond_without	valgrind
@@ -14,9 +14,9 @@
 %endif
 
 Summary:	An interpreted, interactive object-oriented programming language
-Name:		python3
-Version:	3.3.4
-Release:	2
+Name:		python
+Version:	3.4.1
+Release:	1
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 Url:		http://www.python.org/
@@ -29,7 +29,9 @@ Source100:	%{name}.rpmlintrc
 Patch0:         python-3.3.0-module-linkage.patch
 Patch1:         python3-3.3.0-fdr-lib64.patch
 Patch2:         python3-3.2.3-fdr-lib64-fix-for-test_install.patch
+Patch3:		Python-select-requires-libm.patch
 Patch4:         python-3.3.0b1-test-posix_fadvise.patch
+Patch5:		Python-nis-requires-tirpc.patch
 #Fedora patches:
 Patch153:       00153-fix-test_gdb-noise.patch
 Patch156:       00156-gdb-autoload-safepath.patch
@@ -54,18 +56,20 @@ BuildRequires:	pkgconfig(openssl)
 BuildRequires:	pkgconfig(sqlite3)
 BuildRequires:	pkgconfig(tcl)
 BuildRequires:	pkgconfig(tk)
-# uncomment once the emacs part no longer conflict with python 2.X
-#BuildRequires:	emacs
-#BuildRequires:	emacs-bin
 %if %{with valgrind}
 BuildRequires:	valgrind-devel
 %endif
-Provides:	%{name} = %{version}
+Obsoletes:	python3 < %{EVRD}
+Provides:	python3 = %{EVRD}
 Provides:	python(abi) = %{dirver}
 Provides:	/usr/bin/python%{dirver}mu
-Conflicts:	tkinter3 < %{version}
+Conflicts:	tkinter3 < %{EVRD}
 Conflicts:	%{libname}-devel < 3.1.2-4
 Conflicts:	%{devname} < 3.2.2-3
+
+%rename python-ctypes
+%rename python-elementtree
+%rename python-base
 
 %description
 Python is an interpreted, interactive, object-oriented programming
@@ -97,9 +101,10 @@ compared to Tcl, Perl, Scheme or Java.
 %package -n	%{devname}
 Summary:	The libraries and header files needed for Python development
 Group:		Development/Python
-Requires:	%{name} = %{version}
-Requires:	%{libname} = %{version}
-Provides:	%{name}-devel = %{version}-%{release}
+Requires:	%{name} = %{EVRD}
+Requires:	%{libname} = %{EVRD}
+Provides:	%{name}-devel = %{EVRD}
+Provides:	%{name}3-devel = %{EVRD}
 
 %description -n	%{devname}
 The Python programming language's interpreter can be extended with
@@ -115,9 +120,10 @@ documentation.
 %package	docs
 Summary:	Documentation for the Python programming language
 Group:		Development/Python
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{EVRD}
 Requires:	xdg-utils
 BuildArch:	noarch
+Obsoletes:	python3-docs < %{EVRD}
 
 %description	docs
 The python-docs package contains documentation on the Python
@@ -127,47 +133,51 @@ in ASCII text files and in LaTeX source files.
 Install the python-docs package if you'd like to use the documentation
 for the Python language.
 
-%package -n	tkinter3
+%package -n	tkinter
 Summary:	A graphical user interface for the Python scripting language
 Group:		Development/Python
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{EVRD}
 Requires:	tcl tk
+Obsoletes:	tkinter3 < %{EVRD}
 
-%description -n	tkinter3
+%description -n	tkinter
 The Tkinter (Tk interface) program is an graphical user interface for
 the Python scripting language.
 
 You should install the tkinter package if you'd like to use a graphical
 user interface for Python programming.
 
-%package -n	tkinter3-apps
+%package -n	tkinter-apps
 Summary:	Various applications written using tkinter
 Group:		Development/Python
-Requires:	tkinter3
+Requires:	tkinter = %{EVRD}
+Obsoletes:	tkinter3-apps < %{EVRD}
 
-%description -n	tkinter3-apps
+%description -n	tkinter-apps
 Various applications written using tkinter
 
 %prep
 %setup -qn Python-%{version}
-%patch0 -p0 -b .link
+%patch0 -p0 -b .link~
 
 %if "%{_lib}" == "lib64"
-%patch1 -p1 -b .lib64
-%patch2 -p1
+%patch1 -p1 -b .lib64~
+%patch2 -p1 -b .p2~
 %endif
-%patch4 -p1
-%patch153 -p0
-%patch156 -p1
-%patch173 -p1
-%patch179 -p1
+%patch3 -p1 -b .lm~
+%patch4 -p1 -b .p4~
+%patch5 -p1 -b .tirpc~
+%patch153 -p1 -b .p153~
+%patch156 -p1 -b .p156~
+%patch173 -p1 -b .p173~
+%patch179 -p1 -b .p179~
 
 
 # docs
 mkdir html
-bzcat %{SOURCE1} | tar x  -C html
+tar xf %{SOURCE1} -C html
 
-find . -type f -print0 | xargs -0 perl -p -i -e 's@/usr/local/bin/python@/usr/bin/python3@'
+find . -type f -print0 | xargs -0 sed -i -e 's@/usr/local/bin/python@%{_bindir}/python@'
 
 cat > README.omv << EOF
 Python interpreter support readline completion by default.
@@ -189,7 +199,7 @@ export CFLAGS="%{optflags} -I/usr/include/ncursesw"
 export CPPFLAGS="%{optflags} -I/usr/include/ncursesw"
 
 autoreconf -vfi
-%configure2_5x	--with-threads \
+%configure	--with-threads \
 		--enable-ipv6 \
 		--with-wide-unicode \
 		--with-dbmliborder=gdbm \
@@ -229,32 +239,15 @@ mkdir -p %{buildroot}%{_mandir}
 
 (cd %{buildroot}%{_libdir}; ln -sf `ls libpython%{api}*.so.*` libpython%{api}.so)
 
-# fix files conflicting with python2.6
-mv %{buildroot}%{_bindir}/2to3 %{buildroot}%{_bindir}/python3-2to3
-
-# conflicts with python2
-# # emacs, I use it, I want it
-# mkdir -p %{buildroot}%{_datadir}/emacs/site-lisp
-# install -m 644 Misc/python-mode.el %{buildroot}%{_datadir}/emacs/site-lisp
-# emacs -batch -f batch-byte-compile %{buildroot}%{_datadir}/emacs/site-lisp/python-mode.el
-# 
-# install -d %{buildroot}%{_sysconfdir}/emacs/site-start.d
-# cat <<EOF >%{buildroot}%{_sysconfdir}/emacs/site-start.d/%{name}.el
-# (setq auto-mode-alist (cons '("\\\\.py$" . python-mode) auto-mode-alist))
-# (autoload 'python-mode "python-mode" "Mode for python files." t)
-# EOF
-
-#"  this comment is just here because vim syntax higlighting is confused by the previous snippet of lisp
-
-# install pynche as pynche3
-cat << EOF > %{buildroot}%{_bindir}/pynche3
+# install pynche
+cat << EOF > %{buildroot}%{_bindir}/pynche
 #!/bin/bash
 exec %{_libdir}/python%{dirver}/site-packages/pynche/pynche
 EOF
 rm -f Tools/pynche/*.pyw
 cp -r Tools/pynche %{buildroot}%{_libdir}/python%{dirver}/site-packages/
 
-chmod 755 %{buildroot}%{_bindir}/{idle3,pynche3}
+chmod 755 %{buildroot}%{_bindir}/{idle3,pynche}
 
 ln -f Tools/pynche/README Tools/pynche/README.pynche
 
@@ -335,16 +328,18 @@ mkdir -p %{buildroot}%{_sysconfdir}/rpm/macros.d
 install -m644 %{SOURCE2} %{buildroot}%{_sysconfdir}/rpm/macros.d/
 install -m644 %{SOURCE3} %{buildroot}/%{_sysconfdir}/rpm/macros.d/
 
+ln -s python3 %{buildroot}%{_bindir}/python
+ln -s pydoc3 %{buildroot}%{_bindir}/pydoc
+
 %files
 %doc README.omv
-# conflicts with python2.6
-#%config(noreplace) %{_sysconfdir}/emacs/site-start.d/%{name}.el
 %{_sysconfdir}/rpm/macros.d/*.macros
 %{_sysconfdir}/profile.d/*
 %config(noreplace) %{_sysconfdir}/pythonrc.py
 %{_includedir}/python*/pyconfig.h
 %{multiarch_includedir}/python*/pyconfig.h
 
+%dir %{_libdir}/python*/config-*
 %{_libdir}/python*/config*/Makefile
 %exclude %{_libdir}/python*/site-packages/pynche
 %exclude %{_libdir}/python*/lib-dynload/_tkinter.*.so
@@ -354,6 +349,7 @@ install -m644 %{SOURCE3} %{buildroot}/%{_sysconfdir}/rpm/macros.d/
 %{_libdir}/python*/LICENSE.txt
 %{_libdir}/python%{dirver}/*.py
 %{_libdir}/python%{dirver}/__pycache__
+%{_libdir}/python%{dirver}/asyncio
 %{_libdir}/python%{dirver}/collections
 %{_libdir}/python%{dirver}/concurrent
 %{_libdir}/python%{dirver}/ctypes
@@ -362,6 +358,7 @@ install -m644 %{SOURCE3} %{buildroot}/%{_sysconfdir}/rpm/macros.d/
 %{_libdir}/python%{dirver}/distutils
 %{_libdir}/python%{dirver}/email
 %{_libdir}/python%{dirver}/encodings
+%{_libdir}/python%{dirver}/ensurepip
 %{_libdir}/python%{dirver}/html
 %{_libdir}/python%{dirver}/http
 %{_libdir}/python%{dirver}/importlib
@@ -381,13 +378,27 @@ install -m644 %{SOURCE3} %{buildroot}/%{_sysconfdir}/rpm/macros.d/
 %{_libdir}/python%{dirver}/wsgiref*
 %{_libdir}/python%{dirver}/xml
 %{_libdir}/python%{dirver}/xmlrpc
+%dir %{_prefix}/lib/python%{dirver}
+%dir %{_prefix}/lib/python%{dirver}/site-packages
+%{_prefix}/lib/python%{dirver}/site-packages/pip
+%{_prefix}/lib/python%{dirver}/site-packages/pkg_resources.py
+%{_prefix}/lib/python%{dirver}/site-packages/setuptools*
+%{_prefix}/lib/python%{dirver}/site-packages/__pycache__
+%{_prefix}/lib/python%{dirver}/site-packages/_markerlib
+%{_prefix}/lib/python%{dirver}/site-packages/easy_install.py
+%{_prefix}/lib/python%{dirver}/site-packages/pip-*.dist-info
+%{_bindir}/easy_install-%{dirver}
+%{_bindir}/pip3
+%{_bindir}/pip%{dirver}
+%{_bindir}/pydoc
 %{_bindir}/pydoc3*
+%{_bindir}/python
 %{_bindir}/python3*
 %{_bindir}/pyvenv
-%{_bindir}/pyvenv-%dirver
+%{_bindir}/pyvenv-%{dirver}
+%{_bindir}/2to3
 %{_bindir}/2to3-%{dirver}
 %exclude %{_bindir}/python*config
-#%{_datadir}/emacs/site-lisp/*
 %{_mandir}/man*/*
 %if %{with valgrind}
 %{_libdir}/valgrind/valgrind-python3.supp
@@ -411,14 +422,13 @@ install -m644 %{SOURCE3} %{buildroot}/%{_sysconfdir}/rpm/macros.d/
 %doc html/*/*
 %{_datadir}/applications/mandriva-%{name}-docs.desktop
 
-%files -n tkinter3
+%files -n tkinter
 %{_libdir}/python*/tkinter/
 %{_libdir}/python*/idlelib
 %{_libdir}/python*/site-packages/pynche
 %{_libdir}/python*/lib-dynload/_tkinter.*.so
 
-%files -n tkinter3-apps
+%files -n tkinter-apps
 %{_bindir}/idle3*
-%{_bindir}/pynche3
+%{_bindir}/pynche
 %{_datadir}/applications/mandriva-tkinter3.desktop
-
