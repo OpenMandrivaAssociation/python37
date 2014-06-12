@@ -56,6 +56,7 @@ BuildRequires:	pkgconfig(openssl)
 BuildRequires:	pkgconfig(sqlite3)
 BuildRequires:	pkgconfig(tcl)
 BuildRequires:	pkgconfig(tk)
+BuildRequires:	python2
 %if %{with valgrind}
 BuildRequires:	valgrind-devel
 %endif
@@ -213,8 +214,7 @@ autoreconf -vfi
 #perl -pi -e 's/^(LDFLAGS=.*)/$1 -lstdc++/' Makefile
 # (misc) if the home is nfs mounted, rmdir fails due to delay
 export TMP="/tmp" TMPDIR="/tmp"
-# SMP build (with 12 cores) is broken as of 3.3.2
-make LN="ln -sf"
+%make LN="ln -sf" PYTHON=python2
 
 %check
 # (misc) if the home is nfs mounted, rmdir fails
