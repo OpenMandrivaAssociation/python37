@@ -214,6 +214,9 @@ autoreconf -vfi
 #perl -pi -e 's/^(LDFLAGS=.*)/$1 -lstdc++/' Makefile
 # (misc) if the home is nfs mounted, rmdir fails due to delay
 export TMP="/tmp" TMPDIR="/tmp"
+# This is used for bootstrapping - and we don't want to
+# require ourselves
+sed -i -e 's,env python,python2,' Python/makeopcodetargets.py
 %make LN="ln -sf" PYTHON=python2
 
 %check
