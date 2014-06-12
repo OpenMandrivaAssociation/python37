@@ -1,0 +1,11 @@
+--- Python-3.4.1/setup.py.omv~	2014-06-12 16:47:09.873859551 +0200
++++ Python-3.4.1/setup.py	2014-06-12 16:47:34.373553262 +0200
+@@ -625,7 +625,7 @@ class PyBuildExt(build_ext):
+             missing.append('spwd')
+ 
+         # select(2); not on ancient System V
+-        exts.append( Extension('select', ['selectmodule.c']) )
++        exts.append( Extension('select', ['selectmodule.c'], libraries=['m']) )
+ 
+         # Fred Drake's interface to the Python parser
+         exts.append( Extension('parser', ['parsermodule.c']) )

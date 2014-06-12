@@ -1,0 +1,14 @@
+--- Python-3.4.1/setup.py.omv~	2014-06-12 17:30:45.911154584 +0200
++++ Python-3.4.1/setup.py	2014-06-12 17:31:29.622608116 +0200
+@@ -1249,9 +1249,9 @@ class PyBuildExt(build_ext):
+             if (host_platform not in ['cygwin', 'qnx6'] and
+                 find_file('rpcsvc/yp_prot.h', inc_dirs, []) is not None):
+                 if (self.compiler.find_library_file(lib_dirs, 'nsl')):
+-                    libs = ['nsl']
++                    libs = ['nsl','tirpc']
+                 else:
+-                    libs = []
++                    libs = ['tirpc']
+                 exts.append( Extension('nis', ['nismodule.c'],
+                                        libraries = libs) )
+             else:

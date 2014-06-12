@@ -203,6 +203,7 @@ autoreconf -vfi
 		--enable-ipv6 \
 		--with-wide-unicode \
 		--with-dbmliborder=gdbm \
+		--with-ensurepip=install \
 		--enable-shared \
 %if %{with valgrind}
 		--with-valgrind
@@ -238,6 +239,14 @@ mkdir -p %{buildroot}%{_mandir}
 %makeinstall_std LN="ln -sf"
 
 (cd %{buildroot}%{_libdir}; ln -sf `ls libpython%{api}*.so.*` libpython%{api}.so)
+
+# Work around broken distutils having no idea about the need to link
+# python modules to libpython (it probably should get this information
+# from _sysconfigdata.py rather than parsing a Makefile?)
+cat >>%{buildroot}%{_libdir}/python%{dirver}/config-%{dirver}m/Makefile <<EOF
+
+Py_ENABLE_SHARED= 1
+EOF
 
 # install pynche
 cat << EOF > %{buildroot}%{_bindir}/pynche
@@ -379,7 +388,7 @@ ln -s pydoc3 %{buildroot}%{_bindir}/pydoc
 %{_libdir}/python%{dirver}/xml
 %{_libdir}/python%{dirver}/xmlrpc
 %dir %{_prefix}/lib/python%{dirver}
-%dir %{_prefix}/lib/python%{dirver}/site-packages
+%if 0
 %{_prefix}/lib/python%{dirver}/site-packages/pip
 %{_prefix}/lib/python%{dirver}/site-packages/pkg_resources.py
 %{_prefix}/lib/python%{dirver}/site-packages/setuptools*
@@ -390,6 +399,7 @@ ln -s pydoc3 %{buildroot}%{_bindir}/pydoc
 %{_bindir}/easy_install-%{dirver}
 %{_bindir}/pip3
 %{_bindir}/pip%{dirver}
+%endif
 %{_bindir}/pydoc
 %{_bindir}/pydoc3*
 %{_bindir}/python
