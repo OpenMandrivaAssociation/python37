@@ -388,18 +388,6 @@ ln -s pydoc3 %{buildroot}%{_bindir}/pydoc
 %{_libdir}/python%{dirver}/xml
 %{_libdir}/python%{dirver}/xmlrpc
 %dir %{_prefix}/lib/python%{dirver}
-%if 0
-%{_prefix}/lib/python%{dirver}/site-packages/pip
-%{_prefix}/lib/python%{dirver}/site-packages/pkg_resources.py
-%{_prefix}/lib/python%{dirver}/site-packages/setuptools*
-%{_prefix}/lib/python%{dirver}/site-packages/__pycache__
-%{_prefix}/lib/python%{dirver}/site-packages/_markerlib
-%{_prefix}/lib/python%{dirver}/site-packages/easy_install.py
-%{_prefix}/lib/python%{dirver}/site-packages/pip-*.dist-info
-%{_bindir}/easy_install-%{dirver}
-%{_bindir}/pip3
-%{_bindir}/pip%{dirver}
-%endif
 %{_bindir}/pydoc
 %{_bindir}/pydoc3*
 %{_bindir}/python
@@ -413,6 +401,17 @@ ln -s pydoc3 %{buildroot}%{_bindir}/pydoc
 %if %{with valgrind}
 %{_libdir}/valgrind/valgrind-python3.supp
 %endif
+# pip bits
+%{_prefix}/lib/python%{dirver}/site-packages/pip
+%{_prefix}/lib/python%{dirver}/site-packages/pkg_resources.py
+%{_prefix}/lib/python%{dirver}/site-packages/setuptools*
+%{_prefix}/lib/python%{dirver}/site-packages/__pycache__
+%{_prefix}/lib/python%{dirver}/site-packages/_markerlib
+%{_prefix}/lib/python%{dirver}/site-packages/easy_install.py
+%{_prefix}/lib/python%{dirver}/site-packages/pip-*.dist-info
+%{_bindir}/easy_install-%{dirver}
+%{_bindir}/pip3
+%{_bindir}/pip%{dirver}
 
 %files -n %{libname}
 %{_libdir}/libpython%{api}m.so.%{major}*
