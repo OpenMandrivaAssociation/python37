@@ -405,6 +405,7 @@ ln -s pydoc3 %{buildroot}%{_bindir}/pydoc
 %{_libdir}/valgrind/valgrind-python3.supp
 %endif
 # pip bits
+%dir %{_prefix}/lib/python%{dirver}/site-packages
 %{_prefix}/lib/python%{dirver}/site-packages/pip
 %{_prefix}/lib/python%{dirver}/site-packages/pkg_resources.py
 %{_prefix}/lib/python%{dirver}/site-packages/setuptools*
