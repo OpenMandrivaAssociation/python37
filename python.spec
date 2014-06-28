@@ -16,7 +16,7 @@
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python
 Version:	3.4.1
-Release:	3
+Release:	4
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 Url:		http://www.python.org/
@@ -347,6 +347,7 @@ install -m644 %{SOURCE3} %{buildroot}/%{_sysconfdir}/rpm/macros.d/
 
 ln -s python3 %{buildroot}%{_bindir}/python
 ln -s pydoc3 %{buildroot}%{_bindir}/pydoc
+ln -s python3-config %{buildroot}%{_bindir}/python-config
 
 %files
 %doc README.omv
@@ -434,6 +435,7 @@ ln -s pydoc3 %{buildroot}%{_bindir}/pydoc
 %{_includedir}/python*
 %{_libdir}/python*/config-%{dirver}*
 %{_libdir}/python*/test/
+%{_bindir}/python-config
 %{_bindir}/python%{dirver}*-config
 %{_bindir}/python%{familyver}-config
 %{_libdir}/pkgconfig/python*.pc
