@@ -32,6 +32,7 @@ Patch2:         python3-3.2.3-fdr-lib64-fix-for-test_install.patch
 Patch3:		Python-select-requires-libm.patch
 Patch4:         python-3.3.0b1-test-posix_fadvise.patch
 Patch5:		Python-nis-requires-tirpc.patch
+Patch6:		ctypes-libffi-aarch64.patch
 #Fedora patches:
 Patch153:       00153-fix-test_gdb-noise.patch
 Patch156:       00156-gdb-autoload-safepath.patch
@@ -50,6 +51,7 @@ BuildRequires:	gdbm-devel
 BuildRequires:	gmp-devel
 BuildRequires:	readline-devel
 BuildRequires:	pkgconfig(expat)
+BuildRequires:	pkgconfig(libffi) >= 3.1
 BuildRequires:	pkgconfig(libtirpc)
 BuildRequires:	pkgconfig(ncursesw)
 BuildRequires:	pkgconfig(openssl)
@@ -173,6 +175,7 @@ Various applications written using tkinter
 %patch3 -p1 -b .lm~
 %patch4 -p1 -b .p4~
 %patch5 -p1 -b .tirpc~
+%patch6 -p1 -b .aarch64~
 %patch153 -p1 -b .p153~
 %patch156 -p1 -b .p156~
 %patch173 -p1 -b .p173~
@@ -204,12 +207,18 @@ export OPT="%{optflags} -g"
 export CFLAGS="%{optflags} -I/usr/include/ncursesw"
 export CPPFLAGS="%{optflags} -I/usr/include/ncursesw"
 
+%ifarch aarch64
+export LDFLAGS="-Wl,--hash-style=both"
+%endif
+
 autoreconf -vfi
 %configure	--with-threads \
 		--enable-ipv6 \
 		--with-wide-unicode \
 		--with-dbmliborder=gdbm \
 		--with-ensurepip=install \
+		--with-system-expat \
+		--with-system-ffi \
 		--enable-shared \
 %if %{with valgrind}
 		--with-valgrind

@@ -1,0 +1,18 @@
+# HG changeset patch
+# User Andreas Schwab <schwab@suse.de>
+# Date 1367276434 -7200
+# Node ID 05e8999a3901b4853e60d6701510e9b3dd54a7f3
+# Parent  84cef4f1999ad9e362694cdac2f65f0981e3d5d0
+Add missing fficonfig.py bits for aarch64
+
+diff -r 84cef4f1999a -r 05e8999a3901 Modules/_ctypes/libffi/fficonfig.py.in
+--- a/Modules/_ctypes/libffi/fficonfig.py.in	Mon Apr 29 16:09:39 2013 -0400
++++ b/Modules/_ctypes/libffi/fficonfig.py.in	Tue Apr 30 01:00:34 2013 +0200
+@@ -28,6 +28,7 @@
+     'PA': ['src/pa/linux.S', 'src/pa/ffi.c'],
+     'PA_LINUX': ['src/pa/linux.S', 'src/pa/ffi.c'],
+     'PA_HPUX': ['src/pa/hpux32.S', 'src/pa/ffi.c'],
++    'AARCH64' : ['src/aarch64/ffi.c', 'src/aarch64/sysv.S'],
+ }
+ 
+ ffi_sources += ffi_platforms['@TARGET@']
