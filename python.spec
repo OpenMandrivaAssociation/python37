@@ -16,7 +16,7 @@
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python
 Version:	3.4.1
-Release:	4
+Release:	5
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 Url:		http://www.python.org/
@@ -206,10 +206,6 @@ export OPT="%{optflags} -g"
 # https://bugs.mageia.org/show_bug.cgi?id=6702
 export CFLAGS="%{optflags} -I/usr/include/ncursesw"
 export CPPFLAGS="%{optflags} -I/usr/include/ncursesw"
-
-%ifarch aarch64
-export LDFLAGS="-Wl,--hash-style=both"
-%endif
 
 autoreconf -vfi
 %configure	--with-threads \
