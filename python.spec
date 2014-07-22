@@ -212,7 +212,7 @@ autoreconf -vfi
 		--enable-ipv6 \
 		--with-wide-unicode \
 		--with-dbmliborder=gdbm \
-		--with-ensurepip=upgrade \
+		--with-ensurepip=install \
 		--with-system-expat \
 		--with-system-ffi \
 		--enable-shared \
