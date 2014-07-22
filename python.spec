@@ -16,7 +16,7 @@
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python
 Version:	3.4.1
-Release:	6
+Release:	7
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 Url:		http://www.python.org/
@@ -349,6 +349,8 @@ EOF
 mkdir -p %{buildroot}%{_sysconfdir}/rpm/macros.d
 install -m644 %{SOURCE2} %{buildroot}%{_sysconfdir}/rpm/macros.d/
 install -m644 %{SOURCE3} %{buildroot}/%{_sysconfdir}/rpm/macros.d/
+# We are the default version...
+sed -e 's,python3,python,g;s,py3,py,g' %{SOURCE2} >%{buildroot}%{_sysconfdir}/rpm/macros.d/python.macros
 
 ln -s python3 %{buildroot}%{_bindir}/python
 ln -s pydoc3 %{buildroot}%{_bindir}/pydoc
