@@ -16,7 +16,7 @@
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python
 Version:	3.4.1
-Release:	7
+Release:	8
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 Url:		http://www.python.org/
@@ -212,7 +212,7 @@ autoreconf -vfi
 		--enable-ipv6 \
 		--with-wide-unicode \
 		--with-dbmliborder=gdbm \
-		--with-ensurepip=install \
+		--with-ensurepip=upgrade \
 		--with-system-expat \
 		--with-system-ffi \
 		--enable-shared \
