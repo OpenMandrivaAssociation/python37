@@ -1,6 +1,6 @@
---- Python-3.4.1/Lib/test/test_gdb.py.p156~	2014-06-12 16:38:31.472340461 +0200
-+++ Python-3.4.1/Lib/test/test_gdb.py	2014-06-12 16:40:45.333666965 +0200
-@@ -86,6 +86,19 @@ def gdb_has_frame_select():
+--- Python-3.4.2/Lib/test/test_gdb.py.p156~	2014-10-09 15:37:57.285300596 +0200
++++ Python-3.4.2/Lib/test/test_gdb.py	2014-10-09 15:51:02.820486186 +0200
+@@ -88,6 +88,19 @@ def gdb_has_frame_select():
  
  HAS_PYUP_PYDOWN = gdb_has_frame_select()
  
@@ -20,11 +20,10 @@
  BREAKPOINT_FN='builtin_id'
  
  class DebuggerTests(unittest.TestCase):
-@@ -122,15 +135,28 @@ class DebuggerTests(unittest.TestCase):
-         commands = ['set breakpoint pending yes',
-                     'break %s' % breakpoint,
-                     'run']
-+
+@@ -129,10 +142,22 @@ class DebuggerTests(unittest.TestCase):
+         else:
+             commands += ['backtrace']
+ 
 +        if HAS_AUTOLOAD_SAFEPATH:
 +            # Recent GDBs will only auto-load scripts from certain safe
 +            # locations.
@@ -35,16 +34,11 @@
 +        else:
 +            init_commands = []
 +
-         if cmds_after_breakpoint:
-             commands += cmds_after_breakpoint
-         else:
-             commands += ['backtrace']
- 
 +        # print init_commands
          # print commands
  
          # Use "commands" to generate the arguments with which to invoke "gdb":
-         args = ["gdb", "--batch"]
+         args = ["gdb", "--batch", "-nx"]
 +        args += ['--init-eval-command=%s' % cmd for cmd in init_commands]
          args += ['--eval-command=%s' % cmd for cmd in commands]
          args += ["--args",
