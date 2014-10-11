@@ -32,7 +32,7 @@ Patch2:         python3-3.2.3-fdr-lib64-fix-for-test_install.patch
 Patch3:		Python-select-requires-libm.patch
 Patch4:         python-3.3.0b1-test-posix_fadvise.patch
 Patch5:		Python-nis-requires-tirpc.patch
-Patch6:		ctypes-libffi-aarch64.patch
+Patch6:		00184-ctypes-should-build-with-libffi-multilib-wrapper.patch
 #Fedora patches:
 Patch153:       00153-fix-test_gdb-noise.patch
 Patch156:       00156-gdb-autoload-safepath.patch
@@ -175,7 +175,7 @@ Various applications written using tkinter
 %patch3 -p1 -b .lm~
 %patch4 -p1 -b .p4~
 %patch5 -p1 -b .tirpc~
-%patch6 -p1 -b .aarch64~
+%patch6 -p1 -b .multiarch
 %patch153 -p1 -b .p153~
 %patch156 -p1 -b .p156~
 %patch173 -p1 -b .p173~
@@ -197,24 +197,43 @@ you can :
 3) change %{_sysconfdir}/pythonrc.py
 EOF
 
+#   Remove embedded copy of libffi:
+for SUBDIR in darwin libffi libffi.diff libffi_arm_wince libffi_msvc libffi_osx ; do
+  rm -r Modules/_ctypes/$SUBDIR || exit 1 ;
+done
+
+# Ensure that internal copies of expat, libffi and zlib are not used.
+rm -fr Modules/expat
+rm -fr Modules/zlib
+
 %build
+
 rm -f Modules/Setup.local
+
+sed -e "s/ABIFLAGS=\"\${ABIFLAGS}.*\"/:/" -i configure.ac
 
 export OPT="%{optflags} -g"
 
 # to fix curses module build
 # https://bugs.mageia.org/show_bug.cgi?id=6702
-export CFLAGS="%{optflags} -I/usr/include/ncursesw"
-export CPPFLAGS="%{optflags} -I/usr/include/ncursesw"
+#export CFLAGS="%{optflags} -I/usr/include/ncursesw"
+#export CPPFLAGS="%{optflags} -I/usr/include/ncursesw `pkg-config --cflags-only-I libffi`"
+export CFLAGS="%{optflags}"
+export CPPFLAGS="`pkg-config --cflags-only-I libffi`"
 
+
+export with_system_ffi=yes
 autoreconf -vfi
+
 %configure	--with-threads \
 		--enable-ipv6 \
 		--with-wide-unicode \
 		--with-dbmliborder=gdbm \
 		--with-ensurepip=install \
 		--with-system-expat \
-		--with-system-ffi \
+		--with-cxx-main=%{__cxx} \
+		--with-system-ffi="yes" \
+		--enable-loadable-sqlite-extensions \
 		--enable-shared \
 %if %{with valgrind}
 		--with-valgrind
@@ -227,7 +246,7 @@ export TMP="/tmp" TMPDIR="/tmp"
 # This is used for bootstrapping - and we don't want to
 # require ourselves
 sed -i -e 's,env python,python2,' Python/makeopcodetargets.py
-%make LN="ln -sf" PYTHON=python2
+%make LN="ln -sf" PYTHON=python2 EXTRA_CFLAGS="$CFLAGS" $CPPFLAGS
 
 %check
 # (misc) if the home is nfs mounted, rmdir fails
@@ -256,7 +275,7 @@ mkdir -p %{buildroot}%{_mandir}
 # Work around broken distutils having no idea about the need to link
 # python modules to libpython (it probably should get this information
 # from _sysconfigdata.py rather than parsing a Makefile?)
-cat >>%{buildroot}%{_libdir}/python%{dirver}/config-%{dirver}m/Makefile <<EOF
+cat >>%{buildroot}%{_libdir}/python%{dirver}/config-%{dirver}/Makefile <<EOF
 
 Py_ENABLE_SHARED= 1
 EOF
@@ -416,26 +435,9 @@ ln -s python3-config %{buildroot}%{_bindir}/python-config
 %if %{with valgrind}
 %{_libdir}/valgrind/valgrind-python3.supp
 %endif
-# pip bits
-%if "%{_libdir}" != "%{_prefix}/lib"
-# In the %{_libdir} == %{_prefix}/lib case, those are caught by
-# globs above.
-%dir %{_prefix}/lib/python%{dirver}
-%dir %{_prefix}/lib/python%{dirver}/site-packages
-%{_prefix}/lib/python%{dirver}/site-packages/__pycache__
-%{_prefix}/lib/python%{dirver}/site-packages/pkg_resources.py
-%{_prefix}/lib/python%{dirver}/site-packages/easy_install.py
-%{_prefix}/lib/python%{dirver}/site-packages/pip
-%{_prefix}/lib/python%{dirver}/site-packages/setuptools*
-%{_prefix}/lib/python%{dirver}/site-packages/_markerlib
-%{_prefix}/lib/python%{dirver}/site-packages/pip-*.dist-info
-%endif
-%{_bindir}/easy_install-%{dirver}
-%{_bindir}/pip3
-%{_bindir}/pip%{dirver}
 
 %files -n %{libname}
-%{_libdir}/libpython%{api}m.so.%{major}*
+%{_libdir}/libpython%{api}.so.%{major}*
 
 %files -n %{devname}
 %{_libdir}/libpython*.so
