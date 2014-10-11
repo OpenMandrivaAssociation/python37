@@ -432,6 +432,24 @@ ln -s python3-config %{buildroot}%{_bindir}/python-config
 %if %{with valgrind}
 %{_libdir}/valgrind/valgrind-python3.supp
 %endif
+# pip bits
+%if "%{_libdir}" != "%{_prefix}/lib"
+# In the %{_libdir} == %{_prefix}/lib case, those are caught by
+# globs above.
+%dir %{_prefix}/lib/python%{dirver}
+%dir %{_prefix}/lib/python%{dirver}/site-packages
+%{_prefix}/lib/python%{dirver}/site-packages/__pycache__
+%{_prefix}/lib/python%{dirver}/site-packages/pkg_resources.py
+%{_prefix}/lib/python%{dirver}/site-packages/easy_install.py
+%{_prefix}/lib/python%{dirver}/site-packages/pip
+%{_prefix}/lib/python%{dirver}/site-packages/setuptools*
+%{_prefix}/lib/python%{dirver}/site-packages/_markerlib
+%{_prefix}/lib/python%{dirver}/site-packages/pip-*.dist-info
+%endif
+%{_bindir}/easy_install-%{dirver}
+%{_bindir}/pip3
+%{_bindir}/pip%{dirver}
+
 
 %files -n %{libname}
 %{_libdir}/libpython%{api}m.so.%{major}*
