@@ -210,7 +210,7 @@ rm -fr Modules/zlib
 
 rm -f Modules/Setup.local
 
-sed -e "s/ABIFLAGS=\"\${ABIFLAGS}.*\"/:/" -i configure.ac
+#sed -e "s/ABIFLAGS=\"\${ABIFLAGS}.*\"/:/" -i configure.ac
 
 export OPT="%{optflags} -g"
 
@@ -272,7 +272,7 @@ mkdir -p %{buildroot}%{_mandir}
 # Work around broken distutils having no idea about the need to link
 # python modules to libpython (it probably should get this information
 # from _sysconfigdata.py rather than parsing a Makefile?)
-cat >>%{buildroot}%{_libdir}/python%{dirver}/config-%{dirver}/Makefile <<EOF
+cat >>%{buildroot}%{_libdir}/python%{dirver}/config-%{dirver}m/Makefile <<EOF
 
 Py_ENABLE_SHARED= 1
 EOF
@@ -434,7 +434,7 @@ ln -s python3-config %{buildroot}%{_bindir}/python-config
 %endif
 
 %files -n %{libname}
-%{_libdir}/libpython%{api}.so.%{major}*
+%{_libdir}/libpython%{api}m.so.%{major}*
 
 %files -n %{devname}
 %{_libdir}/libpython*.so
