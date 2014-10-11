@@ -216,13 +216,10 @@ export OPT="%{optflags} -g"
 
 # to fix curses module build
 # https://bugs.mageia.org/show_bug.cgi?id=6702
-#export CFLAGS="%{optflags} -I/usr/include/ncursesw"
-#export CPPFLAGS="%{optflags} -I/usr/include/ncursesw `pkg-config --cflags-only-I libffi`"
-export CFLAGS="%{optflags}"
-export CPPFLAGS="`pkg-config --cflags-only-I libffi`"
+export CFLAGS="%{optflags} -I/usr/include/ncursesw"
+export CPPFLAGS="%{optflags} -I/usr/include/ncursesw `pkg-config --cflags-only-I libffi`"
 
 
-export with_system_ffi=yes
 autoreconf -vfi
 
 %configure	--with-threads \
@@ -246,7 +243,7 @@ export TMP="/tmp" TMPDIR="/tmp"
 # This is used for bootstrapping - and we don't want to
 # require ourselves
 sed -i -e 's,env python,python2,' Python/makeopcodetargets.py
-%make LN="ln -sf" PYTHON=python2 EXTRA_CFLAGS="$CFLAGS" $CPPFLAGS
+%make LN="ln -sf" PYTHON=python2
 
 %check
 # (misc) if the home is nfs mounted, rmdir fails
