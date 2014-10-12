@@ -13,7 +13,7 @@
 %bcond_with	valgrind
 %endif
 
-%bcond_without	pip
+%bcond_with	pip
 %bcond_without	abi_m
 
 Summary:	An interpreted, interactive object-oriented programming language
