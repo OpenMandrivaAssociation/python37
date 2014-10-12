@@ -13,6 +13,8 @@
 %bcond_with	valgrind
 %endif
 
+%bcond_with	worse_than_hitler
+
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python
 Version:	3.4.2
@@ -210,6 +212,10 @@ rm -fr Modules/zlib
 
 rm -f Modules/Setup.local
 
+# fedya
+# if you drop ABIFLAGS
+# you got libpython-3.4-1.0.so lib
+# instead of libpython-3.4m-1.0.so lib
 #sed -e "s/ABIFLAGS=\"\${ABIFLAGS}.*\"/:/" -i configure.ac
 
 export OPT="%{optflags} -g"
@@ -433,6 +439,7 @@ ln -s python3-config %{buildroot}%{_bindir}/python-config
 %{_libdir}/valgrind/valgrind-python3.supp
 %endif
 # pip bits
+%if %{with worse_than_hitler}
 %if "%{_libdir}" != "%{_prefix}/lib"
 # In the %{_libdir} == %{_prefix}/lib case, those are caught by
 # globs above.
@@ -449,7 +456,7 @@ ln -s python3-config %{buildroot}%{_bindir}/python-config
 %{_bindir}/easy_install-%{dirver}
 %{_bindir}/pip3
 %{_bindir}/pip%{dirver}
-
+%endif
 
 %files -n %{libname}
 %{_libdir}/libpython%{api}m.so.%{major}*
