@@ -13,6 +13,11 @@
 %bcond_with	valgrind
 %endif
 
+# weird stuff
+# pip not available if python package built with pip
+# * build without pip files lead to good package
+# * but next package lead to unpackaged pip files 
+# let's disable pip
 %bcond_with	pip
 %bcond_without	abi_m
 
@@ -235,7 +240,11 @@ autoreconf -vfi
 		--enable-ipv6 \
 		--with-wide-unicode \
 		--with-dbmliborder=gdbm \
+%if %{with pip}
 		--with-ensurepip=install \
+%else
+		--without-ensurepip \
+%endif
 		--with-system-expat \
 		--with-cxx-main=%{__cxx} \
 		--with-system-ffi \
