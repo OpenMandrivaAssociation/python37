@@ -13,7 +13,7 @@
 %bcond_with	valgrind
 %endif
 
-%bcond_with	worse_than_hitler
+%bcond_without	worse_than_hitler
 
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python
@@ -453,10 +453,10 @@ ln -s python3-config %{buildroot}%{_bindir}/python-config
 %{_prefix}/lib/python%{dirver}/site-packages/_markerlib
 %{_prefix}/lib/python%{dirver}/site-packages/pip-*.dist-info
 %endif
+%endif
 %{_bindir}/easy_install-%{dirver}
 %{_bindir}/pip3
 %{_bindir}/pip%{dirver}
-%endif
 
 %files -n %{libname}
 %{_libdir}/libpython%{api}m.so.%{major}*
