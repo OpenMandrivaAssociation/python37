@@ -16,7 +16,7 @@
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python
 Version:	3.4.2
-Release:	1
+Release:	2
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 Url:		http://www.python.org/
@@ -229,7 +229,7 @@ autoreconf -vfi
 		--with-ensurepip=install \
 		--with-system-expat \
 		--with-cxx-main=%{__cxx} \
-		--with-system-ffi="yes" \
+		--with-system-ffi \
 		--enable-loadable-sqlite-extensions \
 		--enable-shared \
 %if %{with valgrind}
