@@ -13,12 +13,13 @@
 %bcond_with	valgrind
 %endif
 
-%bcond_without	worse_than_hitler
+%bcond_without	pip
+%bcond_without	abi_m
 
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python
 Version:	3.4.2
-Release:	3
+Release:	4
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 Url:		http://www.python.org/
@@ -216,14 +217,16 @@ rm -f Modules/Setup.local
 # if you drop ABIFLAGS
 # you got libpython-3.4-1.0.so lib
 # instead of libpython-3.4m-1.0.so lib
-#sed -e "s/ABIFLAGS=\"\${ABIFLAGS}.*\"/:/" -i configure.ac
+%if !%{with abi_m}
+sed -e "s/ABIFLAGS=\"\${ABIFLAGS}.*\"/:/" -i configure.ac
+%endif
 
 export OPT="%{optflags} -g"
 
 # to fix curses module build
 # https://bugs.mageia.org/show_bug.cgi?id=6702
 export CFLAGS="%{optflags} -I/usr/include/ncursesw"
-export CPPFLAGS="%{optflags} -I/usr/include/ncursesw `pkg-config --cflags-only-I libffi`"
+export CPPFLAGS="%{optflags} -I/usr/include/ncursesw"
 
 
 autoreconf -vfi
@@ -278,7 +281,11 @@ mkdir -p %{buildroot}%{_mandir}
 # Work around broken distutils having no idea about the need to link
 # python modules to libpython (it probably should get this information
 # from _sysconfigdata.py rather than parsing a Makefile?)
+%if %{with abi_m}
 cat >>%{buildroot}%{_libdir}/python%{dirver}/config-%{dirver}m/Makefile <<EOF
+%else
+cat >>%{buildroot}%{_libdir}/python%{dirver}/config-%{dirver}/Makefile <<EOF
+%endif
 
 Py_ENABLE_SHARED= 1
 EOF
@@ -439,7 +446,7 @@ ln -s python3-config %{buildroot}%{_bindir}/python-config
 %{_libdir}/valgrind/valgrind-python3.supp
 %endif
 # pip bits
-%if %{with worse_than_hitler}
+%if %{with pip}
 %if "%{_libdir}" != "%{_prefix}/lib"
 # In the %{_libdir} == %{_prefix}/lib case, those are caught by
 # globs above.
@@ -453,13 +460,17 @@ ln -s python3-config %{buildroot}%{_bindir}/python-config
 %{_prefix}/lib/python%{dirver}/site-packages/_markerlib
 %{_prefix}/lib/python%{dirver}/site-packages/pip-*.dist-info
 %endif
-%endif
 %{_bindir}/easy_install-%{dirver}
 %{_bindir}/pip3
 %{_bindir}/pip%{dirver}
+%endif
 
 %files -n %{libname}
+%if %{with abi_m}
 %{_libdir}/libpython%{api}m.so.%{major}*
+%else
+%{_libdir}/libpython%{api}.so.%{major}*
+%endif
 
 %files -n %{devname}
 %{_libdir}/libpython*.so
