@@ -24,7 +24,7 @@
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python
 Version:	3.4.2
-Release:	5
+Release:	6
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 Url:		http://www.python.org/
@@ -82,10 +82,12 @@ Conflicts:	%{devname} < 3.2.2-3
 %rename python-ctypes
 %rename python-elementtree
 %rename python-base
+%if %{with pip}
 %rename python-setuptools
 %rename python-pkg-resources
 Provides:	python3egg(setuptools)
 Provides:	python3egg(distribute)
+%endif
 
 %description
 Python is an interpreted, interactive, object-oriented programming
