@@ -24,7 +24,7 @@
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python
 Version:	3.4.2
-Release:	6
+Release:	7
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 Url:		http://www.python.org/
@@ -70,6 +70,7 @@ BuildRequires:	python2
 %if %{with valgrind}
 BuildRequires:	valgrind-devel
 %endif
+BuildConflicts:	python-pyxml
 Obsoletes:	python3 < %{EVRD}
 Provides:	python3 = %{EVRD}
 Provides:	python(abi) = %{dirver}
@@ -77,6 +78,7 @@ Provides:	/usr/bin/python%{dirver}mu
 Conflicts:	tkinter3 < %{EVRD}
 Conflicts:	%{libname}-devel < 3.1.2-4
 Conflicts:	%{devname} < 3.2.2-3
+Conflicts:	python-pyxml
 
 # Used to be separate packages, bundled with core now
 %rename python-ctypes
