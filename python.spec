@@ -50,6 +50,7 @@ Patch156:       00156-gdb-autoload-safepath.patch
 # from Fedora (rhbz#913732)
 Patch173:       00173-workaround-ENOPROTOOPT-in-bind_port.patch
 Patch179:       00179-dont-raise-error-on-gdb-corrupted-frames-in-backtrace.patch
+Patch180:	00205-make-libpl-respect-lib64.patch
 
 
 BuildRequires:	blt
@@ -192,6 +193,7 @@ Various applications written using tkinter
 %patch156 -p1 -b .p156~
 %patch173 -p1 -b .p173~
 %patch179 -p1 -b .p179~
+%patch180 -p1 -b .libpl
 
 
 # docs
@@ -350,6 +352,8 @@ find %{buildroot} -type f \( -name "test_binascii.py*" -o -name "test_grp.py*" -
 # fix python library not stripped
 chmod u+w %{buildroot}%{_libdir}/libpython%{api}*.so.1.0 %{buildroot}%{_libdir}/libpython3.so
 
+# drop backup files
+find %{buildroot} -name "*~" -exec rm -f {} \;
 
 mkdir -p %{buildroot}%{_sysconfdir}/profile.d/
 
