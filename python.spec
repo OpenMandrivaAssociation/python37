@@ -1,6 +1,7 @@
 %define docver  3.4.0
 %define dirver  3.4
 %define familyver 3
+%define _disable_lto 1
 
 %define api	%{dirver}
 %define major	1
@@ -24,7 +25,7 @@
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python
 Version:	3.4.4
-Release:	1
+Release:	2
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 Url:		http://www.python.org/
