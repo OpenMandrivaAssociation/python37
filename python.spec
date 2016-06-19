@@ -1,5 +1,5 @@
-%define docver  3.4.0
-%define dirver  3.4
+%define docver  3.5.0a3
+%define dirver  3.5
 %define familyver 3
 %define _disable_lto 1
 
@@ -24,20 +24,20 @@
 
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python
-Version:	3.4.4
-Release:	3
+Version:	3.5.1
+Release:	1
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 Url:		http://www.python.org/
 Source0:	http://www.python.org/ftp/python/%{version}/Python-%{version}.tar.xz
-Source1:	http://www.python.org/ftp/python/doc/%{docver}/python-%{docver}-docs-html.tar.bz2
+Source1:	http://www.python.org/ftp/python/doc/3.5.0/python-%{docver}-docs-html.tar.bz2
 Source2:	python3.macros
 Source3:        pybytecompile.macros
 Source100:	%{name}.rpmlintrc
 #Source4:	python-mode-1.0.tar.bz2
 Patch0:         python-3.3.0-module-linkage.patch
-Patch1:         python3-3.3.0-fdr-lib64.patch
-Patch2:         python3-3.2.3-fdr-lib64-fix-for-test_install.patch
+Patch1:         00102-lib64.patch
+Patch2:         00104-lib64-fix-for-test_install.patch
 Patch3:		Python-select-requires-libm.patch
 Patch4:         python-3.3.0b1-test-posix_fadvise.patch
 Patch5:		Python-nis-requires-tirpc.patch
