@@ -279,7 +279,7 @@ export TMP="/tmp" TMPDIR="/tmp"
 # This is used for bootstrapping - and we don't want to
 # require ourselves
 sed -i -e 's,env python,python2,' Python/makeopcodetargets.py
-%make LN="ln -sf" PYTHON=python2 -j1
+%make PYTHON=python2 -j1
 
 %check
 # (misc) if the home is nfs mounted, rmdir fails
