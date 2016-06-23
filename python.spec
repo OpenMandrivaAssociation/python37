@@ -25,7 +25,7 @@
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python
 Version:	3.5.1
-Release:	1
+Release:	2
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 Url:		http://www.python.org/
@@ -52,6 +52,12 @@ Patch156:       00156-gdb-autoload-safepath.patch
 Patch173:       00173-workaround-ENOPROTOOPT-in-bind_port.patch
 Patch179:       00179-dont-raise-error-on-gdb-corrupted-frames-in-backtrace.patch
 Patch180:	00205-make-libpl-respect-lib64.patch
+
+Patch181:	00157-uid-gid-overflows.patch
+Patch183:	00178-dont-duplicate-flags-in-sysconfig.patch
+Patch184:	00201-fix-memory-leak-in-gdbm.patch
+Patch185:	00209-prevent-buffer-overflow-in-zipimport-module.patch
+Patch186:	00210-Raise-an-error-when-STARTTLS-fails.patch
 
 
 BuildRequires:	blt
@@ -195,6 +201,11 @@ Various applications written using tkinter
 %patch173 -p1 -b .p173~
 %patch179 -p1 -b .p179~
 %patch180 -p1 -b .libpl
+%patch181 -p1
+%patch183 -p1
+%patch184 -p1
+%patch185 -p1
+%patch186 -p1
 
 
 # docs
