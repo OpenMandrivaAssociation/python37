@@ -1,17 +1,17 @@
-%define docver  3.5.0a3
-%define dirver  3.5
+%define docver 3.5.0a3
+%define dirver 3.5
 %define familyver 3
 %define _disable_lto 1
 
-%define api	%{dirver}
-%define major	1
-%define libname	%mklibname python %{api}m %{major}
-%define devname	%mklibname python -d
+%define api %{dirver}
+%define major 1
+%define libname %mklibname python %{api}m %{major}
+%define devname %mklibname python -d
 
 %ifarch %{ix86} x86_64 ppc
-%bcond_without	valgrind
+%bcond_without valgrind
 %else
-%bcond_with	valgrind
+%bcond_with valgrind
 %endif
 
 # weird stuff
@@ -19,46 +19,44 @@
 # * build without pip files lead to good package
 # * but next package lead to unpackaged pip files 
 # let's disable pip
-%bcond_with	pip
-%bcond_without	abi_m
+%bcond_with pip
+%bcond_without abi_m
 
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python
-Version:	3.5.1
-Release:	2
+Version:	3.5.3
+Release:	1
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 Url:		http://www.python.org/
 Source0:	http://www.python.org/ftp/python/%{version}/Python-%{version}.tar.xz
 Source1:	http://www.python.org/ftp/python/doc/3.5.0/python-%{docver}-docs-html.tar.bz2
 Source2:	python3.macros
-Source3:        pybytecompile.macros
+Source3:	pybytecompile.macros
 Source100:	%{name}.rpmlintrc
 #Source4:	python-mode-1.0.tar.bz2
-Patch0:         python-3.3.0-module-linkage.patch
-Patch1:         00102-lib64.patch
-Patch2:         00104-lib64-fix-for-test_install.patch
+Patch0:		python-3.3.0-module-linkage.patch
+Patch1:		00102-lib64.patch
+Patch2:		00104-lib64-fix-for-test_install.patch
 Patch3:		Python-select-requires-libm.patch
-Patch4:         python-3.3.0b1-test-posix_fadvise.patch
+Patch4:		python-3.3.0b1-test-posix_fadvise.patch
 Patch5:		Python-nis-requires-tirpc.patch
 Patch6:		00184-ctypes-should-build-with-libffi-multilib-wrapper.patch
 #Fedora patches:
-Patch153:       00153-fix-test_gdb-noise.patch
-Patch156:       00156-gdb-autoload-safepath.patch
+Patch153:	00153-fix-test_gdb-noise.patch
+Patch156:	00156-gdb-autoload-safepath.patch
 # 00173 #
 # Workaround for ENOPROTOOPT seen in bs within
 # test.test_support.bind_port()
 # from Fedora (rhbz#913732)
-Patch173:       00173-workaround-ENOPROTOOPT-in-bind_port.patch
-Patch179:       00179-dont-raise-error-on-gdb-corrupted-frames-in-backtrace.patch
+Patch173:	00173-workaround-ENOPROTOOPT-in-bind_port.patch
+Patch179:	00179-dont-raise-error-on-gdb-corrupted-frames-in-backtrace.patch
 Patch180:	00205-make-libpl-respect-lib64.patch
-
 Patch181:	00157-uid-gid-overflows.patch
 Patch183:	00178-dont-duplicate-flags-in-sysconfig.patch
 Patch184:	00201-fix-memory-leak-in-gdbm.patch
 Patch185:	00209-prevent-buffer-overflow-in-zipimport-module.patch
 Patch186:	00210-Raise-an-error-when-STARTTLS-fails.patch
-
 
 BuildRequires:	blt
 BuildRequires:	bzip2-devel
@@ -89,12 +87,12 @@ Conflicts:	%{devname} < 3.2.2-3
 Conflicts:	python-pyxml
 
 # Used to be separate packages, bundled with core now
-%rename python-ctypes
-%rename python-elementtree
-%rename python-base
+%rename	python-ctypes
+%rename	python-elementtree
+%rename	python-base
 %if %{with pip}
-%rename python-setuptools
-%rename python-pkg-resources
+%rename	python-setuptools
+%rename	python-pkg-resources
 Provides:	python3egg(setuptools)
 Provides:	python3egg(distribute)
 %endif
@@ -116,7 +114,7 @@ Tix widget set for Tk and RPM.
 Note that documentation for Python is provided in the python-docs
 package.
 
-%package -n	%{libname}
+%package -n %{libname}
 Summary:	Shared libraries for Python %{version}
 Group:		System/Libraries
 Obsoletes:	%{_lib}python3.3 < 3.3.2-2
@@ -126,7 +124,7 @@ This packages contains Python shared object library.  Python is an
 interpreted, interactive, object-oriented programming language often
 compared to Tcl, Perl, Scheme or Java.
 
-%package -n	%{devname}
+%package -n %{devname}
 Summary:	The libraries and header files needed for Python development
 Group:		Development/Python
 Requires:	%{name} = %{EVRD}
@@ -145,7 +143,7 @@ python package will also need to be installed.  You'll probably also
 want to install the python-docs package, which contains Python
 documentation.
 
-%package	docs
+%package docs
 Summary:	Documentation for the Python programming language
 Group:		Development/Python
 Requires:	%{name} = %{EVRD}
@@ -153,7 +151,7 @@ Requires:	xdg-utils
 BuildArch:	noarch
 Obsoletes:	python3-docs < %{EVRD}
 
-%description	docs
+%description docs
 The python-docs package contains documentation on the Python
 programming language and interpreter.  The documentation is provided
 in ASCII text files and in LaTeX source files.
@@ -161,11 +159,12 @@ in ASCII text files and in LaTeX source files.
 Install the python-docs package if you'd like to use the documentation
 for the Python language.
 
-%package -n	tkinter
+%package -n tkinter
 Summary:	A graphical user interface for the Python scripting language
 Group:		Development/Python
 Requires:	%{name} = %{EVRD}
-Requires:	tcl tk
+Requires:	tcl
+Requires:	tk
 Obsoletes:	tkinter3 < %{EVRD}
 
 %description -n	tkinter
@@ -175,14 +174,14 @@ the Python scripting language.
 You should install the tkinter package if you'd like to use a graphical
 user interface for Python programming.
 
-%package -n	tkinter-apps
+%package -n tkinter-apps
 Summary:	Various applications written using tkinter
 Group:		Development/Python
 Requires:	tkinter = %{EVRD}
 Obsoletes:	tkinter3-apps < %{EVRD}
 
 %description -n	tkinter-apps
-Various applications written using tkinter
+Various applications written using tkinter.
 
 %prep
 %setup -qn Python-%{version}
@@ -248,8 +247,8 @@ export OPT="%{optflags} -g"
 
 # to fix curses module build
 # https://bugs.mageia.org/show_bug.cgi?id=6702
-export CFLAGS="%{optflags} -I/usr/include/ncursesw"
-export CPPFLAGS="%{optflags} -I/usr/include/ncursesw"
+export CFLAGS="%{optflags} -D_GNU_SOURCE -fPIC -fwrapv -I/usr/include/ncursesw"
+export CPPFLAGS="%{optflags} -D_GNU_SOURCE -fPIC -fwrapv -I/usr/include/ncursesw"
 
 
 autoreconf -vfi
@@ -371,9 +370,9 @@ mkdir -p %{buildroot}%{_sysconfdir}/profile.d/
 
 cat > %{buildroot}%{_sysconfdir}/profile.d/30python.sh << 'EOF'
 if [ -f $HOME/.pythonrc.py ] ; then
-	export PYTHONSTARTUP=$HOME/.pythonrc.py
+    export PYTHONSTARTUP=$HOME/.pythonrc.py
 else
-	export PYTHONSTARTUP=/etc/pythonrc.py
+    export PYTHONSTARTUP=/etc/pythonrc.py
 fi
 
 export PYTHONDONTWRITEBYTECODE=1
@@ -381,9 +380,9 @@ EOF
 
 cat > %{buildroot}%{_sysconfdir}/profile.d/30python.csh << 'EOF'
 if ( -f ${HOME}/.pythonrc.py ) then
-	setenv PYTHONSTARTUP ${HOME}/.pythonrc.py
+    setenv PYTHONSTARTUP ${HOME}/.pythonrc.py
 else
-	setenv PYTHONSTARTUP /etc/pythonrc.py
+    setenv PYTHONSTARTUP /etc/pythonrc.py
 endif
 setenv PYTHONDONTWRITEBYTECODE 1
 EOF
