@@ -185,7 +185,7 @@ Various applications written using tkinter.
 
 %prep
 %setup -qn Python-%{version}
-%patch0 -p0 -b .link~
+%patch0 -p1 -b .link~
 
 %if "%{_lib}" == "lib64"
 %patch1 -p1 -b .lib64~
