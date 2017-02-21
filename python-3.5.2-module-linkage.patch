@@ -1,0 +1,37 @@
+commit aecb496ba1b9cc8c2d3ca479b7c949418909f520
+Author: Philippe Makowski <pmakowski@espelida.com>
+Date:   Sun Jul 3 14:01:36 2016 +0200
+
+    module-linkage
+
+diff --git a/setup.py b/setup.py
+index 174ce72..280766a 100644
+--- a/setup.py
++++ b/setup.py
+@@ -616,7 +616,7 @@ class PyBuildExt(build_ext):
+                                libraries=math_libs) )
+ 
+         # time libraries: librt may be needed for clock_gettime()
+-        time_libs = []
++        time_libs = ['m']
+         lib = sysconfig.get_config_var('TIMEMODULE_LIB')
+         if lib:
+             time_libs.append(lib)
+@@ -1975,7 +1975,7 @@ class PyBuildExt(build_ext):
+                         include_dirs=include_dirs,
+                         extra_compile_args=extra_compile_args,
+                         extra_link_args=extra_link_args,
+-                        libraries=[],
++                        libraries=['m', 'dl'],
+                         sources=sources,
+                         depends=depends)
+         # function my_sqrt() needs math library for sqrt()
+@@ -2031,7 +2031,7 @@ class PyBuildExt(build_ext):
+                                                          'Modules',
+                                                          '_decimal',
+                                                          'libmpdec'))]
+-            libraries = []
++            libraries = ['m']
+             sources = [
+               '_decimal/_decimal.c',
+               '_decimal/libmpdec/basearith.c',

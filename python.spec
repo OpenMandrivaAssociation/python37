@@ -35,7 +35,7 @@ Source2:	python3.macros
 Source3:	pybytecompile.macros
 Source100:	%{name}.rpmlintrc
 #Source4:	python-mode-1.0.tar.bz2
-Patch0:		python-3.3.0-module-linkage.patch
+Patch0:		python-3.5.2-module-linkage.patch
 Patch1:		00102-lib64.patch
 Patch2:		00104-lib64-fix-for-test_install.patch
 Patch3:		Python-select-requires-libm.patch
