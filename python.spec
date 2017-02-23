@@ -53,23 +53,23 @@ Patch181:	00157-uid-gid-overflows.patch
 Patch183:	00178-dont-duplicate-flags-in-sysconfig.patch
 Patch184:	00201-fix-memory-leak-in-gdbm.patch
 
-#BuildRequires:	blt
-#BuildRequires:	bzip2-devel
-#BuildRequires:	db-devel
-#BuildRequires:	gdbm-devel
-#BuildRequires:	gmp-devel
-#BuildRequires:	readline-devel
-#BuildRequires:	pkgconfig(expat)
-#BuildRequires:	pkgconfig(libffi) >= 3.1
-#BuildRequires:	pkgconfig(libtirpc)
-#BuildRequires:	pkgconfig(ncursesw)
-#BuildRequires:	pkgconfig(openssl)
-#BuildRequires:	pkgconfig(sqlite3)
-#BuildRequires:	pkgconfig(tcl)
-#BuildRequires:	pkgconfig(tk)
-#BuildRequires:	python2
+BuildRequires:	blt
+BuildRequires:	bzip2-devel
+BuildRequires:	db-devel
+BuildRequires:	gdbm-devel
+BuildRequires:	gmp-devel
+BuildRequires:	readline-devel
+BuildRequires:	pkgconfig(expat)
+BuildRequires:	pkgconfig(libffi) >= 3.1
+BuildRequires:	pkgconfig(libtirpc)
+BuildRequires:	pkgconfig(ncursesw)
+BuildRequires:	pkgconfig(openssl)
+BuildRequires:	pkgconfig(sqlite3)
+BuildRequires:	pkgconfig(tcl)
+BuildRequires:	pkgconfig(tk)
+BuildRequires:	python2
 %if %{with valgrind}
-#BuildRequires:	valgrind-devel
+BuildRequires:	valgrind-devel
 %endif
 BuildConflicts:	python-pyxml
 Obsoletes:	python3 < %{EVRD}
