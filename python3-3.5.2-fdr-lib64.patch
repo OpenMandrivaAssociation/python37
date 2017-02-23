@@ -1,7 +1,14 @@
-diff -Naur Python-3.5.3/Lib/distutils/command/install.py Python-3.5.3.tpg/Lib/distutils/command/install.py
---- Python-3.5.3/Lib/distutils/command/install.py	2017-01-17 07:57:48.000000000 +0000
-+++ Python-3.5.3.tpg/Lib/distutils/command/install.py	2017-02-23 19:08:14.475209324 +0000
-@@ -30,14 +30,14 @@
+commit e4bf77277a970ca9ac08b1ecf03ba59bdfdc1b43
+Author: Philippe Makowski <pmakowski@espelida.com>
+Date:   Sun Jul 3 14:25:39 2016 +0200
+
+    fdr-lib64
+
+diff --git a/Lib/distutils/command/install.py b/Lib/distutils/command/install.py
+index 67db007..8174192 100644
+--- a/Lib/distutils/command/install.py
++++ b/Lib/distutils/command/install.py
+@@ -30,14 +30,14 @@ WINDOWS_SCHEME = {
  INSTALL_SCHEMES = {
      'unix_prefix': {
          'purelib': '$base/lib/python$py_version_short/site-packages',
@@ -18,10 +25,11 @@ diff -Naur Python-3.5.3/Lib/distutils/command/install.py Python-3.5.3.tpg/Lib/di
          'headers': '$base/include/python/$dist_name',
          'scripts': '$base/bin',
          'data'   : '$base',
-diff -Naur Python-3.5.3/Lib/distutils/sysconfig.py Python-3.5.3.tpg/Lib/distutils/sysconfig.py
---- Python-3.5.3/Lib/distutils/sysconfig.py	2017-01-17 07:57:48.000000000 +0000
-+++ Python-3.5.3.tpg/Lib/distutils/sysconfig.py	2017-02-23 19:09:33.505914162 +0000
-@@ -132,8 +132,12 @@
+diff --git a/Lib/distutils/sysconfig.py b/Lib/distutils/sysconfig.py
+index 573724d..6e58533 100644
+--- a/Lib/distutils/sysconfig.py
++++ b/Lib/distutils/sysconfig.py
+@@ -132,8 +132,12 @@ def get_python_lib(plat_specific=0, standard_lib=0, prefix=None):
              prefix = plat_specific and EXEC_PREFIX or PREFIX
  
      if os.name == "posix":
@@ -35,10 +43,11 @@ diff -Naur Python-3.5.3/Lib/distutils/sysconfig.py Python-3.5.3.tpg/Lib/distutil
          if standard_lib:
              return libpython
          else:
-diff -Naur Python-3.5.3/Lib/site.py Python-3.5.3.tpg/Lib/site.py
---- Python-3.5.3/Lib/site.py	2017-01-17 07:57:49.000000000 +0000
-+++ Python-3.5.3.tpg/Lib/site.py	2017-02-23 19:10:44.070256283 +0000
-@@ -303,11 +303,15 @@
+diff --git a/Lib/site.py b/Lib/site.py
+index 3f78ef5..ad1033e 100644
+--- a/Lib/site.py
++++ b/Lib/site.py
+@@ -303,11 +303,15 @@ def getsitepackages(prefixes=None):
          seen.add(prefix)
  
          if os.sep == '/':
@@ -54,10 +63,11 @@ diff -Naur Python-3.5.3/Lib/site.py Python-3.5.3.tpg/Lib/site.py
              sitepackages.append(os.path.join(prefix, "lib", "site-packages"))
          if sys.platform == "darwin":
              # for framework builds *only* we add the standard Apple
-diff -Naur Python-3.5.3/Lib/sysconfig.py Python-3.5.3.tpg/Lib/sysconfig.py
---- Python-3.5.3/Lib/sysconfig.py	2017-01-17 07:57:49.000000000 +0000
-+++ Python-3.5.3.tpg/Lib/sysconfig.py	2017-02-23 19:12:15.829213892 +0000
-@@ -20,10 +20,10 @@
+diff --git a/Lib/sysconfig.py b/Lib/sysconfig.py
+index 9c34be0..31bc2ed 100644
+--- a/Lib/sysconfig.py
++++ b/Lib/sysconfig.py
+@@ -20,10 +20,10 @@ __all__ = [
  
  _INSTALL_SCHEMES = {
      'posix_prefix': {
@@ -71,7 +81,7 @@ diff -Naur Python-3.5.3/Lib/sysconfig.py Python-3.5.3.tpg/Lib/sysconfig.py
          'include':
              '{installed_base}/include/python{py_version_short}{abiflags}',
          'platinclude':
-@@ -61,10 +61,10 @@
+@@ -61,10 +61,10 @@ _INSTALL_SCHEMES = {
          'data': '{userbase}',
          },
      'posix_user': {
@@ -85,24 +95,26 @@ diff -Naur Python-3.5.3/Lib/sysconfig.py Python-3.5.3.tpg/Lib/sysconfig.py
          'include': '{userbase}/include/python{py_version_short}',
          'scripts': '{userbase}/bin',
          'data': '{userbase}',
-diff -Naur Python-3.5.3/Lib/test/test_site.py Python-3.5.3.tpg/Lib/test/test_site.py
---- Python-3.5.3/Lib/test/test_site.py	2017-01-17 07:57:51.000000000 +0000
-+++ Python-3.5.3.tpg/Lib/test/test_site.py	2017-02-23 19:13:20.314241064 +0000
-@@ -248,8 +248,8 @@
+diff --git a/Lib/test/test_site.py b/Lib/test/test_site.py
+index da20a3d..f38ce06 100644
+--- a/Lib/test/test_site.py
++++ b/Lib/test/test_site.py
+@@ -248,8 +248,8 @@ class HelperFunctionsTests(unittest.TestCase):
              self.assertEqual(dirs[1], wanted)
          elif os.sep == '/':
              # OS X non-framwework builds, Linux, FreeBSD, etc
 -            self.assertEqual(len(dirs), 1)
 -            wanted = os.path.join('xoxo', 'lib', 'python' + sys.version[:3],
 +            self.assertEqual(len(dirs), 2)
-+            wanted = os.path.join('xoxo', 'lib64',
++            wanted = os.path.join('xoxo', 'lib64', 'python' + sys.version[:3],
                                    'site-packages')
              self.assertEqual(dirs[0], wanted)
          else:
-diff -Naur Python-3.5.3/Makefile.pre.in Python-3.5.3.tpg/Makefile.pre.in
---- Python-3.5.3/Makefile.pre.in	2017-01-17 07:57:52.000000000 +0000
-+++ Python-3.5.3.tpg/Makefile.pre.in	2017-02-23 19:13:38.881817759 +0000
-@@ -126,7 +126,7 @@
+diff --git a/Makefile.pre.in b/Makefile.pre.in
+index 87528a0..99b6bb9 100644
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -125,7 +125,7 @@ LIBDIR=		@libdir@
  MANDIR=		@mandir@
  INCLUDEDIR=	@includedir@
  CONFINCLUDEDIR=	$(exec_prefix)/include
@@ -111,10 +123,11 @@ diff -Naur Python-3.5.3/Makefile.pre.in Python-3.5.3.tpg/Makefile.pre.in
  ABIFLAGS=	@ABIFLAGS@
  
  # Detailed destination directories
-diff -Naur Python-3.5.3/Modules/getpath.c Python-3.5.3.tpg/Modules/getpath.c
---- Python-3.5.3/Modules/getpath.c	2017-01-17 07:57:53.000000000 +0000
-+++ Python-3.5.3.tpg/Modules/getpath.c	2017-02-23 19:16:27.038919233 +0000
-@@ -494,7 +494,7 @@
+diff --git a/Modules/getpath.c b/Modules/getpath.c
+index 18deb60..27ca814 100644
+--- a/Modules/getpath.c
++++ b/Modules/getpath.c
+@@ -494,7 +494,7 @@ calculate_path(void)
      _pythonpath = Py_DecodeLocale(PYTHONPATH, NULL);
      _prefix = Py_DecodeLocale(PREFIX, NULL);
      _exec_prefix = Py_DecodeLocale(EXEC_PREFIX, NULL);
@@ -123,7 +136,7 @@ diff -Naur Python-3.5.3/Modules/getpath.c Python-3.5.3.tpg/Modules/getpath.c
  
      if (!_pythonpath || !_prefix || !_exec_prefix || !lib_python) {
          Py_FatalError(
-@@ -683,7 +683,7 @@
+@@ -683,7 +683,7 @@ calculate_path(void)
      }
      else
          wcsncpy(zip_path, _prefix, MAXPATHLEN);
@@ -132,7 +145,7 @@ diff -Naur Python-3.5.3/Modules/getpath.c Python-3.5.3.tpg/Modules/getpath.c
      bufsz = wcslen(zip_path);   /* Replace "00" with version */
      zip_path[bufsz - 6] = VERSION[0];
      zip_path[bufsz - 5] = VERSION[2];
-@@ -695,7 +695,7 @@
+@@ -695,7 +695,7 @@ calculate_path(void)
              fprintf(stderr,
                  "Could not find platform dependent libraries <exec_prefix>\n");
          wcsncpy(exec_prefix, _exec_prefix, MAXPATHLEN);
@@ -141,10 +154,11 @@ diff -Naur Python-3.5.3/Modules/getpath.c Python-3.5.3.tpg/Modules/getpath.c
      }
      /* If we found EXEC_PREFIX do *not* reduce it!  (Yet.) */
  
-diff -Naur Python-3.5.3/setup.py Python-3.5.3.tpg/setup.py
---- Python-3.5.3/setup.py	2017-02-23 19:07:07.458837785 +0000
-+++ Python-3.5.3.tpg/setup.py	2017-02-23 19:19:00.732428008 +0000
-@@ -491,7 +491,7 @@
+diff --git a/setup.py b/setup.py
+index 280766a..a8cee56 100644
+--- a/setup.py
++++ b/setup.py
+@@ -492,7 +492,7 @@ class PyBuildExt(build_ext):
          # directories (i.e. '.' and 'Include') must be first.  See issue
          # 10520.
          if not cross_compiling:
@@ -153,7 +167,7 @@ diff -Naur Python-3.5.3/setup.py Python-3.5.3.tpg/setup.py
              add_dir_to_list(self.compiler.include_dirs, '/usr/local/include')
          # only change this for cross builds for 3.3, issues on Mageia
          if cross_compiling:
-@@ -779,11 +779,11 @@
+@@ -780,11 +780,11 @@ class PyBuildExt(build_ext):
              elif curses_library:
                  readline_libs.append(curses_library)
              elif self.compiler.find_library_file(lib_dirs +
@@ -167,7 +181,7 @@ diff -Naur Python-3.5.3/setup.py Python-3.5.3.tpg/setup.py
                                     extra_link_args=readline_extra_link_args,
                                     libraries=readline_libs) )
          else:
-@@ -820,8 +820,8 @@
+@@ -821,8 +821,8 @@ class PyBuildExt(build_ext):
              if krb5_h:
                  ssl_incs += krb5_h
          ssl_libs = find_library_file(self.compiler, 'ssl',lib_dirs,

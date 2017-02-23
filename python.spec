@@ -42,9 +42,6 @@ Patch3:		Python-select-requires-libm.patch
 Patch4:		python-3.3.0b1-test-posix_fadvise.patch
 Patch5:		Python-nis-requires-tirpc.patch
 Patch6:		00184-ctypes-should-build-with-libffi-multilib-wrapper.patch
-#Fedora patches:
-Patch153:	00153-fix-test_gdb-noise.patch
-Patch156:	00156-gdb-autoload-safepath.patch
 # 00173 #
 # Workaround for ENOPROTOOPT seen in bs within
 # test.test_support.bind_port()
@@ -55,26 +52,24 @@ Patch180:	00205-make-libpl-respect-lib64.patch
 Patch181:	00157-uid-gid-overflows.patch
 Patch183:	00178-dont-duplicate-flags-in-sysconfig.patch
 Patch184:	00201-fix-memory-leak-in-gdbm.patch
-Patch185:	00209-prevent-buffer-overflow-in-zipimport-module.patch
-Patch186:	00210-Raise-an-error-when-STARTTLS-fails.patch
 
-BuildRequires:	blt
-BuildRequires:	bzip2-devel
-BuildRequires:	db-devel
-BuildRequires:	gdbm-devel
-BuildRequires:	gmp-devel
-BuildRequires:	readline-devel
-BuildRequires:	pkgconfig(expat)
-BuildRequires:	pkgconfig(libffi) >= 3.1
-BuildRequires:	pkgconfig(libtirpc)
-BuildRequires:	pkgconfig(ncursesw)
-BuildRequires:	pkgconfig(openssl)
-BuildRequires:	pkgconfig(sqlite3)
-BuildRequires:	pkgconfig(tcl)
-BuildRequires:	pkgconfig(tk)
-BuildRequires:	python2
+#BuildRequires:	blt
+#BuildRequires:	bzip2-devel
+#BuildRequires:	db-devel
+#BuildRequires:	gdbm-devel
+#BuildRequires:	gmp-devel
+#BuildRequires:	readline-devel
+#BuildRequires:	pkgconfig(expat)
+#BuildRequires:	pkgconfig(libffi) >= 3.1
+#BuildRequires:	pkgconfig(libtirpc)
+#BuildRequires:	pkgconfig(ncursesw)
+#BuildRequires:	pkgconfig(openssl)
+#BuildRequires:	pkgconfig(sqlite3)
+#BuildRequires:	pkgconfig(tcl)
+#BuildRequires:	pkgconfig(tk)
+#BuildRequires:	python2
 %if %{with valgrind}
-BuildRequires:	valgrind-devel
+#BuildRequires:	valgrind-devel
 %endif
 BuildConflicts:	python-pyxml
 Obsoletes:	python3 < %{EVRD}
@@ -195,17 +190,12 @@ Various applications written using tkinter.
 %patch4 -p1 -b .p4~
 %patch5 -p1 -b .tirpc~
 %patch6 -p1 -b .multiarch
-%patch153 -p1 -b .p153~
-%patch156 -p1 -b .p156~
 %patch173 -p1 -b .p173~
 %patch179 -p1 -b .p179~
 %patch180 -p1 -b .libpl
 %patch181 -p1
 %patch183 -p1
 %patch184 -p1
-%patch185 -p1
-%patch186 -p1
-
 
 # docs
 mkdir html

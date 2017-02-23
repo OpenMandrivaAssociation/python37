@@ -1,14 +1,7 @@
-commit aecb496ba1b9cc8c2d3ca479b7c949418909f520
-Author: Philippe Makowski <pmakowski@espelida.com>
-Date:   Sun Jul 3 14:01:36 2016 +0200
-
-    module-linkage
-
-diff --git a/setup.py b/setup.py
-index 174ce72..280766a 100644
---- a/setup.py
-+++ b/setup.py
-@@ -616,7 +616,7 @@ class PyBuildExt(build_ext):
+diff -Naur Python-3.5.3/setup.py Python-3.5.3.tpg/setup.py
+--- Python-3.5.3/setup.py	2017-01-17 07:57:54.000000000 +0000
++++ Python-3.5.3.tpg/setup.py	2017-02-23 19:06:18.022036334 +0000
+@@ -615,7 +615,7 @@
                                 libraries=math_libs) )
  
          # time libraries: librt may be needed for clock_gettime()
@@ -17,7 +10,7 @@ index 174ce72..280766a 100644
          lib = sysconfig.get_config_var('TIMEMODULE_LIB')
          if lib:
              time_libs.append(lib)
-@@ -1975,7 +1975,7 @@ class PyBuildExt(build_ext):
+@@ -1974,7 +1974,7 @@
                          include_dirs=include_dirs,
                          extra_compile_args=extra_compile_args,
                          extra_link_args=extra_link_args,
@@ -26,7 +19,7 @@ index 174ce72..280766a 100644
                          sources=sources,
                          depends=depends)
          # function my_sqrt() needs math library for sqrt()
-@@ -2031,7 +2031,7 @@ class PyBuildExt(build_ext):
+@@ -2032,7 +2032,7 @@
                                                           'Modules',
                                                           '_decimal',
                                                           'libmpdec'))]

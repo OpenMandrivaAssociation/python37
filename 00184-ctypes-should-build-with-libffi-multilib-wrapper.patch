@@ -1,13 +1,12 @@
---- Python-3.3.2/setup.py.orig	2013-07-01 15:23:24.377711044 +0200
-+++ Python-3.3.2/setup.py	2013-07-01 15:23:34.094676496 +0200
-@@ -1882,7 +1882,9 @@
-                     if not line:
-                         ffi_inc = None
+diff -Naur Python-3.5.3/setup.py Python-3.5.3.tpg/setup.py
+--- Python-3.5.3/setup.py	2017-02-23 19:24:35.000000000 +0000
++++ Python-3.5.3.tpg/setup.py	2017-02-23 19:25:00.843618210 +0000
+@@ -1999,7 +1999,7 @@
+             with open(ffi_h) as f:
+                 for line in f:
+                     line = line.strip()
+-                    if line.startswith(('#define LIBFFI_H',
++                    if line.startswith(('#define _MULTIARCH_HEADER',
+                                         '#define ffi_wrapper_h')):
                          break
--                    if line.startswith('#define LIBFFI_H'):
-+                    if line.startswith('#define LIBFFI_H') or \
-+                       line.startswith('#define ffi_wrapper_h') or \
-+                       line.startswith('#define _MULTIARCH_HEADER'):
-                         break
-         ffi_lib = None
-         if ffi_inc is not None:
+                 else:
