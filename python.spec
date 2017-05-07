@@ -190,9 +190,9 @@ Various applications written using tkinter.
 %patch4 -p1 -b .p4~
 %patch5 -p1 -b .tirpc~
 %patch6 -p1 -b .multiarch
+%patch7 -p1 -b .libpl
 %patch173 -p1 -b .p173~
 %patch179 -p1 -b .p179~
-%patch180 -p1 -b .libpl
 %patch181 -p1
 %patch183 -p1
 %patch184 -p1
