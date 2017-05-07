@@ -49,7 +49,6 @@ Patch7:		http://pkgs.fedoraproject.org/cgit/rpms/python3.git/plain/00205-make-li
 # from Fedora (rhbz#913732)
 Patch173:	00173-workaround-ENOPROTOOPT-in-bind_port.patch
 Patch179:	00179-dont-raise-error-on-gdb-corrupted-frames-in-backtrace.patch
-Patch180:	00205-make-libpl-respect-lib64.patch
 Patch181:	http://pkgs.fedoraproject.org/cgit/rpms/python3.git/plain/00157-uid-gid-overflows.patch
 Patch183:	00178-dont-duplicate-flags-in-sysconfig.patch
 Patch184:	00201-fix-memory-leak-in-gdbm.patch
