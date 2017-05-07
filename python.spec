@@ -1,5 +1,5 @@
-%define docver 3.5.0a3
-%define dirver 3.5
+%define docver 3.6.1
+%define dirver 3.6
 %define familyver 3
 %define _disable_lto 1
 
@@ -24,20 +24,20 @@
 
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python
-Version:	3.5.3
+Version:	3.6.1
 Release:	1
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 Url:		http://www.python.org/
 Source0:	http://www.python.org/ftp/python/%{version}/Python-%{version}.tar.xz
-Source1:	http://www.python.org/ftp/python/doc/3.5.0/python-%{docver}-docs-html.tar.bz2
+Source1:	http://www.python.org/ftp/python/doc/%{docver}/python-%{docver}-docs-html.tar.bz2
 Source2:	python3.macros
 Source3:	pybytecompile.macros
 Source100:	%{name}.rpmlintrc
 #Source4:	python-mode-1.0.tar.bz2
-Patch0:		python-3.5.2-module-linkage.patch
-Patch1:		00102-lib64.patch
-Patch2:		00104-lib64-fix-for-test_install.patch
+Patch0:		python-3.6.1-module-linkage.patch
+Patch1:		http://pkgs.fedoraproject.org/cgit/rpms/python3.git/plain/00102-lib64.patch
+Patch2:		http://pkgs.fedoraproject.org/cgit/rpms/python3.git/plain/00104-lib64-fix-for-test_install.patch
 Patch3:		Python-select-requires-libm.patch
 Patch4:		python-3.3.0b1-test-posix_fadvise.patch
 Patch5:		Python-nis-requires-tirpc.patch
@@ -49,7 +49,7 @@ Patch6:		00184-ctypes-should-build-with-libffi-multilib-wrapper.patch
 Patch173:	00173-workaround-ENOPROTOOPT-in-bind_port.patch
 Patch179:	00179-dont-raise-error-on-gdb-corrupted-frames-in-backtrace.patch
 Patch180:	00205-make-libpl-respect-lib64.patch
-Patch181:	00157-uid-gid-overflows.patch
+Patch181:	http://pkgs.fedoraproject.org/cgit/rpms/python3.git/plain/00157-uid-gid-overflows.patch
 Patch183:	00178-dont-duplicate-flags-in-sysconfig.patch
 Patch184:	00201-fix-memory-leak-in-gdbm.patch
 
@@ -213,7 +213,7 @@ you can :
 EOF
 
 #   Remove embedded copy of libffi:
-for SUBDIR in darwin libffi libffi.diff libffi_arm_wince libffi_msvc libffi_osx ; do
+for SUBDIR in darwin libffi libffi.diff libffi_msvc libffi_osx ; do
   rm -r Modules/_ctypes/$SUBDIR || exit 1 ;
 done
 
@@ -240,9 +240,11 @@ export OPT="%{optflags} -g"
 export CFLAGS="%{optflags} -D_GNU_SOURCE -fPIC -fwrapv -I/usr/include/ncursesw"
 export CPPFLAGS="%{optflags} -D_GNU_SOURCE -fPIC -fwrapv -I/usr/include/ncursesw"
 
+# Python's configure adds -std=c99 even for c++, clang doesn't like that
+# combination at all
+sed -i -e 's,-std=c99,,' configure.ac
 
 autoreconf -vfi
-
 %configure	--with-threads \
 		--enable-ipv6 \
 		--with-wide-unicode \
@@ -257,6 +259,7 @@ autoreconf -vfi
 		--with-system-ffi \
 		--enable-loadable-sqlite-extensions \
 		--enable-shared \
+		--enable-optimizations \
 %if %{with valgrind}
 		--with-valgrind
 %endif
@@ -439,7 +442,6 @@ ln -s python3-config %{buildroot}%{_bindir}/python-config
 %{_libdir}/python%{dirver}/lib2to3
 %{_libdir}/python%{dirver}/logging
 %{_libdir}/python%{dirver}/multiprocessing
-%{_libdir}/python%{dirver}/plat-linux
 %{_libdir}/python%{dirver}/pydoc_data
 %{_libdir}/python%{dirver}/site-packages
 %{_libdir}/python%{dirver}/sqlite3

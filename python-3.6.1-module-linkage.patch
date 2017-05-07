@@ -1,7 +1,6 @@
-diff -Naur Python-3.5.3/setup.py Python-3.5.3.tpg/setup.py
---- Python-3.5.3/setup.py	2017-01-17 07:57:54.000000000 +0000
-+++ Python-3.5.3.tpg/setup.py	2017-02-23 19:06:18.022036334 +0000
-@@ -615,7 +615,7 @@
+--- Python-3.6.1/setup.py.link~	2017-03-21 07:32:38.000000000 +0100
++++ Python-3.6.1/setup.py	2017-05-07 20:34:33.025700771 +0200
+@@ -616,7 +616,7 @@ class PyBuildExt(build_ext):
                                 libraries=math_libs) )
  
          # time libraries: librt may be needed for clock_gettime()
@@ -10,7 +9,7 @@ diff -Naur Python-3.5.3/setup.py Python-3.5.3.tpg/setup.py
          lib = sysconfig.get_config_var('TIMEMODULE_LIB')
          if lib:
              time_libs.append(lib)
-@@ -1974,7 +1974,7 @@
+@@ -2005,7 +2005,7 @@ class PyBuildExt(build_ext):
                          include_dirs=include_dirs,
                          extra_compile_args=extra_compile_args,
                          extra_link_args=extra_link_args,
@@ -19,12 +18,12 @@ diff -Naur Python-3.5.3/setup.py Python-3.5.3.tpg/setup.py
                          sources=sources,
                          depends=depends)
          # function my_sqrt() needs math library for sqrt()
-@@ -2032,7 +2032,7 @@
-                                                          'Modules',
-                                                          '_decimal',
-                                                          'libmpdec'))]
--            libraries = []
-+            libraries = ['m']
-             sources = [
-               '_decimal/_decimal.c',
-               '_decimal/libmpdec/basearith.c',
+@@ -2055,7 +2055,7 @@ class PyBuildExt(build_ext):
+         undef_macros = []
+         if '--with-system-libmpdec' in sysconfig.get_config_var("CONFIG_ARGS"):
+             include_dirs = []
+-            libraries = [':libmpdec.so.2']
++            libraries = [':libmpdec.so.2', 'm']
+             sources = ['_decimal/_decimal.c']
+             depends = ['_decimal/docstrings.h']
+         else:
