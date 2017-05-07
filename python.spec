@@ -42,6 +42,7 @@ Patch3:		Python-select-requires-libm.patch
 Patch4:		python-3.3.0b1-test-posix_fadvise.patch
 Patch5:		Python-nis-requires-tirpc.patch
 Patch6:		00184-ctypes-should-build-with-libffi-multilib-wrapper.patch
+Patch7:		http://pkgs.fedoraproject.org/cgit/rpms/python3.git/plain/00205-make-libpl-respect-lib64.patch
 # 00173 #
 # Workaround for ENOPROTOOPT seen in bs within
 # test.test_support.bind_port()
