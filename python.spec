@@ -406,6 +406,10 @@ ln -s python3 %{buildroot}%{_bindir}/python
 ln -s pydoc3 %{buildroot}%{_bindir}/pydoc
 ln -s python3-config %{buildroot}%{_bindir}/python-config
 
+# Fix permissions on docs
+find html -type d |xargs chmod 0755
+find html -type f |xargs chmod 0644
+
 %files
 %doc README.omv
 %{_sysconfdir}/rpm/macros.d/*.macros
