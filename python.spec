@@ -25,7 +25,7 @@
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python
 Version:	3.6.1
-Release:	1
+Release:	2
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 Url:		http://www.python.org/
@@ -41,7 +41,6 @@ Patch2:		http://pkgs.fedoraproject.org/cgit/rpms/python3.git/plain/00104-lib64-f
 Patch3:		Python-select-requires-libm.patch
 Patch4:		python-3.3.0b1-test-posix_fadvise.patch
 Patch5:		Python-nis-requires-tirpc.patch
-Patch6:		00184-ctypes-should-build-with-libffi-multilib-wrapper.patch
 Patch7:		http://pkgs.fedoraproject.org/cgit/rpms/python3.git/plain/00205-make-libpl-respect-lib64.patch
 # 00173 #
 # Workaround for ENOPROTOOPT seen in bs within
@@ -189,7 +188,6 @@ Various applications written using tkinter.
 %patch3 -p1 -b .lm~
 %patch4 -p1 -b .p4~
 %patch5 -p1 -b .tirpc~
-%patch6 -p1 -b .multiarch
 %patch7 -p1 -b .libpl
 %patch173 -p1 -b .p173~
 %patch179 -p1 -b .p179~
@@ -394,8 +392,6 @@ except:
 # but then, this file will not be sourced
 EOF
 
-%multiarch_includes %{buildroot}/usr/include/python*/pyconfig.h
-
 mkdir -p %{buildroot}%{_sysconfdir}/rpm/macros.d
 install -m644 %{SOURCE2} %{buildroot}%{_sysconfdir}/rpm/macros.d/
 install -m644 %{SOURCE3} %{buildroot}/%{_sysconfdir}/rpm/macros.d/
@@ -416,7 +412,6 @@ find html -type f |xargs chmod 0644
 %{_sysconfdir}/profile.d/*
 %config(noreplace) %{_sysconfdir}/pythonrc.py
 %{_includedir}/python*/pyconfig.h
-%{multiarch_includedir}/python*/pyconfig.h
 
 %dir %{_libdir}/python*/config-*
 %{_libdir}/python*/config*/Makefile
