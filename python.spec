@@ -1,4 +1,4 @@
-%define docver 3.6.1
+%define docver 3.6.2
 %define dirver 3.6
 %define familyver 3
 %define _disable_lto 1
@@ -24,8 +24,8 @@
 
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python
-Version:	3.6.1
-Release:	2
+Version:	3.6.2
+Release:	1
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 Url:		http://www.python.org/
@@ -41,6 +41,7 @@ Patch2:		http://pkgs.fedoraproject.org/cgit/rpms/python3.git/plain/00104-lib64-f
 Patch3:		Python-select-requires-libm.patch
 Patch4:		python-3.3.0b1-test-posix_fadvise.patch
 Patch5:		Python-nis-requires-tirpc.patch
+Patch6:		python-3.6.2-clang-5.0.patch
 Patch7:		http://pkgs.fedoraproject.org/cgit/rpms/python3.git/plain/00205-make-libpl-respect-lib64.patch
 # 00173 #
 # Workaround for ENOPROTOOPT seen in bs within
@@ -188,6 +189,7 @@ Various applications written using tkinter.
 %patch3 -p1 -b .lm~
 %patch4 -p1 -b .p4~
 %patch5 -p1 -b .tirpc~
+%patch6 -p1 -b .clang5~
 %patch7 -p1 -b .libpl
 %patch173 -p1 -b .p173~
 %patch179 -p1 -b .p179~
