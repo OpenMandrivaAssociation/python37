@@ -24,7 +24,7 @@
 
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python
-Version:	3.6.2
+Version:	3.6.3
 Release:	1
 License:	Modified CNRI Open Source License
 Group:		Development/Python
@@ -222,6 +222,7 @@ rm -fr Modules/expat
 rm -fr Modules/zlib
 
 %build
+%global optflags %{optflags} -O3
 
 rm -f Modules/Setup.local
 
