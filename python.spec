@@ -1,4 +1,4 @@
-%define docver 3.6.2
+%define docver 3.6.3
 %define dirver 3.6
 %define familyver 3
 
@@ -261,7 +261,6 @@ autoreconf -vfi
 		--enable-shared \
 		--enable-optimizations \
 		--with-pymalloc \
-		--with-signal-module \
 		--enable-ipv6=yes \
 		--with-system-expat \
 		--with-lto=8 \
