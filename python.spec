@@ -1,7 +1,6 @@
 %define docver 3.6.2
 %define dirver 3.6
 %define familyver 3
-%define _disable_lto 1
 
 %define api %{dirver}
 %define major 1
@@ -25,7 +24,7 @@
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python
 Version:	3.6.3
-Release:	1
+Release:	2
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 Url:		http://www.python.org/
@@ -261,6 +260,12 @@ autoreconf -vfi
 		--enable-loadable-sqlite-extensions \
 		--enable-shared \
 		--enable-optimizations \
+		--with-pymalloc \
+		--with-signal-module \
+		--enable-ipv6=yes \
+		--with-system-expat \
+		--with-lto=8 \
+		--with-computed-gotos \
 %if %{with valgrind}
 		--with-valgrind
 %endif
