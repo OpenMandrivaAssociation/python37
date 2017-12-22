@@ -1,4 +1,4 @@
-%define docver 3.6.3
+%define docver 3.6.4
 %define dirver 3.6
 %define familyver 3
 
@@ -23,8 +23,8 @@
 
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python
-Version:	3.6.3
-Release:	2
+Version:	3.6.4
+Release:	1
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 Url:		http://www.python.org/
