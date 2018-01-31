@@ -1,8 +1,6 @@
-diff --git a/Lib/test/test_os.py b/Lib/test/test_os.py
-index e9fdb07..ea60e6e 100644
---- a/Lib/test/test_os.py
-+++ b/Lib/test/test_os.py
-@@ -1723,30 +1723,36 @@ class PosixUidGidTests(unittest.TestCase):
+--- Python-3.7.0a4/Lib/test/test_os.py.p181~	2018-01-09 04:05:14.000000000 +0100
++++ Python-3.7.0a4/Lib/test/test_os.py	2018-01-31 18:29:40.683697800 +0100
+@@ -1771,30 +1771,36 @@ class PosixUidGidTests(unittest.TestCase
      def test_setuid(self):
          if os.getuid() != 0:
              self.assertRaises(OSError, os.setuid, 0)
@@ -39,7 +37,7 @@ index e9fdb07..ea60e6e 100644
          self.assertRaises(OverflowError, os.setreuid, 1<<32, 0)
          self.assertRaises(OverflowError, os.setreuid, 0, 1<<32)
  
-@@ -1762,6 +1768,8 @@ class PosixUidGidTests(unittest.TestCase):
+@@ -1810,6 +1816,8 @@ class PosixUidGidTests(unittest.TestCase
      def test_setregid(self):
          if os.getuid() != 0 and not HAVE_WHEEL_GROUP:
              self.assertRaises(OSError, os.setregid, 0, 0)
@@ -48,21 +46,17 @@ index e9fdb07..ea60e6e 100644
          self.assertRaises(OverflowError, os.setregid, 1<<32, 0)
          self.assertRaises(OverflowError, os.setregid, 0, 1<<32)
  
-diff --git a/Lib/test/test_pwd.py b/Lib/test/test_pwd.py
-index ac9cff7..db98159 100644
---- a/Lib/test/test_pwd.py
-+++ b/Lib/test/test_pwd.py
-@@ -104,11 +104,11 @@ class PwdTest(unittest.TestCase):
+--- Python-3.7.0a4/Lib/test/test_pwd.py.p181~	2018-01-31 18:29:40.683697800 +0100
++++ Python-3.7.0a4/Lib/test/test_pwd.py	2018-01-31 18:29:53.561716897 +0100
+@@ -95,9 +95,9 @@ class PwdTest(unittest.TestCase):
          # In some cases, byuids isn't a complete list of all users in the
          # system, so if we try to pick a value not in byuids (via a perturbing
          # loop, say), pwd.getpwuid() might still be able to find data for that
 -        # uid. Using sys.maxint may provoke the same problems, but hopefully
-+        # uid. Using 2**32 - 2 may provoke the same problems, but hopefully
++        # uid. Using 2**32-2 may provoke the same problems, but hopefully
          # it will be a more repeatable failure.
-         # Android accepts a very large span of uids including sys.maxsize and
-         # -1; it raises KeyError with 1 or 2 for example.
 -        fakeuid = sys.maxsize
-+        fakeuid = 2**32 - 2
++        fakeuid = 2**32-2
          self.assertNotIn(fakeuid, byuids)
-         if not support.is_android:
-             self.assertRaises(KeyError, pwd.getpwuid, fakeuid)
+         self.assertRaises(KeyError, pwd.getpwuid, fakeuid)
+ 

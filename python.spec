@@ -1,11 +1,13 @@
 %define docver 3.6.4
-%define dirver 3.6
+%define dirver 3.7
 %define familyver 3
 
 %define api %{dirver}
 %define major 1
 %define libname %mklibname python %{api}m %{major}
 %define devname %mklibname python -d
+
+%define pre a4
 
 %ifarch %{ix86} x86_64 ppc
 %bcond_without valgrind
@@ -23,12 +25,16 @@
 
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python
-Version:	3.6.4
+Version:	3.7.0
+%if "%{pre}" != ""
+Release:	0.%{pre}.1
+%else
 Release:	1
+%endif
 License:	Modified CNRI Open Source License
 Group:		Development/Python
 Url:		http://www.python.org/
-Source0:	http://www.python.org/ftp/python/%{version}/Python-%{version}.tar.xz
+Source0:	http://www.python.org/ftp/python/%{version}/Python-%{version}%{pre}.tar.xz
 Source1:	http://www.python.org/ftp/python/doc/%{docver}/python-%{docver}-docs-html.tar.bz2
 Source2:	python3.macros
 Source3:	pybytecompile.macros
@@ -178,7 +184,7 @@ Obsoletes:	tkinter3-apps < %{EVRD}
 Various applications written using tkinter.
 
 %prep
-%setup -qn Python-%{version}
+%setup -qn Python-%{version}%{pre}
 %patch0 -p1 -b .link~
 
 %if "%{_lib}" == "lib64"
@@ -192,9 +198,9 @@ Various applications written using tkinter.
 %patch7 -p1 -b .libpl
 %patch173 -p1 -b .p173~
 %patch179 -p1 -b .p179~
-%patch181 -p1
-%patch183 -p1
-%patch184 -p1
+%patch181 -p1 -b .p181~
+%patch183 -p1 -b .p183~
+%patch184 -p1 -b .p184~
 
 # docs
 mkdir html
@@ -212,7 +218,7 @@ you can :
 EOF
 
 #   Remove embedded copy of libffi:
-for SUBDIR in darwin libffi libffi.diff libffi_msvc libffi_osx ; do
+for SUBDIR in darwin libffi_msvc libffi_osx ; do
   rm -r Modules/_ctypes/$SUBDIR || exit 1 ;
 done
 

@@ -1,24 +1,15 @@
---- Python-3.6.1/setup.py.link~	2017-03-21 07:32:38.000000000 +0100
-+++ Python-3.6.1/setup.py	2017-05-07 20:34:33.025700771 +0200
-@@ -616,7 +616,7 @@ class PyBuildExt(build_ext):
-                                libraries=math_libs) )
+--- Python-3.7.0a4/setup.py.link~	2018-01-09 04:05:14.000000000 +0100
++++ Python-3.7.0a4/setup.py	2018-01-31 17:55:06.486014467 +0100
+@@ -657,7 +657,7 @@ class PyBuildExt(build_ext):
+                                libraries=['m']) )
  
          # time libraries: librt may be needed for clock_gettime()
 -        time_libs = []
-+        time_libs = ['m']
++        time_libs = [ 'm' ]
          lib = sysconfig.get_config_var('TIMEMODULE_LIB')
          if lib:
              time_libs.append(lib)
-@@ -2005,7 +2005,7 @@ class PyBuildExt(build_ext):
-                         include_dirs=include_dirs,
-                         extra_compile_args=extra_compile_args,
-                         extra_link_args=extra_link_args,
--                        libraries=[],
-+                        libraries=['m', 'dl'],
-                         sources=sources,
-                         depends=depends)
-         # function my_sqrt() needs math library for sqrt()
-@@ -2055,7 +2055,7 @@ class PyBuildExt(build_ext):
+@@ -2060,7 +2060,7 @@ class PyBuildExt(build_ext):
          undef_macros = []
          if '--with-system-libmpdec' in sysconfig.get_config_var("CONFIG_ARGS"):
              include_dirs = []
