@@ -1,5 +1,5 @@
---- Python-3.7.0a4/Lib/distutils/command/install.py.lib64~	2018-01-09 04:05:14.000000000 +0100
-+++ Python-3.7.0a4/Lib/distutils/command/install.py	2018-01-31 17:56:08.489075136 +0100
+--- Python-3.7.0b1/Lib/distutils/command/install.py.lib64~	2018-01-31 00:48:26.000000000 +0100
++++ Python-3.7.0b1/Lib/distutils/command/install.py	2018-02-02 16:42:00.628407498 +0100
 @@ -30,14 +30,14 @@ WINDOWS_SCHEME = {
  INSTALL_SCHEMES = {
      'unix_prefix': {
@@ -17,8 +17,8 @@
          'headers': '$base/include/python/$dist_name',
          'scripts': '$base/bin',
          'data'   : '$base',
---- Python-3.7.0a4/Lib/distutils/sysconfig.py.lib64~	2018-01-09 04:05:14.000000000 +0100
-+++ Python-3.7.0a4/Lib/distutils/sysconfig.py	2018-01-31 17:56:08.490075137 +0100
+--- Python-3.7.0b1/Lib/distutils/sysconfig.py.lib64~	2018-01-31 00:48:26.000000000 +0100
++++ Python-3.7.0b1/Lib/distutils/sysconfig.py	2018-02-02 16:42:00.628407498 +0100
 @@ -129,8 +129,12 @@ def get_python_lib(plat_specific=0, stan
              prefix = plat_specific and EXEC_PREFIX or PREFIX
  
@@ -33,8 +33,8 @@
          if standard_lib:
              return libpython
          else:
---- Python-3.7.0a4/Lib/site.py.lib64~	2018-01-31 17:56:08.490075137 +0100
-+++ Python-3.7.0a4/Lib/site.py	2018-01-31 18:25:26.672311191 +0100
+--- Python-3.7.0b1/Lib/site.py.lib64~	2018-02-02 16:42:00.628407498 +0100
++++ Python-3.7.0b1/Lib/site.py	2018-02-02 16:43:16.504482162 +0100
 @@ -334,11 +334,15 @@ def getsitepackages(prefixes=None):
          seen.add(prefix)
  
@@ -49,10 +49,10 @@
              sitepackages.append(prefix)
 +            sitepackages.append(os.path.join(prefix, "lib64", "site-packages"))
              sitepackages.append(os.path.join(prefix, "lib", "site-packages"))
-         # for framework builds *only* we add the standard Apple locations.
-         if sys.platform == "darwin" and sys._framework:
---- Python-3.7.0a4/Lib/sysconfig.py.lib64~	2018-01-09 04:05:14.000000000 +0100
-+++ Python-3.7.0a4/Lib/sysconfig.py	2018-01-31 17:56:08.490075137 +0100
+     return sitepackages
+ 
+--- Python-3.7.0b1/Lib/sysconfig.py.lib64~	2018-01-31 00:48:26.000000000 +0100
++++ Python-3.7.0b1/Lib/sysconfig.py	2018-02-02 16:42:00.628407498 +0100
 @@ -20,10 +20,10 @@ __all__ = [
  
  _INSTALL_SCHEMES = {
@@ -81,19 +81,19 @@
          'include': '{userbase}/include/python{py_version_short}',
          'scripts': '{userbase}/bin',
          'data': '{userbase}',
---- Python-3.7.0a4/Lib/test/test_site.py.lib64~	2018-01-31 17:56:08.490075137 +0100
-+++ Python-3.7.0a4/Lib/test/test_site.py	2018-01-31 18:25:59.193361917 +0100
-@@ -276,7 +276,7 @@ class HelperFunctionsTests(unittest.Test
-         elif os.sep == '/':
-             # OS X non-framework builds, Linux, FreeBSD, etc
+--- Python-3.7.0b1/Lib/test/test_site.py.lib64~	2018-02-02 16:42:00.628407498 +0100
++++ Python-3.7.0b1/Lib/test/test_site.py	2018-02-02 16:43:46.328511336 +0100
+@@ -264,7 +264,7 @@ class HelperFunctionsTests(unittest.Test
+         if os.sep == '/':
+             # OS X, Linux, FreeBSD, etc
              self.assertEqual(len(dirs), 1)
 -            wanted = os.path.join('xoxo', 'lib',
 +            wanted = os.path.join('xoxo', 'lib64',
                                    'python%d.%d' % sys.version_info[:2],
                                    'site-packages')
              self.assertEqual(dirs[0], wanted)
---- Python-3.7.0a4/Makefile.pre.in.lib64~	2018-01-09 04:05:14.000000000 +0100
-+++ Python-3.7.0a4/Makefile.pre.in	2018-01-31 17:56:08.490075137 +0100
+--- Python-3.7.0b1/Makefile.pre.in.lib64~	2018-01-31 00:48:26.000000000 +0100
++++ Python-3.7.0b1/Makefile.pre.in	2018-02-02 16:42:00.628407498 +0100
 @@ -133,7 +133,7 @@ LIBDIR=		@libdir@
  MANDIR=		@mandir@
  INCLUDEDIR=	@includedir@
@@ -103,8 +103,8 @@
  ABIFLAGS=	@ABIFLAGS@
  
  # Detailed destination directories
---- Python-3.7.0a4/Modules/getpath.c.lib64~	2018-01-31 17:56:08.491075138 +0100
-+++ Python-3.7.0a4/Modules/getpath.c	2018-01-31 18:27:42.545520551 +0100
+--- Python-3.7.0b1/Modules/getpath.c.lib64~	2018-01-31 00:48:26.000000000 +0100
++++ Python-3.7.0b1/Modules/getpath.c	2018-02-02 16:42:00.629407499 +0100
 @@ -500,7 +500,7 @@ calculate_exec_prefix(const _PyCoreConfi
                  "Could not find platform dependent libraries <exec_prefix>\n");
          }
@@ -132,9 +132,9 @@
      if (!calculate->lib_python) {
          return DECODE_LOCALE_ERR("EXEC_PREFIX define", len);
      }
---- Python-3.7.0a4/setup.py.lib64~	2018-01-31 17:56:08.487075134 +0100
-+++ Python-3.7.0a4/setup.py	2018-01-31 17:56:08.491075138 +0100
-@@ -531,7 +531,7 @@ class PyBuildExt(build_ext):
+--- Python-3.7.0b1/setup.py.lib64~	2018-02-02 16:42:00.626407496 +0100
++++ Python-3.7.0b1/setup.py	2018-02-02 16:42:00.629407499 +0100
+@@ -541,7 +541,7 @@ class PyBuildExt(build_ext):
          # directories (i.e. '.' and 'Include') must be first.  See issue
          # 10520.
          if not cross_compiling:
@@ -143,7 +143,7 @@
              add_dir_to_list(self.compiler.include_dirs, '/usr/local/include')
          # only change this for cross builds for 3.3, issues on Mageia
          if cross_compiling:
-@@ -830,11 +830,11 @@ class PyBuildExt(build_ext):
+@@ -849,11 +849,11 @@ class PyBuildExt(build_ext):
              elif curses_library:
                  readline_libs.append(curses_library)
              elif self.compiler.find_library_file(lib_dirs +
@@ -157,14 +157,3 @@
                                     extra_link_args=readline_extra_link_args,
                                     libraries=readline_libs) )
          else:
-@@ -871,8 +871,8 @@ class PyBuildExt(build_ext):
-             if krb5_h:
-                 ssl_incs += krb5_h
-         ssl_libs = find_library_file(self.compiler, 'ssl',lib_dirs,
--                                     ['/usr/local/ssl/lib',
--                                      '/usr/contrib/ssl/lib/'
-+                                     ['/usr/local/ssl/lib64',
-+                                      '/usr/contrib/ssl/lib64/'
-                                      ] )
- 
-         if (ssl_incs is not None and

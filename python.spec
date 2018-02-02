@@ -7,7 +7,7 @@
 %define libname %mklibname python %{api}m %{major}
 %define devname %mklibname python -d
 
-%define pre a4
+%define pre b1
 
 %ifarch %{ix86} x86_64 ppc
 %bcond_without valgrind
@@ -45,7 +45,7 @@ Patch1:		http://pkgs.fedoraproject.org/cgit/rpms/python3.git/plain/00102-lib64.p
 Patch2:		http://pkgs.fedoraproject.org/cgit/rpms/python3.git/plain/00104-lib64-fix-for-test_install.patch
 Patch3:		Python-select-requires-libm.patch
 Patch4:		python-3.3.0b1-test-posix_fadvise.patch
-Patch5:		Python-nis-requires-tirpc.patch
+Patch5:		Python-3.7.0b1-_ctypes-requires-libdl.patch
 Patch6:		python-3.6.2-clang-5.0.patch
 Patch7:		http://pkgs.fedoraproject.org/cgit/rpms/python3.git/plain/00205-make-libpl-respect-lib64.patch
 # 00173 #
@@ -193,7 +193,7 @@ Various applications written using tkinter.
 %endif
 %patch3 -p1 -b .lm~
 %patch4 -p1 -b .p4~
-%patch5 -p1 -b .tirpc~
+%patch5 -p1 -b .p5~
 %patch6 -p1 -b .clang5~
 %patch7 -p1 -b .libpl
 %patch173 -p1 -b .p173~
