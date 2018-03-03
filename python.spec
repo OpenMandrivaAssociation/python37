@@ -27,7 +27,7 @@ Summary:	An interpreted, interactive object-oriented programming language
 Name:		python
 Version:	3.7.0
 %if "%{pre}" != ""
-Release:	0.%{pre}.1
+Release:	0.%{pre}.2
 %else
 Release:	1
 %endif
@@ -66,12 +66,14 @@ BuildRequires:	gmp-devel
 BuildRequires:	readline-devel
 BuildRequires:	pkgconfig(expat)
 BuildRequires:	pkgconfig(libffi) >= 3.1
+BuildRequires:	pkgconfig(liblzma)
 BuildRequires:	pkgconfig(libtirpc)
 BuildRequires:	pkgconfig(ncursesw)
 BuildRequires:	pkgconfig(openssl)
 BuildRequires:	pkgconfig(sqlite3)
 BuildRequires:	pkgconfig(tcl)
 BuildRequires:	pkgconfig(tk)
+BuildRequires:	pkgconfig(zlib)
 BuildRequires:	python2
 %if %{with valgrind}
 BuildRequires:	valgrind-devel
