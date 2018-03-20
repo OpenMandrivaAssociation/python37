@@ -1,3 +1,6 @@
+# Barfs on supposed-to-fail parts of the testsuite
+%define _python_bytecompile_build 0
+
 %define docver 3.6.4
 %define dirver 3.7
 %define familyver 3
@@ -7,7 +10,7 @@
 %define libname %mklibname python %{api}m %{major}
 %define devname %mklibname python -d
 
-%define pre b1
+%define pre b2
 
 %ifarch %{ix86} x86_64 ppc
 %bcond_without valgrind
@@ -27,7 +30,7 @@ Summary:	An interpreted, interactive object-oriented programming language
 Name:		python
 Version:	3.7.0
 %if "%{pre}" != ""
-Release:	0.%{pre}.3
+Release:	0.%{pre}.1
 %else
 Release:	1
 %endif
