@@ -10,7 +10,7 @@
 %define libname %mklibname python %{api}m %{major}
 %define devname %mklibname python -d
 
-%define pre b2
+%define pre b3
 
 %ifarch %{ix86} x86_64 ppc
 %bcond_without valgrind
@@ -52,6 +52,8 @@ Patch5:		Python-3.7.0b1-_ctypes-requires-libdl.patch
 Patch6:		python-3.6.2-clang-5.0.patch
 Patch7:		http://pkgs.fedoraproject.org/cgit/rpms/python3.git/plain/00205-make-libpl-respect-lib64.patch
 Patch8:		python-3.7.0b1-atomic-c++-buildfix.patch
+# https://bugs.python.org/issue33182
+Patch9:		https://github.com/python/cpython/commit/2961717986201d639b60de51e5f2e9aa2573856c.patch
 # 00173 #
 # Workaround for ENOPROTOOPT seen in bs within
 # test.test_support.bind_port()
@@ -200,9 +202,10 @@ Various applications written using tkinter.
 %patch3 -p1 -b .lm~
 %patch4 -p1 -b .p4~
 %patch5 -p1 -b .p5~
-%patch6 -p1 -b .clang5~
+#patch6 -p1 -b .clang5~
 %patch7 -p1 -b .libpl
 %patch8 -p1 -b .atomic~
+%patch9 -p1 -b .clang6~
 %patch173 -p1 -b .p173~
 %patch179 -p1 -b .p179~
 %patch181 -p1 -b .p181~
