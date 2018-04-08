@@ -30,7 +30,7 @@ Summary:	An interpreted, interactive object-oriented programming language
 Name:		python
 Version:	3.7.0
 %if "%{pre}" != ""
-Release:	0.%{pre}.1
+Release:	0.%{pre}.2
 %else
 Release:	1
 %endif
@@ -378,7 +378,14 @@ find %{buildroot} -type f \( -name "test_binascii.py*" -o -name "test_grp.py*" -
 chmod u+w %{buildroot}%{_libdir}/libpython%{api}*.so.1.0 %{buildroot}%{_libdir}/libpython3.so
 
 # drop backup files
-find %{buildroot} -name "*~" -exec rm -f {} \;
+find %{buildroot} -name "*~" -delete
+find . -name "*~" -delete
+
+# Get rid of DOS batch files:
+find %{buildroot} -name \*.bat -delete
+# Get rid of EXE files:
+find %{buildroot} -name \*.exe -delete
+
 
 mkdir -p %{buildroot}%{_sysconfdir}/profile.d/
 
