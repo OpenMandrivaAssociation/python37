@@ -479,6 +479,10 @@ find html -type f |xargs chmod 0644
 %{_libdir}/python%{dirver}/importlib
 %{_libdir}/python%{dirver}/json
 %{_libdir}/python%{dirver}/lib-dynload
+%exclude %{_libdir}/python%{dirver}/lib-dynload/_ctypes_test.*.so
+%exclude %{_libdir}/python%{dirver}/lib-dynload/_testbuffer.*.so
+%exclude %{_libdir}/python%{dirver}/lib-dynload/_testcapi.*.so
+%exclude %{_libdir}/python%{dirver}/lib-dynload/_testimportmultiple.*.so
 %{_libdir}/python%{dirver}/lib2to3
 %exclude %{_libdir}/python%{dirver}/lib2to3/tests
 %{_libdir}/python%{dirver}/logging
@@ -570,7 +574,7 @@ find html -type f |xargs chmod 0644
 %{_libdir}/python%{dirver}/lib-dynload/_ctypes_test.*.so
 %{_libdir}/python%{dirver}/lib-dynload/_testbuffer.*.so
 %{_libdir}/python%{dirver}/lib-dynload/_testcapi.*.so
-%{_libdir}/python%{dirver}/lib-dynload_testimportmultiple.*.so
+%{_libdir}/python%{dirver}/lib-dynload/_testimportmultiple.*.so
 %{_libdir}/python%{dirver}/lib2to3/tests
 %{_libdir}/python%{dirver}/tkinter/test
 %{_libdir}/python%{dirver}/unittest/test
