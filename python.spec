@@ -30,7 +30,7 @@ Summary:	An interpreted, interactive object-oriented programming language
 Name:		python
 Version:	3.7.0
 %if "%{pre}" != ""
-Release:	0.%{pre}.2
+Release:	0.%{pre}.3
 %else
 Release:	1
 %endif
@@ -190,6 +190,15 @@ Obsoletes:	tkinter3-apps < %{EVRD}
 
 %description -n	tkinter-apps
 Various applications written using tkinter.
+
+%package test
+Summary:	The self-test suite for the main python3 package
+Group:		Development/Python
+Requires:	%{name} = %{EVRD}
+
+%description test
+The self-test suite for the Python interpreter.
+This is only useful to test Python itself.
 
 %prep
 %setup -qn Python-%{version}%{pre}
@@ -457,9 +466,11 @@ find html -type f |xargs chmod 0644
 %{_libdir}/python%{dirver}/collections
 %{_libdir}/python%{dirver}/concurrent
 %{_libdir}/python%{dirver}/ctypes
+%exclude %{_libdir}/python%{dirver}/ctypes/test
 %{_libdir}/python%{dirver}/curses
 %{_libdir}/python%{dirver}/dbm
 %{_libdir}/python%{dirver}/distutils
+%exclude %{_libdir}/python%{dirver}/distutils/tests
 %{_libdir}/python%{dirver}/email
 %{_libdir}/python%{dirver}/encodings
 %{_libdir}/python%{dirver}/ensurepip
@@ -469,13 +480,16 @@ find html -type f |xargs chmod 0644
 %{_libdir}/python%{dirver}/json
 %{_libdir}/python%{dirver}/lib-dynload
 %{_libdir}/python%{dirver}/lib2to3
+%exclude %{_libdir}/python%{dirver}/lib2to3/tests
 %{_libdir}/python%{dirver}/logging
 %{_libdir}/python%{dirver}/multiprocessing
 %{_libdir}/python%{dirver}/pydoc_data
 %{_libdir}/python%{dirver}/site-packages
 %{_libdir}/python%{dirver}/sqlite3
+%exclude %{_libdir}/python%{dirver}/sqlite3/test
 %{_libdir}/python%{dirver}/turtledemo
 %{_libdir}/python%{dirver}/unittest
+%exclude %{_libdir}/python%{dirver}/unittest/test
 %{_libdir}/python%{dirver}/urllib
 %{_libdir}/python%{dirver}/venv
 %{_libdir}/python%{dirver}/wsgiref*
@@ -539,6 +553,7 @@ find html -type f |xargs chmod 0644
 
 %files -n tkinter
 %{_libdir}/python*/tkinter/
+%exclude %{_libdir}/python%{dirver}/tkinter/test
 %{_libdir}/python*/idlelib
 %{_libdir}/python*/site-packages/pynche
 %{_libdir}/python*/lib-dynload/_tkinter.*.so
@@ -547,3 +562,15 @@ find html -type f |xargs chmod 0644
 %{_bindir}/idle3*
 %{_bindir}/pynche
 %{_datadir}/applications/mandriva-tkinter3.desktop
+
+%files test
+%{_libdir}/python%{dirver}/ctypes/test
+%{_libdir}/python%{dirver}/distutils/tests
+%{_libdir}/python%{dirver}/sqlite3/test
+%{_libdir}/python%{dirver}/lib-dynload/_ctypes_test.*.so
+%{_libdir}/python%{dirver}/lib-dynload/_testbuffer.*.so
+%{_libdir}/python%{dirver}/lib-dynload/_testcapi.*.so
+%{_libdir}/python%{dirver}/lib-dynload_testimportmultiple.*.so
+%{_libdir}/python%{dirver}/lib2to3/tests
+%{_libdir}/python%{dirver}/tkinter/test
+%{_libdir}/python%{dirver}/unittest/test
