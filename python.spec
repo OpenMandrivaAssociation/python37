@@ -10,7 +10,7 @@
 %define libname %mklibname python %{api}m %{major}
 %define devname %mklibname python -d
 
-%define pre b4
+%define pre b5
 
 %ifarch %{ix86} x86_64 ppc
 %bcond_without valgrind
