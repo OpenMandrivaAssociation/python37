@@ -30,7 +30,7 @@ Summary:	An interpreted, interactive object-oriented programming language
 Name:		python
 Version:	3.7.0
 %if "%{pre}" != ""
-Release:	0.%{pre}.1
+Release:	0.%{pre}.2
 %else
 Release:	1
 %endif
