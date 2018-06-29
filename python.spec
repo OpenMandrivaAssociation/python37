@@ -1,7 +1,7 @@
 # Barfs on supposed-to-fail parts of the testsuite
 %define _python_bytecompile_build 0
 
-%define docver 3.6.4
+%define docver 3.7.0
 %define dirver 3.7
 %define familyver 3
 
@@ -10,7 +10,7 @@
 %define libname %mklibname python %{api}m %{major}
 %define devname %mklibname python -d
 
-%define pre b5
+%define pre %{nil}
 
 %ifarch %{ix86} x86_64 ppc
 %bcond_without valgrind
@@ -38,7 +38,7 @@ License:	Modified CNRI Open Source License
 Group:		Development/Python
 Url:		http://www.python.org/
 Source0:	http://www.python.org/ftp/python/%{version}/Python-%{version}%{pre}.tar.xz
-Source1:	http://www.python.org/ftp/python/doc/%{docver}/python-%{docver}-docs-html.tar.bz2
+Source1:	http://www.python.org/ftp/python/doc/%{docver}/python-%{docver}rc1-docs-html.tar.bz2
 Source2:	python3.macros
 Source3:	pybytecompile.macros
 Source100:	%{name}.rpmlintrc
