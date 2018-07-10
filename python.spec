@@ -505,7 +505,6 @@ find html -type f |xargs chmod 0644
 %{_bindir}/2to3
 %{_bindir}/2to3-%{dirver}
 %exclude %{_bindir}/python*config
-%{_mandir}/man*/*
 %if %{with valgrind}
 %{_libdir}/valgrind/valgrind-python3.supp
 %endif
@@ -550,6 +549,7 @@ find html -type f |xargs chmod 0644
 %files docs
 %doc html/*/*
 %{_datadir}/applications/mandriva-%{name}-docs.desktop
+%{_mandir}/man*/*
 
 %files -n tkinter
 %{_libdir}/python*/tkinter/
