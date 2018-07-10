@@ -540,7 +540,6 @@ find html -type f |xargs chmod 0644
 %{_libdir}/libpython*.so
 %{_includedir}/python*
 %{_libdir}/python*/config-%{dirver}*
-%{_libdir}/python*/test/
 %{_bindir}/python-config
 %{_bindir}/python%{dirver}*-config
 %{_bindir}/python%{familyver}-config
@@ -565,6 +564,7 @@ find html -type f |xargs chmod 0644
 %{_datadir}/applications/mandriva-tkinter3.desktop
 
 %files test
+%{_libdir}/python*/test/
 %{_libdir}/python%{dirver}/ctypes/test
 %{_libdir}/python%{dirver}/distutils/tests
 %{_libdir}/python%{dirver}/sqlite3/test
