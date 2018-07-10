@@ -32,7 +32,7 @@ Version:	3.7.0
 %if "%{pre}" != ""
 Release:	0.%{pre}.2
 %else
-Release:	1
+Release:	2
 %endif
 License:	Modified CNRI Open Source License
 Group:		Development/Python
