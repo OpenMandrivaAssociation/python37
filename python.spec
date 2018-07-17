@@ -442,6 +442,11 @@ ln -s python3-config %{buildroot}%{_bindir}/python-config
 find html -type d |xargs chmod 0755
 find html -type f |xargs chmod 0644
 
+# Barf if an important module required by dnf didn't build
+# (e.g. due to broken dependency libraries)
+[ -e %{buildroot}%{_libdir}/python*/lib-dynload/_curses.*.so ] || exit 1
+[ -e %{buildroot}%{_libdir}/python*/lib-dynload/_lzma.*.so ] || exit 1
+
 %files
 %doc README.omv
 %{_sysconfdir}/rpm/macros.d/*.macros
