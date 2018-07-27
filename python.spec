@@ -137,7 +137,7 @@ Requires:	%{name} = %{EVRD}
 Requires:	%{libname} = %{EVRD}
 Provides:	%{name}-devel = %{EVRD}
 Provides:	%{name}3-devel = %{EVRD}
-provides:	pkgconfig(python) = 3
+Provides:	pkgconfig(python) = 3
 
 %description -n	%{devname}
 The Python programming language's interpreter can be extended with
