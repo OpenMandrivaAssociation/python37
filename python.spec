@@ -32,7 +32,7 @@ Version:	3.7.0
 %if "%{pre}" != ""
 Release:	0.%{pre}.2
 %else
-Release:	2
+Release:	3
 %endif
 License:	Modified CNRI Open Source License
 Group:		Development/Python
@@ -137,6 +137,7 @@ Requires:	%{name} = %{EVRD}
 Requires:	%{libname} = %{EVRD}
 Provides:	%{name}-devel = %{EVRD}
 Provides:	%{name}3-devel = %{EVRD}
+provides:	pkgconfig(python) = 3
 
 %description -n	%{devname}
 The Python programming language's interpreter can be extended with
