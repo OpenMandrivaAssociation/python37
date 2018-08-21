@@ -32,7 +32,7 @@ Version:	3.7.0
 %if "%{pre}" != ""
 Release:	0.%{pre}.2
 %else
-Release:	3
+Release:	4
 %endif
 License:	Modified CNRI Open Source License
 Group:		Development/Python
@@ -135,6 +135,7 @@ Summary:	The libraries and header files needed for Python development
 Group:		Development/Python
 Requires:	%{name} = %{EVRD}
 Requires:	%{libname} = %{EVRD}
+Requires:	python-pkg-resources
 Provides:	%{name}-devel = %{EVRD}
 Provides:	%{name}3-devel = %{EVRD}
 Provides:	pkgconfig(python) = 3
