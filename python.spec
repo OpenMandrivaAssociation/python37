@@ -32,7 +32,7 @@ Version:	3.7.0
 %if "%{pre}" != ""
 Release:	0.%{pre}.2
 %else
-Release:	4
+Release:	5
 %endif
 License:	Modified CNRI Open Source License
 Group:		Development/Python
@@ -495,7 +495,6 @@ find html -type f |xargs chmod 0644
 %{_libdir}/python%{dirver}/site-packages
 %{_libdir}/python%{dirver}/sqlite3
 %exclude %{_libdir}/python%{dirver}/sqlite3/test
-%{_libdir}/python%{dirver}/turtledemo
 %{_libdir}/python%{dirver}/unittest
 %exclude %{_libdir}/python%{dirver}/unittest/test
 %{_libdir}/python%{dirver}/urllib
@@ -561,6 +560,7 @@ find html -type f |xargs chmod 0644
 %files -n tkinter
 %{_libdir}/python*/tkinter/
 %exclude %{_libdir}/python%{dirver}/tkinter/test
+%{_libdir}/python%{dirver}/turtledemo
 %{_libdir}/python*/idlelib
 %{_libdir}/python*/site-packages/pynche
 %{_libdir}/python*/lib-dynload/_tkinter.*.so
