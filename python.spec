@@ -12,7 +12,7 @@
 
 %define pre %{nil}
 
-%ifarch %{ix86} x86_64 ppc
+%ifarch %{ix86} %{x86_64} ppc
 %bcond_without valgrind
 %else
 %bcond_with valgrind
@@ -286,9 +286,8 @@ autoreconf -vfi
 		--enable-optimizations \
 		--with-pymalloc \
 		--enable-ipv6=yes \
-		--with-system-expat \
 		--with-lto=8 \
-		--with-computed-gotos \
+		--with-computed-gotos=yes \
 %if %{with valgrind}
 		--with-valgrind
 %endif
@@ -393,7 +392,6 @@ find . -name "*~" -delete
 find %{buildroot} -name \*.bat -delete
 # Get rid of EXE files:
 find %{buildroot} -name \*.exe -delete
-
 
 mkdir -p %{buildroot}%{_sysconfdir}/profile.d/
 
