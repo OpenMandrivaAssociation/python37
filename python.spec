@@ -1,7 +1,7 @@
 # Barfs on supposed-to-fail parts of the testsuite
 %define _python_bytecompile_build 0
 
-%define docver 3.7.0
+%define docver 3.7.1
 %define dirver 3.7
 %define familyver 3
 
@@ -28,11 +28,11 @@
 
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python
-Version:	3.7.0
+Version:	3.7.1
 %if "%{pre}" != ""
 Release:	0.%{pre}.2
 %else
-Release:	5
+Release:	1
 %endif
 License:	Modified CNRI Open Source License
 Group:		Development/Python
@@ -299,7 +299,7 @@ export TMP="/tmp" TMPDIR="/tmp"
 # This is used for bootstrapping - and we don't want to
 # require ourselves
 sed -i -e 's,env python,python2,' Python/makeopcodetargets.py
-%make PYTHON=python2 -j1
+%make_build PYTHON=python2 -j1
 
 %check
 # (misc) if the home is nfs mounted, rmdir fails
@@ -321,7 +321,7 @@ echo 'install_dir='"%{buildroot}%{_bindir}" >>setup.cfg
 
 # python is not GNU and does not know fsstd
 mkdir -p %{buildroot}%{_mandir}
-%makeinstall_std LN="ln -sf"
+%make_install LN="ln -sf"
 
 (cd %{buildroot}%{_libdir}; ln -sf `ls libpython%{api}*.so.*` libpython%{api}.so)
 
@@ -376,7 +376,6 @@ Terminal=false
 Type=Application
 Categories=Documentation;
 EOF
-
 
 # fix non real scripts
 #chmod 644 %{buildroot}%{_libdir}/python*/test/test_{binascii,grp,htmlparser}.py*
