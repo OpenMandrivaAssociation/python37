@@ -78,6 +78,7 @@ BuildRequires:	pkgconfig(sqlite3)
 BuildRequires:	pkgconfig(tcl)
 BuildRequires:	pkgconfig(tk)
 BuildRequires:	pkgconfig(zlib)
+BuildRequires:	pkgconfig(uuid)
 BuildRequires:	python2
 %if %{with valgrind}
 BuildRequires:	valgrind-devel
