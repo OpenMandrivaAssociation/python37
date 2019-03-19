@@ -304,7 +304,7 @@ export TMP="/tmp" TMPDIR="/tmp"
 sed -i -e 's,env python,python2,' Python/makeopcodetargets.py
 %ifarch riscv64
 # wipe 11 hours of tests
-rm -fv Lib/test/test_*
+rm -frv Lib/test/test_*
 %endif
 %make_build PYTHON=python2 -j1
 
