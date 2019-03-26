@@ -59,7 +59,6 @@ Patch9:		python-3.7.1-dont-build-testembed-with-c++.patch
 # from Fedora (rhbz#913732)
 Patch173:	00173-workaround-ENOPROTOOPT-in-bind_port.patch
 Patch179:	00179-dont-raise-error-on-gdb-corrupted-frames-in-backtrace.patch
-Patch181:	http://pkgs.fedoraproject.org/cgit/rpms/python3.git/plain/00157-uid-gid-overflows.patch
 Patch183:	00178-dont-duplicate-flags-in-sysconfig.patch
 Patch184:	00201-fix-memory-leak-in-gdbm.patch
 
@@ -219,7 +218,6 @@ This is only useful to test Python itself.
 %patch9 -p1 -b .c++~
 %patch173 -p1 -b .p173~
 %patch179 -p1 -b .p179~
-%patch181 -p1 -b .p181~
 %patch183 -p1 -b .p183~
 %patch184 -p1 -b .p184~
 
