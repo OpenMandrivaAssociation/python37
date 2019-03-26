@@ -1,7 +1,7 @@
 # Barfs on supposed-to-fail parts of the testsuite
 %define _python_bytecompile_build 0
 
-%define docver 3.7.2
+%define docver 3.7.3
 %define dirver 3.7
 %define familyver 3
 
@@ -28,7 +28,7 @@
 
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python
-Version:	3.7.2
+Version:	3.7.3
 %if "%{pre}" != ""
 Release:	0.%{pre}.1
 %else
@@ -306,7 +306,7 @@ sed -i -e 's,env python,python2,' Python/makeopcodetargets.py
 # wipe 11 hours of tests
 rm -frv Lib/test/test_*
 %endif
-%make_build PYTHON=python2 -j1
+%make_build PYTHON=python2 -j1 -V
 
 %check
 # (misc) if the home is nfs mounted, rmdir fails
