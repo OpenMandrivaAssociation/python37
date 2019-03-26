@@ -304,7 +304,7 @@ sed -i -e 's,env python,python2,' Python/makeopcodetargets.py
 # wipe 11 hours of tests
 rm -frv Lib/test/test_*
 %endif
-%make_build PYTHON=python2 -j1 -V
+%make_build PYTHON=python2 -j1
 
 %check
 # (misc) if the home is nfs mounted, rmdir fails
