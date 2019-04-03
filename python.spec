@@ -32,7 +32,7 @@ Version:	3.7.3
 %if "%{pre}" != ""
 Release:	0.%{pre}.1
 %else
-Release:	1
+Release:	2
 %endif
 License:	Modified CNRI Open Source License
 Group:		Development/Python
@@ -61,6 +61,10 @@ Patch173:	00173-workaround-ENOPROTOOPT-in-bind_port.patch
 Patch179:	00179-dont-raise-error-on-gdb-corrupted-frames-in-backtrace.patch
 Patch183:	00178-dont-duplicate-flags-in-sysconfig.patch
 Patch184:	00201-fix-memory-leak-in-gdbm.patch
+# (tpg) ClearLinux patches
+Patch500:	0002-Skip-tests-TODO-fix-skips.patch
+Patch501:	0003-Use-pybench-to-optimize-python.patch
+Patch502:	0001-Add-pybench-for-pgo-optimization.patch
 
 BuildRequires:	blt
 BuildRequires:	bzip2-devel
@@ -220,6 +224,9 @@ This is only useful to test Python itself.
 %patch179 -p1 -b .p179~
 %patch183 -p1 -b .p183~
 %patch184 -p1 -b .p184~
+%patch501 -p1
+%patch502 -p1
+%patch503 -p1
 
 # docs
 mkdir html
@@ -269,6 +276,10 @@ export CPPFLAGS="%{optflags} -D_GNU_SOURCE -fPIC -fwrapv -I/usr/include/ncursesw
 # combination at all
 sed -i -e 's,-std=c99,,' configure.ac
 
+# Determinism: The interpreter is patched to write null timestamps when compiling python files.
+# This way python does not try to update them when we freeze timestamps in nix store.
+export DETERMINISTIC_BUILD=1
+
 autoreconf -vfi
 %configure	--with-threads \
 		--enable-ipv6 \
@@ -284,14 +295,14 @@ autoreconf -vfi
 		--with-system-ffi \
 		--enable-loadable-sqlite-extensions \
 		--enable-shared \
-		--enable-optimizations \
 		--with-pymalloc \
 		--enable-ipv6=yes \
 		--with-lto=8 \
 		--with-computed-gotos=yes \
 %if %{with valgrind}
-		--with-valgrind
+		--with-valgrind \
 %endif
+		--enable-optimizations
 
 # fix build
 #perl -pi -e 's/^(LDFLAGS=.*)/$1 -lstdc++/' Makefile
@@ -328,7 +339,7 @@ echo 'install_dir='"%{buildroot}%{_bindir}" >>setup.cfg
 mkdir -p %{buildroot}%{_mandir}
 %make_install LN="ln -sf"
 
-(cd %{buildroot}%{_libdir}; ln -sf `ls libpython%{api}*.so.*` libpython%{api}.so)
+(cd %{buildroot}%{_libdir}; ln -sf $(ls libpython%{api}*.so.*) libpython%{api}.so)
 
 # Work around broken distutils having no idea about the need to link
 # python modules to libpython (it probably should get this information
