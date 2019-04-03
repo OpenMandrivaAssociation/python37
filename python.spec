@@ -88,6 +88,7 @@ BuildRequires:	python2
 BuildRequires:	valgrind-devel
 %endif
 BuildConflicts:	python-pyxml
+Requires:	clang
 Obsoletes:	python3 < %{EVRD}
 Provides:	python3 = %{EVRD}
 Provides:	python(abi) = %{dirver}
@@ -276,12 +277,12 @@ export CPPFLAGS="%{optflags} -D_GNU_SOURCE -fPIC -fwrapv -I/usr/include/ncursesw
 # combination at all
 sed -i -e 's,-std=c99,,' configure.ac
 
-# Determinism: The interpreter is patched to write null timestamps when compiling python files.
-# This way python does not try to update them when we freeze timestamps in nix store.
-export DETERMINISTIC_BUILD=1
+# (tpg) Determinism
+export PYTHONHASHSEED=0
 
 autoreconf -vfi
 %configure	--with-threads \
+		--without-gcc \
 		--enable-ipv6 \
 		--with-wide-unicode \
 		--with-dbmliborder=gdbm \
