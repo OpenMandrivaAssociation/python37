@@ -225,9 +225,9 @@ This is only useful to test Python itself.
 %patch179 -p1 -b .p179~
 %patch183 -p1 -b .p183~
 %patch184 -p1 -b .p184~
+%patch500 -p1
 %patch501 -p1
 %patch502 -p1
-%patch503 -p1
 
 # docs
 mkdir html
