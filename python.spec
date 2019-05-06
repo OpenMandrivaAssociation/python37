@@ -32,7 +32,7 @@ Version:	3.7.3
 %if "%{pre}" != ""
 Release:	0.%{pre}.1
 %else
-Release:	3
+Release:	4
 %endif
 License:	Modified CNRI Open Source License
 Group:		Development/Python
@@ -88,7 +88,9 @@ BuildRequires:	python2
 BuildRequires:	valgrind-devel
 %endif
 BuildConflicts:	python-pyxml
-Requires:	clang
+%ifnarch %{riscv}
+BuildRequires:	clang
+%endif
 Obsoletes:	python3 < %{EVRD}
 Provides:	python3 = %{EVRD}
 Provides:	python(abi) = %{dirver}
@@ -282,7 +284,9 @@ export PYTHONHASHSEED=0
 
 autoreconf -vfi
 %configure	--with-threads \
+%ifnarch %{riscv}
 		--without-gcc \
+%endif
 		--enable-ipv6 \
 		--with-wide-unicode \
 		--with-dbmliborder=gdbm \
