@@ -1,7 +1,7 @@
 # Barfs on supposed-to-fail parts of the testsuite
 %define _python_bytecompile_build 0
 
-%define docver 3.7.3
+%define docver 3.7.4
 %define dirver 3.7
 %define familyver 3
 
@@ -28,11 +28,11 @@
 
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python
-Version:	3.7.3
+Version:	3.7.4
 %if "%{pre}" != ""
 Release:	0.%{pre}.1
 %else
-Release:	4
+Release:	1
 %endif
 License:	Modified CNRI Open Source License
 Group:		Development/Python
