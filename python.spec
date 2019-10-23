@@ -52,7 +52,7 @@ Patch6:		Python-3.7.0b1-_ctypes-requires-libdl.patch
 Patch7:		python-3.6.2-clang-5.0.patch
 Patch8:		http://pkgs.fedoraproject.org/cgit/rpms/python3.git/plain/00205-make-libpl-respect-lib64.patch
 Patch9:		python-3.7.0b1-atomic-c++-buildfix.patch
-Patch10:	python-3.7.1-dont-build-testembed-with-c++.patch
+#Patch10:	python-3.7.1-dont-build-testembed-with-c++.patch
 # 00173 #
 # Workaround for ENOPROTOOPT seen in bs within
 # test.test_support.bind_port()
