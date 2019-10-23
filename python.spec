@@ -1,7 +1,7 @@
 # Barfs on supposed-to-fail parts of the testsuite
 %define _python_bytecompile_build 0
 
-%define docver 3.7.4
+%define docver 3.7.5
 %define dirver 3.7
 %define familyver 3
 
@@ -28,7 +28,7 @@
 
 Summary:	An interpreted, interactive object-oriented programming language
 Name:		python
-Version:	3.7.4
+Version:	3.7.5
 %if "%{pre}" != ""
 Release:	0.%{pre}.1
 %else
@@ -67,11 +67,11 @@ Patch501:	0003-Use-pybench-to-optimize-python.patch
 Patch502:	0001-Add-pybench-for-pgo-optimization.patch
 
 BuildRequires:	blt
-BuildRequires:	bzip2-devel
+BuildRequires:	pkgconfig(bzip2)
 BuildRequires:	db-devel
 BuildRequires:	gdbm-devel
 BuildRequires:	gmp-devel
-BuildRequires:	readline-devel
+BuildRequires:	pkgconfig(readline)
 BuildRequires:	pkgconfig(expat)
 BuildRequires:	pkgconfig(libffi) >= 3.1
 BuildRequires:	pkgconfig(liblzma)
@@ -183,7 +183,7 @@ Requires:	tcl
 Requires:	tk
 Obsoletes:	tkinter3 < %{EVRD}
 
-%description -n	tkinter
+%description -n tkinter
 The Tkinter (Tk interface) program is an graphical user interface for
 the Python scripting language.
 
@@ -196,7 +196,7 @@ Group:		Development/Python
 Requires:	tkinter = %{EVRD}
 Obsoletes:	tkinter3-apps < %{EVRD}
 
-%description -n	tkinter-apps
+%description -n tkinter-apps
 Various applications written using tkinter.
 
 %package test
