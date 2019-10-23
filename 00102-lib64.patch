@@ -1,6 +1,41 @@
---- Python-3.7.0b1/Lib/distutils/command/install.py.lib64~	2018-01-31 00:48:26.000000000 +0100
-+++ Python-3.7.0b1/Lib/distutils/command/install.py	2018-02-02 16:42:00.628407498 +0100
-@@ -30,14 +30,14 @@ WINDOWS_SCHEME = {
+From b9f1dd6be195cc3b11a80e6f0dde2096dd8b9855 Mon Sep 17 00:00:00 2001
+From: David Malcolm <dmalcolm@redhat.com>
+Date: Wed, 13 Jan 2010 21:25:18 +0000
+Subject: [PATCH] 00102: Change the various install paths to use /usr/lib64/
+ instead or /usr/lib/
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Only used when "%{_lib}" == "lib64".
+
+Co-authored-by: David Malcolm <dmalcolm@redhat.com>
+Co-authored-by: Thomas Spura <tomspur@fedoraproject.org>
+Co-authored-by: Slavek Kabrda <bkabrda@redhat.com>
+Co-authored-by: Matej Stuchlik <mstuchli@redhat.com>
+Co-authored-by: Tomas Orsava <torsava@redhat.com>
+Co-authored-by: Charalampos Stratakis <cstratak@redhat.com>
+Co-authored-by: Petr Viktorin <pviktori@redhat.com>
+Co-authored-by: Miro Hrončok <miro@hroncok.cz>
+Co-authored-by: Iryna Shcherbina <shcherbina.iryna@gmail.com>
+---
+ Lib/distutils/command/install.py    |  4 ++--
+ Lib/distutils/sysconfig.py          |  6 +++++-
+ Lib/distutils/tests/test_install.py |  3 ++-
+ Lib/site.py                         |  4 ++++
+ Lib/sysconfig.py                    | 12 ++++++------
+ Lib/test/test_site.py               |  4 ++--
+ Makefile.pre.in                     |  2 +-
+ Modules/getpath.c                   |  6 +++---
+ configure                           |  4 ++--
+ configure.ac                        |  4 ++--
+ setup.py                            |  6 +++---
+ 11 files changed, 32 insertions(+), 23 deletions(-)
+
+diff -Naur Python-3.7.5/Lib/distutils/command/install.py Python-3.7.5.tpg/Lib/distutils/command/install.py
+--- Python-3.7.5/Lib/distutils/command/install.py	2019-10-14 22:32:36.000000000 +0000
++++ Python-3.7.5.tpg/Lib/distutils/command/install.py	2019-10-23 12:18:21.355044521 +0000
+@@ -30,14 +30,14 @@
  INSTALL_SCHEMES = {
      'unix_prefix': {
          'purelib': '$base/lib/python$py_version_short/site-packages',
@@ -17,9 +52,10 @@
          'headers': '$base/include/python/$dist_name',
          'scripts': '$base/bin',
          'data'   : '$base',
---- Python-3.7.0b1/Lib/distutils/sysconfig.py.lib64~	2018-01-31 00:48:26.000000000 +0100
-+++ Python-3.7.0b1/Lib/distutils/sysconfig.py	2018-02-02 16:42:00.628407498 +0100
-@@ -129,8 +129,12 @@ def get_python_lib(plat_specific=0, stan
+diff -Naur Python-3.7.5/Lib/distutils/sysconfig.py Python-3.7.5.tpg/Lib/distutils/sysconfig.py
+--- Python-3.7.5/Lib/distutils/sysconfig.py	2019-10-14 22:32:36.000000000 +0000
++++ Python-3.7.5.tpg/Lib/distutils/sysconfig.py	2019-10-23 12:20:36.932045320 +0000
+@@ -147,8 +147,12 @@
              prefix = plat_specific and EXEC_PREFIX or PREFIX
  
      if os.name == "posix":
@@ -33,14 +69,29 @@
          if standard_lib:
              return libpython
          else:
---- Python-3.7.0b1/Lib/site.py.lib64~	2018-02-02 16:42:00.628407498 +0100
-+++ Python-3.7.0b1/Lib/site.py	2018-02-02 16:43:16.504482162 +0100
-@@ -334,11 +334,15 @@ def getsitepackages(prefixes=None):
+diff -Naur Python-3.7.5/Lib/distutils/tests/test_install.py Python-3.7.5.tpg/Lib/distutils/tests/test_install.py
+--- Python-3.7.5/Lib/distutils/tests/test_install.py	2019-10-14 22:32:36.000000000 +0000
++++ Python-3.7.5.tpg/Lib/distutils/tests/test_install.py	2019-10-23 12:21:32.738045649 +0000
+@@ -57,8 +57,9 @@
+             self.assertEqual(got, expected)
+ 
+         libdir = os.path.join(destination, "lib", "python")
++        platlibdir = os.path.join(destination, "lib64", "python")
+         check_path(cmd.install_lib, libdir)
+-        check_path(cmd.install_platlib, libdir)
++        check_path(cmd.install_platlib, platlibdir)
+         check_path(cmd.install_purelib, libdir)
+         check_path(cmd.install_headers,
+                    os.path.join(destination, "include", "python", "foopkg"))
+diff -Naur Python-3.7.5/Lib/site.py Python-3.7.5.tpg/Lib/site.py
+--- Python-3.7.5/Lib/site.py	2019-10-14 22:32:36.000000000 +0000
++++ Python-3.7.5.tpg/Lib/site.py	2019-10-23 12:22:35.486046019 +0000
+@@ -334,11 +334,15 @@
          seen.add(prefix)
  
          if os.sep == '/':
 +            sitepackages.append(os.path.join(prefix, "lib64",
-+                                        "python%d.%d" % sys.version_info[:2],
++                                        "python" + sys.version[:3],
 +                                        "site-packages"))
              sitepackages.append(os.path.join(prefix, "lib",
                                          "python%d.%d" % sys.version_info[:2],
@@ -51,9 +102,10 @@
              sitepackages.append(os.path.join(prefix, "lib", "site-packages"))
      return sitepackages
  
---- Python-3.7.0b1/Lib/sysconfig.py.lib64~	2018-01-31 00:48:26.000000000 +0100
-+++ Python-3.7.0b1/Lib/sysconfig.py	2018-02-02 16:42:00.628407498 +0100
-@@ -20,10 +20,10 @@ __all__ = [
+diff -Naur Python-3.7.5/Lib/sysconfig.py Python-3.7.5.tpg/Lib/sysconfig.py
+--- Python-3.7.5/Lib/sysconfig.py	2019-10-14 22:32:36.000000000 +0000
++++ Python-3.7.5.tpg/Lib/sysconfig.py	2019-10-23 12:24:23.795046657 +0000
+@@ -20,10 +20,10 @@
  
  _INSTALL_SCHEMES = {
      'posix_prefix': {
@@ -67,7 +119,7 @@
          'include':
              '{installed_base}/include/python{py_version_short}{abiflags}',
          'platinclude':
-@@ -62,10 +62,10 @@ _INSTALL_SCHEMES = {
+@@ -62,10 +62,10 @@
          'data': '{userbase}',
          },
      'posix_user': {
@@ -81,20 +133,24 @@
          'include': '{userbase}/include/python{py_version_short}',
          'scripts': '{userbase}/bin',
          'data': '{userbase}',
---- Python-3.7.0b1/Lib/test/test_site.py.lib64~	2018-02-02 16:42:00.628407498 +0100
-+++ Python-3.7.0b1/Lib/test/test_site.py	2018-02-02 16:43:46.328511336 +0100
-@@ -264,7 +264,7 @@ class HelperFunctionsTests(unittest.Test
+diff -Naur Python-3.7.5/Lib/test/test_site.py Python-3.7.5.tpg/Lib/test/test_site.py
+--- Python-3.7.5/Lib/test/test_site.py	2019-10-14 22:32:36.000000000 +0000
++++ Python-3.7.5.tpg/Lib/test/test_site.py	2019-10-23 12:25:17.490046974 +0000
+@@ -269,8 +269,8 @@
+         dirs = site.getsitepackages()
          if os.sep == '/':
              # OS X, Linux, FreeBSD, etc
-             self.assertEqual(len(dirs), 1)
+-            self.assertEqual(len(dirs), 1)
 -            wanted = os.path.join('xoxo', 'lib',
++            self.assertEqual(len(dirs), 2)
 +            wanted = os.path.join('xoxo', 'lib64',
                                    'python%d.%d' % sys.version_info[:2],
                                    'site-packages')
              self.assertEqual(dirs[0], wanted)
---- Python-3.7.0b1/Makefile.pre.in.lib64~	2018-01-31 00:48:26.000000000 +0100
-+++ Python-3.7.0b1/Makefile.pre.in	2018-02-02 16:42:00.628407498 +0100
-@@ -133,7 +133,7 @@ LIBDIR=		@libdir@
+diff -Naur Python-3.7.5/Makefile.pre.in Python-3.7.5.tpg/Makefile.pre.in
+--- Python-3.7.5/Makefile.pre.in	2019-10-14 22:32:36.000000000 +0000
++++ Python-3.7.5.tpg/Makefile.pre.in	2019-10-23 12:26:18.680047335 +0000
+@@ -144,7 +144,7 @@
  MANDIR=		@mandir@
  INCLUDEDIR=	@includedir@
  CONFINCLUDEDIR=	$(exec_prefix)/include
@@ -103,9 +159,10 @@
  ABIFLAGS=	@ABIFLAGS@
  
  # Detailed destination directories
---- Python-3.7.0b1/Modules/getpath.c.lib64~	2018-01-31 00:48:26.000000000 +0100
-+++ Python-3.7.0b1/Modules/getpath.c	2018-02-02 16:42:00.629407499 +0100
-@@ -500,7 +500,7 @@ calculate_exec_prefix(const _PyCoreConfi
+diff -Naur Python-3.7.5/Modules/getpath.c Python-3.7.5.tpg/Modules/getpath.c
+--- Python-3.7.5/Modules/getpath.c	2019-10-14 22:32:36.000000000 +0000
++++ Python-3.7.5.tpg/Modules/getpath.c	2019-10-23 12:27:50.379047875 +0000
+@@ -535,7 +535,7 @@
                  "Could not find platform dependent libraries <exec_prefix>\n");
          }
          wcsncpy(exec_prefix, calculate->exec_prefix, MAXPATHLEN);
@@ -114,7 +171,7 @@
      }
      /* If we found EXEC_PREFIX do *not* reduce it!  (Yet.) */
  }
-@@ -742,7 +742,7 @@ calculate_zip_path(PyCalculatePath *calc
+@@ -787,7 +787,7 @@
      else {
          wcsncpy(calculate->zip_path, calculate->prefix, MAXPATHLEN);
      }
@@ -123,8 +180,8 @@
  
      /* Replace "00" with version */
      size_t bufsz = wcslen(calculate->zip_path);
-@@ -867,7 +867,7 @@ calculate_init(PyCalculatePath *calculat
-     if (!calculate->prefix) {
+@@ -912,7 +912,7 @@
+     if (!calculate->exec_prefix) {
          return DECODE_LOCALE_ERR("EXEC_PREFIX define", len);
      }
 -    calculate->lib_python = Py_DecodeLocale("lib/python" VERSION, &len);
@@ -132,9 +189,40 @@
      if (!calculate->lib_python) {
          return DECODE_LOCALE_ERR("EXEC_PREFIX define", len);
      }
---- Python-3.7.0b1/setup.py.lib64~	2018-02-02 16:42:00.626407496 +0100
-+++ Python-3.7.0b1/setup.py	2018-02-02 16:42:00.629407499 +0100
-@@ -541,7 +541,7 @@ class PyBuildExt(build_ext):
+diff -Naur Python-3.7.5/configure Python-3.7.5.tpg/configure
+--- Python-3.7.5/configure	2019-10-14 22:32:36.000000000 +0000
++++ Python-3.7.5.tpg/configure	2019-10-23 12:29:09.542048342 +0000
+@@ -15266,9 +15266,9 @@
+ 
+ 
+ if test x$PLATFORM_TRIPLET = x; then
+-  LIBPL='$(prefix)'"/lib/python${VERSION}/config-${LDVERSION}"
++  LIBPL='$(prefix)'"/lib64/python${VERSION}/config-${LDVERSION}"
+ else
+-  LIBPL='$(prefix)'"/lib/python${VERSION}/config-${LDVERSION}-${PLATFORM_TRIPLET}"
++  LIBPL='$(prefix)'"/lib64/python${VERSION}/config-${LDVERSION}-${PLATFORM_TRIPLET}"
+ fi
+ 
+ 
+diff -Naur Python-3.7.5/configure.ac Python-3.7.5.tpg/configure.ac
+--- Python-3.7.5/configure.ac	2019-10-14 22:32:36.000000000 +0000
++++ Python-3.7.5.tpg/configure.ac	2019-10-23 12:29:17.283048387 +0000
+@@ -4757,9 +4757,9 @@
+ dnl define LIBPL after ABIFLAGS and LDVERSION is defined.
+ AC_SUBST(PY_ENABLE_SHARED)
+ if test x$PLATFORM_TRIPLET = x; then
+-  LIBPL='$(prefix)'"/lib/python${VERSION}/config-${LDVERSION}"
++  LIBPL='$(prefix)'"/lib64/python${VERSION}/config-${LDVERSION}"
+ else
+-  LIBPL='$(prefix)'"/lib/python${VERSION}/config-${LDVERSION}-${PLATFORM_TRIPLET}"
++  LIBPL='$(prefix)'"/lib64/python${VERSION}/config-${LDVERSION}-${PLATFORM_TRIPLET}"
+ fi
+ AC_SUBST(LIBPL)
+ 
+diff -Naur Python-3.7.5/setup.py Python-3.7.5.tpg/setup.py
+--- Python-3.7.5/setup.py	2019-10-23 12:15:53.966043652 +0000
++++ Python-3.7.5.tpg/setup.py	2019-10-23 12:30:35.320048847 +0000
+@@ -585,7 +585,7 @@
          # directories (i.e. '.' and 'Include') must be first.  See issue
          # 10520.
          if not cross_compiling:
@@ -143,7 +231,7 @@
              add_dir_to_list(self.compiler.include_dirs, '/usr/local/include')
          # only change this for cross builds for 3.3, issues on Mageia
          if cross_compiling:
-@@ -849,11 +849,11 @@ class PyBuildExt(build_ext):
+@@ -891,11 +891,11 @@
              elif curses_library:
                  readline_libs.append(curses_library)
              elif self.compiler.find_library_file(lib_dirs +
@@ -157,3 +245,6 @@
                                     extra_link_args=readline_extra_link_args,
                                     libraries=readline_libs) )
          else:
+
+--
+2.21.0

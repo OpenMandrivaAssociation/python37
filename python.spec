@@ -44,15 +44,16 @@ Source3:	pybytecompile.macros
 Source100:	%{name}.rpmlintrc
 #Source4:	python-mode-1.0.tar.bz2
 Patch0:		python-3.6.1-module-linkage.patch
-Patch1:		http://pkgs.fedoraproject.org/cgit/rpms/python3.git/plain/00102-lib64.patch
-Patch2:		http://pkgs.fedoraproject.org/cgit/rpms/python3.git/plain/00104-lib64-fix-for-test_install.patch
-Patch3:		Python-select-requires-libm.patch
-Patch4:		python-3.3.0b1-test-posix_fadvise.patch
-Patch5:		Python-3.7.0b1-_ctypes-requires-libdl.patch
-Patch6:		python-3.6.2-clang-5.0.patch
-Patch7:		http://pkgs.fedoraproject.org/cgit/rpms/python3.git/plain/00205-make-libpl-respect-lib64.patch
-Patch8:		python-3.7.0b1-atomic-c++-buildfix.patch
-Patch9:		python-3.7.1-dont-build-testembed-with-c++.patch
+Patch1:		https://src.fedoraproject.org/rpms/python3/raw/master/f/00001-rpath.patch
+Patch2:		https://src.fedoraproject.org/rpms/python3/raw/master/f/00102-lib64.patch
+Patch3:		http://pkgs.fedoraproject.org/cgit/rpms/python3.git/plain/00104-lib64-fix-for-test_install.patch
+Patch4:		Python-select-requires-libm.patch
+Patch5:		python-3.3.0b1-test-posix_fadvise.patch
+Patch6:		Python-3.7.0b1-_ctypes-requires-libdl.patch
+Patch7:		python-3.6.2-clang-5.0.patch
+Patch8:		http://pkgs.fedoraproject.org/cgit/rpms/python3.git/plain/00205-make-libpl-respect-lib64.patch
+Patch9:		python-3.7.0b1-atomic-c++-buildfix.patch
+Patch10:	python-3.7.1-dont-build-testembed-with-c++.patch
 # 00173 #
 # Workaround for ENOPROTOOPT seen in bs within
 # test.test_support.bind_port()
