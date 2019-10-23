@@ -46,7 +46,6 @@ Source100:	%{name}.rpmlintrc
 Patch0:		python-3.6.1-module-linkage.patch
 Patch1:		https://src.fedoraproject.org/rpms/python3/raw/master/f/00001-rpath.patch
 Patch2:		https://src.fedoraproject.org/rpms/python3/raw/master/f/00102-lib64.patch
-Patch3:		http://pkgs.fedoraproject.org/cgit/rpms/python3.git/plain/00104-lib64-fix-for-test_install.patch
 Patch4:		Python-select-requires-libm.patch
 Patch5:		python-3.3.0b1-test-posix_fadvise.patch
 Patch6:		Python-3.7.0b1-_ctypes-requires-libdl.patch
@@ -217,7 +216,6 @@ This is only useful to test Python itself.
 %patch1 -p1 -b .lib64~
 %patch2 -p1 -b .p2~
 %endif
-%patch3 -p1 -b .lm~
 %patch4 -p1 -b .p4~
 %patch5 -p1 -b .p5~
 #patch6 -p1 -b .clang5~
