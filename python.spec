@@ -222,6 +222,7 @@ This is only useful to test Python itself.
 %patch7 -p1 -b .libpl
 %patch8 -p1 -b .atomic~
 %patch9 -p1 -b .c++~
+%patch10 -p1
 %patch173 -p1 -b .p173~
 %patch179 -p1 -b .p179~
 %patch183 -p1 -b .p183~
